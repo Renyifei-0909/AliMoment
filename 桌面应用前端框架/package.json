@@ -1,0 +1,29 @@
+{
+  "name": "ai-editor",
+  "version": "1.0.0",
+  "description": "AI Video Editor",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^28.3.3",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.example.aieditor",
+    "productName": "AI智剪",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "renderer/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "zip"
+    }
+  }
+}
