@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="Infinity" maxWidth="Infinity" style="-fx-background-color: #1a1a2e;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.aiimoment.controller.SettingsPageController">
+    <Label text="设置页面" style="-fx-text-fill: #a0a0a0; -fx-font-size: 18px;" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20" />
+</AnchorPane>

@@ -1,0 +1,7 @@
+com\aiimoment\Main.class
+com\aiimoment\controller\DraftPageController.class
+com\aiimoment\controller\SettingsPageController.class
+com\aiimoment\controller\SearchPageController.class
+com\aiimoment\controller\MaterialPageController.class
+com\aiimoment\controller\SmartEditPageController.class
+com\aiimoment\controller\MainController.class

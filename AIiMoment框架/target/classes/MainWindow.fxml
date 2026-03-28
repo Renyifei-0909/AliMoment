@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.aiimoment.controller.MainController" style="-fx-background-color: #1a1a2e;">
+
+    <top>
+        <VBox>
+            <HBox fx:id="titleBar" minHeight="40.0" prefHeight="40.0" style="-fx-background-color: #16213e; -fx-border-color: rgba(255,255,255,0.05); -fx-border-width: 0 0 1 0;">
+                <HBox fx:id="titleBarLeft" alignment="CENTER_LEFT" spacing="8.0">
+                    <Label fx:id="appIcon" text="✨" style="-fx-font-size: 18px;" />
+                </HBox>
+                <Region HBox.hgrow="ALWAYS" />
+                <HBox fx:id="windowControls" alignment="CENTER_RIGHT" spacing="8.0">
+                    <Button fx:id="minimizeBtn" mnemonicParsing="false" text="−" style="-fx-background-color: transparent; -fx-text-fill: #a0a0a0; -fx-font-size: 16px; -fx-pref-width: 32px; -fx-pref-height: 32px; -fx-background-radius: 6px;" />
+                    <Button fx:id="maximizeBtn" mnemonicParsing="false" text="□" style="-fx-background-color: transparent; -fx-text-fill: #a0a0a0; -fx-font-size: 16px; -fx-pref-width: 32px; -fx-pref-height: 32px; -fx-background-radius: 6px;" />
+                    <Button fx:id="closeBtn" mnemonicParsing="false" text="×" style="-fx-background-color: transparent; -fx-text-fill: #a0a0a0; -fx-font-size: 16px; -fx-pref-width: 32px; -fx-pref-height: 32px; -fx-background-radius: 6px;" />
+                </HBox>
+            </HBox>
+            <HBox fx:id="navbar" minHeight="60.0" prefHeight="60.0" style="-fx-background-color: #252547; -fx-border-color: rgba(255,255,255,0.05); -fx-border-width: 0 0 1 0; -fx-padding: 0 40;">
+                <HBox fx:id="titleContainer" alignment="CENTER_LEFT" style="-fx-padding: 0 32 0 0;">
+                    <Label fx:id="navTitle" text="✨ AIimoment" style="-fx-font-size: 18px; -fx-font-weight: 600; -fx-text-fill: #667eea;" />
+                </HBox>
+                <HBox fx:id="navItemsContainer" alignment="CENTER" spacing="8.0" HBox.hgrow="ALWAYS">
+                    <Button fx:id="navMaterial" mnemonicParsing="false" text="素材库" style="-fx-background-color: transparent; -fx-text-fill: #a0a0a0; -fx-font-size: 16px; -fx-font-weight: 500; -fx-padding: 12 24; -fx-background-radius: 8px;" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                    <Button fx:id="navDraft" mnemonicParsing="false" text="草稿箱" style="-fx-background-color: transparent; -fx-text-fill: #a0a0a0; -fx-font-size: 16px; -fx-font-weight: 500; -fx-padding: 12 24; -fx-background-radius: 8px;" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                    <Button fx:id="navSearch" mnemonicParsing="false" text="智能检索" style="-fx-background-color: transparent; -fx-text-fill: #a0a0a0; -fx-font-size: 16px; -fx-font-weight: 500; -fx-padding: 12 24; -fx-background-radius: 8px;" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                    <Button fx:id="navSmartEdit" mnemonicParsing="false" text="智能剪辑" style="-fx-background-color: transparent; -fx-text-fill: #a0a0a0; -fx-font-size: 16px; -fx-font-weight: 500; -fx-padding: 12 24; -fx-background-radius: 8px;" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                    <Button fx:id="navSettings" mnemonicParsing="false" text="设置" style="-fx-background-color: transparent; -fx-text-fill: #a0a0a0; -fx-font-size: 16px; -fx-font-weight: 500; -fx-padding: 12 24; -fx-background-radius: 8px;" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                </HBox>
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <AnchorPane fx:id="contentArea" style="-fx-background-color: #1a1a2e;">
+            <AnchorPane fx:id="pageMaterial" style="-fx-background-color: #1a1a2e;" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" />
+            <AnchorPane fx:id="pageDraft" style="-fx-background-color: #1a1a2e;" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" />
+            <AnchorPane fx:id="pageSearch" style="-fx-background-color: #1a1a2e;" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" />
+            <AnchorPane fx:id="pageSmartEdit" style="-fx-background-color: #1a1a2e;" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" />
+            <AnchorPane fx:id="pageSettings" style="-fx-background-color: #1a1a2e;" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" />
+        </AnchorPane>
+    </center>
+</BorderPane>
