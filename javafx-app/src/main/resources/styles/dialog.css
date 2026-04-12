@@ -1,0 +1,105 @@
+/* Alimoment 对话框：深色、圆角、与品牌青蓝渐变一致 */
+
+.dialog-pane.alimoment-dialog {
+    -fx-background-color: #2d2d30;
+    -fx-background-radius: 12px;
+    -fx-border-color: rgba(0, 212, 196, 0.25);
+    -fx-border-width: 1px;
+    -fx-border-radius: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.45), 24, 0.15, 0, 8);
+}
+
+.dialog-pane.alimoment-dialog > .header-panel {
+    -fx-background-color: linear-gradient(to right, rgba(0, 120, 212, 0.12), rgba(0, 212, 196, 0.08));
+    -fx-background-radius: 12px 12px 0 0;
+    -fx-padding: 18 20 12 20;
+}
+
+.dialog-pane.alimoment-dialog > .header-panel .label {
+    -fx-text-fill: #f0f4f8;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.dialog-pane.alimoment-dialog > .content {
+    -fx-padding: 4 24 8 24;
+}
+
+.dialog-pane.alimoment-dialog > * > .graphic-container {
+    -fx-padding: 0 16 0 0;
+}
+
+.dialog-pane.alimoment-dialog .content.label,
+.dialog-pane.alimoment-dialog > .content .label {
+    -fx-text-fill: #c8cdd3;
+    -fx-font-size: 13.5px;
+    -fx-wrap-text: true;
+    -fx-line-spacing: 3px;
+    -fx-max-width: 420px;
+}
+
+.dialog-pane.alimoment-dialog:header .header-panel .label {
+    -fx-padding: 0;
+}
+
+.dialog-pane.alimoment-dialog > .button-bar > .container {
+    -fx-background-color: #252528;
+    -fx-background-radius: 0 0 12px 12px;
+    -fx-padding: 12 20 18 20;
+    -fx-border-color: rgba(255, 255, 255, 0.06);
+    -fx-border-width: 1 0 0 0;
+}
+
+.dialog-pane.alimoment-dialog .button {
+    -fx-background-color: linear-gradient(to right, #0078d4, #009688);
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-padding: 9px 28px;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+    -fx-min-width: 88px;
+}
+
+.dialog-pane.alimoment-dialog .button:hover {
+    -fx-background-color: linear-gradient(to right, #1a8ce8, #00bfa5);
+}
+
+.dialog-pane.alimoment-dialog .button:pressed {
+    -fx-background-color: linear-gradient(to right, #006cbd, #00897b);
+}
+
+/* 左侧圆形图标容器（由代码设置 styleClass） */
+.dialog-brand-icon-wrap {
+    -fx-min-width: 56px;
+    -fx-min-height: 56px;
+    -fx-max-width: 56px;
+    -fx-max-height: 56px;
+    -fx-background-color: linear-gradient(to bottom right, #00e5ff, #0078d4);
+    -fx-background-radius: 28px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 120, 212, 0.4), 10, 0.25, 0, 2);
+    -fx-alignment: center;
+}
+
+.dialog-brand-icon-wrap .image-view {
+    -fx-effect: null;
+}
+
+.dialog-error-badge {
+    -fx-min-width: 22px;
+    -fx-min-height: 22px;
+    -fx-max-width: 22px;
+    -fx-max-height: 22px;
+    -fx-background-color: #ff5252;
+    -fx-background-radius: 11px;
+    -fx-border-color: #2d2d30;
+    -fx-border-width: 2px;
+    -fx-border-radius: 11px;
+    -fx-alignment: center;
+}
+
+.dialog-error-badge-text {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}

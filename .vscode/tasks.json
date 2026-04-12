@@ -1,0 +1,70 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "JavaFX: Run AIiMoment (javafx-app)",
+      "type": "shell",
+      "command": "chmod +x ./mvnw 2>/dev/null || true; ./mvnw javafx:run",
+      "options": {
+        "cwd": "${workspaceFolder}/javafx-app"
+      },
+      "windows": {
+        "command": "cmd /c mvnw.cmd javafx:run"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "JavaFX: Run desktop UI (electron-app/java-ui)",
+      "type": "shell",
+      "command": "chmod +x ./mvnw 2>/dev/null || true; ./mvnw javafx:run",
+      "options": {
+        "cwd": "${workspaceFolder}/electron-app/java-ui"
+      },
+      "windows": {
+        "command": "cmd /c mvnw.cmd javafx:run"
+      },
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Electron: npm install",
+      "type": "shell",
+      "command": "npm install",
+      "options": {
+        "cwd": "${workspaceFolder}/electron-app"
+      },
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Electron: npm start",
+      "type": "shell",
+      "command": "npm start",
+      "options": {
+        "cwd": "${workspaceFolder}/electron-app"
+      },
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

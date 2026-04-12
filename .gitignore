@@ -1,0 +1,12 @@
+# Maven
+**/target/
+
+# Node (Electron)
+node_modules/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+*.iml

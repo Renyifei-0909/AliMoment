@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="Infinity" maxWidth="Infinity" styleClass="search-root" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.aiimoment.controller.SearchPageController">
+    <HBox spacing="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+        <VBox alignment="TOP_CENTER" minWidth="56" maxWidth="56" prefWidth="56" styleClass="search-rail">
+            <Button mnemonicParsing="false" styleClass="rail-avatar" />
+            <Region VBox.vgrow="ALWAYS" />
+            <Button fx:id="railMenuBtn" mnemonicParsing="false" styleClass="rail-menu-btn" text="☰" />
+        </VBox>
+
+        <HBox HBox.hgrow="ALWAYS" spacing="20" style="-fx-padding: 16 20 16 16;">
+            <VBox spacing="12" HBox.hgrow="ALWAYS">
+                <StackPane fx:id="videoPane" minHeight="280" styleClass="card-surface video-placeholder video-placeholder-empty" VBox.vgrow="ALWAYS">
+                    <VBox fx:id="videoPlaceholder" alignment="CENTER" spacing="10" StackPane.alignment="CENTER">
+                        <Label styleClass="play-overlay" text="▶" />
+                        <Label styleClass="video-import-hint" text="点击导入视频" />
+                    </VBox>
+                </StackPane>
+                <HBox alignment="CENTER_LEFT" spacing="16">
+                    <Label fx:id="videoTimeLabel" styleClass="video-time-label" text="00:00:00 / 00:00:00" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <HBox alignment="CENTER_RIGHT" spacing="8">
+                        <Button fx:id="seekStartBtn" mnemonicParsing="false" styleClass="transport-btn" text="⏮" />
+                        <Button fx:id="playPauseBtn" mnemonicParsing="false" styleClass="transport-btn" text="▶" />
+                        <Button fx:id="seekEndBtn" mnemonicParsing="false" styleClass="transport-btn" text="⏭" />
+                    </HBox>
+                </HBox>
+                <Pane fx:id="timelinePane" maxHeight="12" minHeight="12" styleClass="timeline-shell" />
+            </VBox>
+
+            <VBox minWidth="320" prefWidth="400" spacing="14" HBox.hgrow="NEVER">
+                <Label styleClass="search-panel-title" text="智能搜索" />
+                <VBox spacing="8" styleClass="card-surface" style="-fx-padding: 12;">
+                    <TextArea fx:id="searchField" prefRowCount="5" promptText="描述您要查找的视频片段…例如：找到两个人在野外骑行的场景" styleClass="search-text-area" wrapText="true" />
+                    <HBox alignment="CENTER_RIGHT" spacing="8">
+                        <Button mnemonicParsing="false" styleClass="icon-tool-btn" text="▢" />
+                        <Button mnemonicParsing="false" styleClass="icon-tool-btn" text="🌐" />
+                        <Button mnemonicParsing="false" styleClass="icon-tool-btn" text="📎" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="searchSubmitBtn" mnemonicParsing="false" styleClass="search-submit-btn" text="↑" />
+                    </HBox>
+                </VBox>
+                <Label styleClass="section-heading" text="搜索历史" />
+                <FlowPane fx:id="historyPane" hgap="8" vgap="8">
+                    <Button mnemonicParsing="false" styleClass="history-chip" text="家长陪伴小朋友玩乐" />
+                    <Button mnemonicParsing="false" styleClass="history-chip" text="小朋友们一起搭积木" />
+                    <Button mnemonicParsing="false" styleClass="history-chip" text="小朋友们自己玩耍" />
+                </FlowPane>
+                <Label styleClass="section-heading" text="搜索结果" />
+                <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent; -fx-background: transparent;" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS">
+                    <VBox fx:id="resultsBox" spacing="10" style="-fx-background-color: transparent;">
+                        <padding>
+                            <Insets bottom="8" />
+                        </padding>
+                    </VBox>
+                </ScrollPane>
+            </VBox>
+        </HBox>
+    </HBox>
+</AnchorPane>

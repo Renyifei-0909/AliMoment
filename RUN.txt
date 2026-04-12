@@ -1,0 +1,41 @@
+AliMoment — 组员如何跑起来（VS Code / 命令行）
+========================================
+
+所有人都要做的准备
+------------------
+1) 安装 JDK 11 或更高（推荐 17）。安装后能在终端执行: java -version
+2) 不需要单独安装 Maven。仓库里已带 Maven Wrapper（mvnw / mvnw.cmd），第一次运行会自动下载 Maven 到本机用户目录（需联网）。
+
+用 VS Code 跑（推荐）
+------------------
+1) 安装扩展：Extension Pack for Java（打开仓库时如提示“安装推荐扩展”，选安装即可）
+2) 文件 -> 打开文件夹 -> 选择本仓库根目录 AliMoment（不是子文件夹）
+3) 等右下角 Java / Maven 导入完成
+4) 运行 JavaFX 主程序：
+   - 按 Ctrl+Shift+B  （默认生成任务）
+   - 或 终端 -> 运行任务 -> 选 “JavaFX: Run AIiMoment (javafx-app)”
+5) 跑 Electron 壳：先运行任务 “Electron: npm install” 一次，再运行 “Electron: npm start”
+
+命令行（Windows PowerShell）
+----------------------------
+cd javafx-app
+.\mvnw.cmd javafx:run
+
+命令行（macOS / Linux）
+-----------------------
+cd javafx-app
+chmod +x mvnw
+./mvnw javafx:run
+
+Java 桌面演示（electron-app/java-ui）
+-------------------------------------
+cd electron-app/java-ui
+Windows: .\mvnw.cmd javafx:run
+Unix:    chmod +x mvnw && ./mvnw javafx:run
+
+提交到 Git 时请包含
+-------------------
+javafx-app/mvnw、javafx-app/mvnw.cmd、javafx-app/.mvn/
+electron-app/java-ui/mvnw、electron-app/java-ui/mvnw.cmd、electron-app/java-ui/.mvn/
+.vscode/tasks.json、.vscode/extensions.json
+这样组员克隆后无需再配 Maven。
