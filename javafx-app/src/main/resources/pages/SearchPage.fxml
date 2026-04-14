@@ -44,7 +44,9 @@
             <VBox minWidth="320" prefWidth="400" spacing="14" HBox.hgrow="NEVER">
                 <Label styleClass="search-panel-title" text="智能搜索" />
                 <VBox spacing="8" styleClass="card-surface" style="-fx-padding: 12;">
-                    <TextArea fx:id="searchField" prefRowCount="5" promptText="描述您要查找的视频片段…例如：找到两个人在野外骑行的场景" styleClass="search-text-area" wrapText="true" />
+                    <StackPane styleClass="search-input-shell">
+                        <TextArea fx:id="searchField" prefRowCount="5" promptText="描述您要查找的视频片段…例如：找到两个人在野外骑行的场景" styleClass="search-text-area" wrapText="true" />
+                    </StackPane>
                     <HBox alignment="CENTER_RIGHT" spacing="8">
                         <Button mnemonicParsing="false" styleClass="icon-tool-btn" text="▢" />
                         <Button mnemonicParsing="false" styleClass="icon-tool-btn" text="🌐" />

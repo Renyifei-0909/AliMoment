@@ -1,8 +1,120 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="Infinity" maxWidth="Infinity" style="-fx-background-color: #1a1a2e;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.aiimoment.controller.SettingsPageController">
-    <Label text="设置页面" style="-fx-text-fill: #a0a0a0; -fx-font-size: 18px;" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20" />
+<AnchorPane maxHeight="Infinity" maxWidth="Infinity" styleClass="settings-root" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.aiimoment.controller.SettingsPageController">
+    <HBox spacing="14" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+        <VBox minWidth="250" prefWidth="260" spacing="10" styleClass="settings-side">
+            <Label styleClass="settings-group-title" text="通用设置" />
+            <Button mnemonicParsing="false" styleClass="settings-side-item settings-side-item-active" text="主题与外观" />
+            <Button mnemonicParsing="false" styleClass="settings-side-item" text="语言与地区" />
+            <Button mnemonicParsing="false" styleClass="settings-side-item" text="账户管理" />
+            <Button mnemonicParsing="false" styleClass="settings-side-item" text="快捷键" />
+            <Button mnemonicParsing="false" styleClass="settings-side-item" text="缓存管理" />
+
+            <Label styleClass="settings-group-title" text="AI功能设置" />
+            <HBox alignment="CENTER_LEFT" styleClass="settings-side-row">
+                <Label styleClass="settings-side-label" text="AI辅助开关" />
+                <Region HBox.hgrow="ALWAYS" />
+                <ToggleButton mnemonicParsing="false" selected="true" styleClass="switch-toggle" />
+            </HBox>
+            <HBox alignment="CENTER_LEFT" styleClass="settings-side-row">
+                <Label styleClass="settings-side-label" text="自动剪辑" />
+                <Region HBox.hgrow="ALWAYS" />
+                <ToggleButton mnemonicParsing="false" selected="true" styleClass="switch-toggle" />
+            </HBox>
+            <Button mnemonicParsing="false" styleClass="settings-side-item" text="朗读字幕" />
+            <Button mnemonicParsing="false" styleClass="settings-side-item" text="AI模型配置" />
+            <Button mnemonicParsing="false" styleClass="settings-side-item" text="语音与音频" />
+
+            <Label styleClass="settings-group-title" text="项目与导出" />
+            <Button mnemonicParsing="false" styleClass="settings-side-item" text="保存路径" />
+            <Button mnemonicParsing="false" styleClass="settings-side-item" text="自动保存" />
+            <Button mnemonicParsing="false" styleClass="settings-side-item" text="默认导出设置" />
+            <Region VBox.vgrow="ALWAYS" />
+        </VBox>
+
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="settings-scroll" vbarPolicy="AS_NEEDED" HBox.hgrow="ALWAYS">
+            <VBox spacing="12">
+                <Label styleClass="settings-page-title" text="主页与外观" />
+
+                <VBox spacing="10" styleClass="settings-card">
+                    <HBox alignment="CENTER_LEFT" spacing="16">
+                        <VBox spacing="6">
+                            <Label styleClass="settings-card-title" text="主题方案" />
+                            <Label styleClass="settings-card-desc" text="选择你喜欢的应用主题" />
+                        </VBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <HBox spacing="14">
+                            <VBox spacing="8">
+                                <Region minHeight="86" minWidth="160" styleClass="theme-preview theme-preview-dark" />
+                                <HBox alignment="CENTER_LEFT" spacing="8">
+                                    <ToggleButton mnemonicParsing="false" selected="true" styleClass="theme-radio" />
+                                    <Label styleClass="settings-side-label" text="深色" />
+                                </HBox>
+                            </VBox>
+                            <VBox spacing="8">
+                                <Region minHeight="86" minWidth="160" styleClass="theme-preview theme-preview-light" />
+                                <HBox alignment="CENTER_LEFT" spacing="8">
+                                    <ToggleButton mnemonicParsing="false" styleClass="theme-radio" />
+                                    <Label styleClass="settings-side-label" text="浅色" />
+                                </HBox>
+                            </VBox>
+                        </HBox>
+                    </HBox>
+                    <Separator />
+                    <HBox alignment="CENTER_LEFT">
+                        <Label styleClass="settings-side-label" text="自动跟随系统主题" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <ToggleButton mnemonicParsing="false" selected="true" styleClass="switch-toggle" />
+                    </HBox>
+                </VBox>
+
+                <VBox spacing="10" styleClass="settings-card">
+                    <Label styleClass="settings-card-title" text="语言与地区" />
+                    <HBox alignment="CENTER_LEFT" styleClass="settings-select-row">
+                        <Label styleClass="settings-side-label" text="简体中文" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label styleClass="settings-select-icon" text="☰" />
+                    </HBox>
+                </VBox>
+
+                <VBox spacing="10" styleClass="settings-card">
+                    <Label styleClass="settings-card-title" text="账户管理" />
+                    <HBox alignment="CENTER_LEFT" styleClass="settings-select-row">
+                        <Region minHeight="44" minWidth="44" styleClass="settings-avatar" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label styleClass="settings-select-icon" text="⌄" />
+                    </HBox>
+                </VBox>
+
+                <VBox spacing="10" styleClass="settings-card">
+                    <Label styleClass="settings-card-title" text="快捷键" />
+                    <HBox alignment="CENTER_LEFT" styleClass="settings-select-row">
+                        <Label styleClass="settings-card-desc" text="查看并自定义快捷键映射" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label styleClass="settings-select-icon" text="⌄" />
+                    </HBox>
+                </VBox>
+
+                <VBox spacing="10" styleClass="settings-card">
+                    <Label styleClass="settings-card-title" text="缓存管理" />
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <Region HBox.hgrow="ALWAYS" styleClass="storage-bar storage-used" />
+                        <Button mnemonicParsing="false" styleClass="settings-clean-btn" text="清理" />
+                    </HBox>
+                    <Label styleClass="settings-card-desc" text="APP已用内存  |  设备已用空间  |  设备可用空间" />
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </HBox>
 </AnchorPane>

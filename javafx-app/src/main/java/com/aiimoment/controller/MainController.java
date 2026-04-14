@@ -151,9 +151,19 @@ public class MainController {
     }
 
     private void setupWindowControls() {
+        if (minimizeBtn == null || maximizeBtn == null || closeBtn == null) {
+            return;
+        }
+
         minimizeBtn.setDefaultButton(false);
         maximizeBtn.setDefaultButton(false);
         closeBtn.setDefaultButton(false);
+        minimizeBtn.setCancelButton(false);
+        maximizeBtn.setCancelButton(false);
+        closeBtn.setCancelButton(false);
+        minimizeBtn.setFocusTraversable(false);
+        maximizeBtn.setFocusTraversable(false);
+        closeBtn.setFocusTraversable(false);
 
         minimizeBtn.setOnAction(event -> {
             Stage stage = (Stage) minimizeBtn.getScene().getWindow();

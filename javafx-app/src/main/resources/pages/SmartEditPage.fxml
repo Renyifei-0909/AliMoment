@@ -1,8 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="Infinity" maxWidth="Infinity" style="-fx-background-color: #1a1a2e;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.aiimoment.controller.SmartEditPageController">
-    <Label text="智能剪辑页面" style="-fx-text-fill: #a0a0a0; -fx-font-size: 18px;" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20" />
+<AnchorPane maxHeight="Infinity" maxWidth="Infinity" styleClass="smart-edit-root" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.aiimoment.controller.SmartEditPageController">
+    <HBox spacing="16" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+        <VBox minWidth="280" prefWidth="300" spacing="12" styleClass="smart-edit-side">
+            <Label styleClass="smart-edit-title" text="智能剪辑工具箱" />
+            <Label styleClass="smart-edit-subtitle" text="小功能快捷操作（分割/变速/动画/特效/删除）" />
+            <FlowPane hgap="8" vgap="8">
+                <Button fx:id="splitBtn" mnemonicParsing="false" styleClass="smart-tool-btn" text="✂ 分割片段" />
+                <Button fx:id="speedBtn" mnemonicParsing="false" styleClass="smart-tool-btn" text="⏩ 变速" />
+                <Button fx:id="trimBtn" mnemonicParsing="false" styleClass="smart-tool-btn" text="🎞 剪辑" />
+                <Button fx:id="effectBtn" mnemonicParsing="false" styleClass="smart-tool-btn" text="🎬 特效" />
+                <Button fx:id="deleteBtn" mnemonicParsing="false" styleClass="smart-tool-btn smart-tool-danger" text="🗑 删除片段" />
+            </FlowPane>
+            <VBox spacing="8" styleClass="smart-edit-card">
+                <Label styleClass="section-heading" text="参数调节" />
+                <Label styleClass="smart-edit-param" text="播放速度" />
+                <Slider fx:id="speedSlider" max="3.0" min="0.5" value="1.0" />
+                <Label styleClass="smart-edit-param" text="剪辑时长（秒）" />
+                <Slider fx:id="trimSlider" max="30.0" min="3.0" value="10.0" />
+                <Label styleClass="smart-edit-param" text="特效强度" />
+                <Slider fx:id="effectSlider" max="100.0" min="0.0" value="35.0" />
+            </VBox>
+            <Label fx:id="toolStatusLabel" styleClass="smart-edit-status" text="准备就绪：请选择一个小功能进行微调。" />
+            <Region VBox.vgrow="ALWAYS" />
+        </VBox>
+
+        <VBox spacing="12" HBox.hgrow="ALWAYS">
+            <Label styleClass="smart-edit-title" text="视频预览区" />
+            <StackPane fx:id="previewPane" styleClass="smart-preview-pane smart-preview-empty" VBox.vgrow="ALWAYS">
+                <VBox fx:id="previewPlaceholder" alignment="CENTER" spacing="10">
+                    <Label styleClass="play-overlay" text="▶" />
+                    <Label styleClass="video-import-hint" text="点击导入视频" />
+                </VBox>
+            </StackPane>
+            <HBox alignment="CENTER_LEFT" spacing="12">
+                <Label styleClass="smart-edit-param" text="时间线" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Button fx:id="undoBtn" mnemonicParsing="false" styleClass="icon-tool-btn" text="↶" />
+                <Button fx:id="redoBtn" mnemonicParsing="false" styleClass="icon-tool-btn" text="↷" />
+            </HBox>
+        </VBox>
+
+        <VBox minWidth="340" prefWidth="360" spacing="12" styleClass="smart-edit-side">
+            <Label styleClass="smart-edit-title" text="一键剪辑工作台" />
+            <Label styleClass="smart-edit-subtitle" text="输入你的需求，系统自动生成作品（主功能）" />
+            <VBox spacing="8" styleClass="smart-edit-card">
+                <Label styleClass="section-heading" text="创作需求" />
+                <TextArea fx:id="demandInput" prefRowCount="8" promptText="例如：帮我做一个30秒旅游vlog，节奏轻快，带字幕和转场。" styleClass="smart-demand-area" wrapText="true" />
+                <CheckBox fx:id="autoVoiceCheck" mnemonicParsing="false" selected="true" styleClass="smart-check" text="自动加配音（AI旁白）" />
+                <Button fx:id="oneClickEditBtn" mnemonicParsing="false" styleClass="smart-primary-btn" text="一键剪辑生成作品" />
+            </VBox>
+            <VBox spacing="8" styleClass="smart-edit-card" VBox.vgrow="ALWAYS">
+                <Label styleClass="section-heading" text="生成结果" />
+                <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="smart-result-scroll" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS">
+                    <VBox fx:id="resultListBox" spacing="8">
+                        <Label fx:id="resultStatusLabel" styleClass="smart-edit-status" text="等待生成：填写需求后点击「一键剪辑生成作品」。" />
+                    </VBox>
+                </ScrollPane>
+            </VBox>
+        </VBox>
+    </HBox>
 </AnchorPane>
