@@ -1,14 +1,19 @@
 package com.aiimoment.controller;
 
 import javafx.animation.ScaleTransition;
+import javafx.application.Platform;
 import com.aiimoment.ui.AliBrandLogo;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -19,6 +24,9 @@ import java.util.Map;
 public class MainController {
 
     private static final String NAV_STYLE = "nav-tab-btn";
+    private static final String NAV_COMPACT_STYLE = "nav-tab-btn-compact";
+    /** 中间导航条可用宽度低于此值时改为「仅图标 + Tooltip」（Office / 浏览器窄工具栏常见做法） */
+    private static final double NAV_COMPACT_WIDTH_THRESHOLD = 920;
 
     @FXML
     private BorderPane topChrome;
@@ -43,6 +51,8 @@ public class MainController {
     @FXML
     private Button navSettings;
     @FXML
+    private HBox navItemsContainer;
+    @FXML
     private AnchorPane pageMaterial;
     @FXML
     private AnchorPane pageDraft;
@@ -54,6 +64,8 @@ public class MainController {
     private AnchorPane pageSettings;
 
     private Map<Button, AnchorPane> navMap = new HashMap<>();
+    private final Map<Button, String> navFullLabels = new HashMap<>();
+    private boolean navCompact;
     private Button activeNavButton;
 
     private double xOffset = 0;
@@ -77,7 +89,62 @@ public class MainController {
         }
 
         loadBrandLogo();
+        captureNavLabelsAndSetupAdaptiveNav();
         setActiveNavButton(navSearch);
+        Platform.runLater(this::syncNavCompactToCurrentWidth);
+    }
+
+    private void captureNavLabelsAndSetupAdaptiveNav() {
+        for (Button b : navMap.keySet()) {
+            navFullLabels.put(b, b.getText());
+        }
+        if (navItemsContainer == null) {
+            return;
+        }
+        navItemsContainer.widthProperty().addListener((obs, ignored, w) -> syncNavCompactToCurrentWidth());
+    }
+
+    private void syncNavCompactToCurrentWidth() {
+        if (navItemsContainer == null) {
+            return;
+        }
+        double width = navItemsContainer.getWidth();
+        if (width <= 0) {
+            return;
+        }
+        boolean wantCompact = width < NAV_COMPACT_WIDTH_THRESHOLD;
+        if (wantCompact == navCompact) {
+            return;
+        }
+        navCompact = wantCompact;
+        refreshAllNavPresentation();
+    }
+
+    private void refreshAllNavPresentation() {
+        for (Button b : navMap.keySet()) {
+            applyNavCompactState(b);
+            applyNavStyle(b, b == activeNavButton);
+        }
+    }
+
+    private void applyNavCompactState(Button b) {
+        String full = navFullLabels.get(b);
+        if (full == null) {
+            return;
+        }
+        if (navCompact) {
+            b.setText("");
+            b.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+            b.setTooltip(new Tooltip(full));
+            if (!b.getStyleClass().contains(NAV_COMPACT_STYLE)) {
+                b.getStyleClass().add(NAV_COMPACT_STYLE);
+            }
+        } else {
+            b.setText(full);
+            b.setContentDisplay(ContentDisplay.TOP);
+            b.setTooltip(null);
+            b.getStyleClass().remove(NAV_COMPACT_STYLE);
+        }
     }
 
     private void loadBrandLogo() {
@@ -89,10 +156,10 @@ public class MainController {
             url = getClass().getResource("/images/ali-logo.png");
         }
         if (url != null) {
-            ImageView iv = new ImageView(new Image(url.toExternalForm(), 32, 32, true, true, true));
+            ImageView iv = new ImageView(new Image(url.toExternalForm(), 40, 40, true, true, true));
             brandLogoContainer.getChildren().setAll(iv);
         } else {
-            brandLogoContainer.getChildren().setAll(AliBrandLogo.build(32));
+            brandLogoContainer.getChildren().setAll(AliBrandLogo.build(40));
         }
     }
 
@@ -114,7 +181,15 @@ public class MainController {
             AnchorPane.setRightAnchor(page, 0.0);
             AnchorPane.setBottomAnchor(page, 0.0);
         } catch (Exception e) {
+            System.err.println("[FXML] 加载失败: " + fxmlPath + " — " + e.getMessage());
             e.printStackTrace();
+            Label err = new Label("页面加载失败（" + fxmlPath + "）\n" + e.getClass().getSimpleName() + ": " + e.getMessage());
+            err.setWrapText(true);
+            err.setStyle("-fx-text-fill: #ff6666; -fx-padding: 16; -fx-font-size: 12px;");
+            container.getChildren().add(err);
+            AnchorPane.setTopAnchor(err, 8.0);
+            AnchorPane.setLeftAnchor(err, 8.0);
+            AnchorPane.setRightAnchor(err, 8.0);
         }
     }
 

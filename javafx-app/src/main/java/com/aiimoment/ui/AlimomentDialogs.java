@@ -12,6 +12,8 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Window;
 
+import com.aiimoment.AppTheme;
+
 import java.net.URL;
 
 /**
@@ -20,6 +22,7 @@ import java.net.URL;
 public final class AlimomentDialogs {
 
     private static final String DIALOG_CSS = "/styles/dialog.css";
+    private static final String DIALOG_LIGHT_CSS = "/styles/dialog-light.css";
     private static final int ICON_BOX = 56;
     private static final int LOGO_IN_ICON = 32;
 
@@ -39,9 +42,16 @@ public final class AlimomentDialogs {
     }
 
     private static void applyStyle(DialogPane pane) {
-        URL css = AlimomentDialogs.class.getResource(DIALOG_CSS);
-        if (css != null && pane.getStylesheets().stream().noneMatch(s -> s.contains("dialog.css"))) {
-            pane.getStylesheets().add(css.toExternalForm());
+        pane.getStylesheets().removeIf(s ->
+                s.contains("dialog.css") || s.contains("dialog-light.css"));
+        URL dark = AlimomentDialogs.class.getResource(DIALOG_CSS);
+        URL light = AlimomentDialogs.class.getResource(DIALOG_LIGHT_CSS);
+        if (AppTheme.isLight()) {
+            if (light != null) {
+                pane.getStylesheets().add(light.toExternalForm());
+            }
+        } else if (dark != null) {
+            pane.getStylesheets().add(dark.toExternalForm());
         }
         pane.getStyleClass().add("alimoment-dialog");
         pane.setMinWidth(380);

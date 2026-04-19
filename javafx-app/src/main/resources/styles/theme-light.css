@@ -1,0 +1,588 @@
+/* 浅色主题：依赖场景根 StackPane 上的 styleClass「theme-light」，覆盖 app.css 中的深色配色 */
+
+.theme-light.app-shell {
+    -fx-background-color: #f0f0f0;
+}
+
+.theme-light .root-shell {
+    -fx-background-color: #f0f0f0;
+}
+
+.theme-light .top-bar {
+    -fx-background-color: #ffffff;
+    -fx-border-color: rgba(0, 0, 0, 0.08);
+}
+
+.theme-light .brand-name {
+    -fx-text-fill: #1a1a1a;
+}
+
+.theme-light .menu-chevron-btn {
+    -fx-background-color: #ececec;
+    -fx-text-fill: #444444;
+}
+.theme-light .menu-chevron-btn:hover {
+    -fx-background-color: #e0e0e0;
+}
+
+.theme-light .nav-tab-btn {
+    -fx-text-fill: #666666;
+}
+.theme-light .nav-tab-btn:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.06);
+    -fx-text-fill: #222222;
+}
+.theme-light .nav-tab-btn-active {
+    -fx-background-color: rgba(0, 120, 212, 0.12);
+    -fx-text-fill: #0078d4;
+    -fx-border-color: #0078d4;
+}
+
+.theme-light .win-ctrl-btn {
+    -fx-text-fill: #555555;
+}
+.theme-light .win-ctrl-btn:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.06);
+}
+.theme-light .win-ctrl-btn:armed {
+    -fx-background-color: rgba(0, 0, 0, 0.08);
+}
+.theme-light .win-ctrl-btn:pressed {
+    -fx-background-color: rgba(0, 0, 0, 0.10);
+}
+.theme-light .win-ctrl-btn:focused:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.06);
+}
+.theme-light .win-ctrl-btn:default:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.06);
+}
+
+.theme-light .search-root {
+    -fx-background-color: #f0f0f0;
+}
+
+.theme-light .search-rail {
+    -fx-background-color: #fafafa;
+    -fx-border-color: rgba(0, 120, 212, 0.22);
+}
+
+.theme-light .rail-avatar {
+    -fx-background-color: #e0e0e0;
+}
+
+.theme-light .rail-menu-btn {
+    -fx-text-fill: #666666;
+}
+.theme-light .rail-menu-btn:hover {
+    -fx-text-fill: #111111;
+}
+
+.theme-light .card-surface {
+    -fx-background-color: #ffffff;
+}
+
+.theme-light .search-panel-title {
+    -fx-text-fill: #1a1a1a;
+}
+
+.theme-light .search-input-shell {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+}
+
+.theme-light .search-text-area {
+    -fx-control-inner-background: #ffffff;
+    -fx-text-fill: #222222;
+    -fx-prompt-text-fill: #888888;
+}
+
+.theme-light .search-text-area .content {
+    -fx-background-color: #ffffff;
+}
+
+.theme-light .history-chip {
+    -fx-background-color: #e8e8e8;
+    -fx-text-fill: #444444;
+}
+.theme-light .history-chip:hover {
+    -fx-background-color: #dedede;
+}
+
+.theme-light .search-submit-btn {
+    -fx-background-color: #0078d4;
+    -fx-text-fill: #ffffff;
+}
+.theme-light .search-submit-btn:hover {
+    -fx-background-color: #1084d8;
+}
+
+.theme-light .result-card {
+    -fx-background-color: #ffffff;
+    -fx-border-color: rgba(0, 0, 0, 0.08);
+}
+
+.theme-light .result-time {
+    -fx-text-fill: #0078c8;
+}
+
+.theme-light .result-desc {
+    -fx-text-fill: #555555;
+}
+
+.theme-light .badge-high {
+    -fx-background-color: rgba(46, 125, 50, 0.15);
+    -fx-text-fill: #2e7d32;
+    -fx-border-color: #43a047;
+}
+
+.theme-light .badge-mid {
+    -fx-background-color: rgba(245, 124, 0, 0.12);
+    -fx-text-fill: #e65100;
+    -fx-border-color: #fb8c00;
+}
+
+.theme-light .video-time-label {
+    -fx-text-fill: #666666;
+}
+
+.theme-light .video-placeholder {
+    -fx-background-color: #eaeaea;
+}
+
+.theme-light .play-overlay {
+    -fx-text-fill: rgba(0, 0, 0, 0.45);
+}
+
+.theme-light .video-import-hint {
+    -fx-text-fill: #666666;
+}
+
+.theme-light .transport-btn {
+    -fx-text-fill: #444444;
+}
+.theme-light .transport-btn:hover {
+    -fx-text-fill: #111111;
+}
+
+.theme-light .timeline-bg-layer {
+    -fx-background-color: #c8c8c8;
+}
+
+.theme-light .timeline-index-band {
+    -fx-background-color: #c9a090;
+}
+
+.theme-light .timeline-played-layer {
+    -fx-background-color: #2a9d84;
+}
+
+.theme-light .icon-tool-btn {
+    -fx-text-fill: #555555;
+}
+.theme-light .icon-tool-btn:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.06);
+    -fx-text-fill: #111111;
+}
+
+.theme-light .section-heading {
+    -fx-text-fill: #555555;
+}
+
+.theme-light .smart-edit-root {
+    -fx-background-color: #f0f0f0;
+}
+
+.theme-light .smart-edit-side {
+    -fx-background-color: #ffffff;
+}
+
+.theme-light .smart-edit-title {
+    -fx-text-fill: #1a1a1a;
+}
+
+.theme-light .smart-edit-subtitle {
+    -fx-text-fill: #666666;
+}
+
+.theme-light .smart-edit-card {
+    -fx-background-color: #f5f5f5;
+}
+
+.theme-light .smart-tool-btn {
+    -fx-background-color: #ececec;
+    -fx-text-fill: #333333;
+}
+.theme-light .smart-tool-btn:hover {
+    -fx-background-color: #e0e0e0;
+    -fx-text-fill: #000000;
+}
+
+.theme-light .smart-tool-danger:hover {
+    -fx-background-color: rgba(232, 17, 35, 0.2);
+}
+
+.theme-light .smart-edit-param {
+    -fx-text-fill: #555555;
+}
+
+.theme-light .smart-edit-status {
+    -fx-text-fill: #0078c8;
+}
+
+.theme-light .smart-preview-pane {
+    -fx-background-color: #eaeaea;
+    -fx-border-color: rgba(0, 0, 0, 0.1);
+}
+
+.theme-light .smart-demand-area {
+    -fx-control-inner-background: #ffffff;
+    -fx-text-fill: #222222;
+    -fx-prompt-text-fill: #888888;
+}
+
+.theme-light .smart-demand-area .content {
+    -fx-background-color: #ffffff;
+}
+
+.theme-light .smart-check {
+    -fx-text-fill: #333333;
+}
+
+.theme-light .smart-primary-btn {
+    -fx-background-color: #0078d4;
+    -fx-text-fill: #ffffff;
+}
+.theme-light .smart-primary-btn:hover {
+    -fx-background-color: #1486dd;
+}
+
+.theme-light .settings-root {
+    -fx-background-color: #f0f0f0;
+}
+
+.theme-light .settings-side {
+    -fx-background-color: #ffffff;
+}
+
+.theme-light .settings-side-scroll .scroll-bar:vertical .track {
+    -fx-background-color: rgba(0, 0, 0, 0.06);
+}
+
+.theme-light .settings-side-scroll .scroll-bar:vertical .thumb {
+    -fx-background-color: rgba(0, 0, 0, 0.22);
+}
+
+.theme-light .settings-side-scroll .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.35);
+}
+
+.theme-light .settings-group-title {
+    -fx-text-fill: #0078d4;
+}
+
+.theme-light .settings-group-heading {
+    -fx-text-fill: #0078d4;
+}
+
+.theme-light .settings-group-heading:hover {
+    -fx-text-fill: #106ebe;
+}
+
+.theme-light .settings-side-item {
+    -fx-background-color: #f2f2f2;
+    -fx-text-fill: #444444;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+.theme-light .settings-side-item:hover {
+    -fx-background-color: #e8e8e8;
+    -fx-text-fill: #111111;
+}
+
+.theme-light .settings-side-item:focused {
+    -fx-background-insets: 0;
+    -fx-background-color: #f2f2f2;
+}
+
+.theme-light .settings-side-item-active:focused {
+    -fx-background-color: rgba(0, 120, 212, 0.12);
+}
+
+.theme-light .settings-side-item-active {
+    -fx-background-color: rgba(0, 120, 212, 0.12);
+    -fx-text-fill: #111111;
+    -fx-font-weight: bold;
+    -fx-border-color: rgba(0, 120, 212, 0.75);
+    -fx-border-width: 0 0 0 3px;
+}
+
+.theme-light .settings-side-row {
+    -fx-background-color: #f2f2f2;
+}
+
+.theme-light .settings-side-label {
+    -fx-text-fill: #333333;
+}
+
+.theme-light .switch-toggle {
+    -fx-background-color: #c0c0c0;
+}
+.theme-light .switch-toggle:selected {
+    -fx-background-color: #0078d4;
+}
+
+.theme-light .settings-page-title {
+    -fx-text-fill: #1a1a1a;
+}
+
+.theme-light .settings-card {
+    -fx-background-color: #ffffff;
+}
+
+.theme-light .theme-swatch-wrapper {
+    -fx-border-color: rgba(0, 0, 0, 0.14);
+}
+
+.theme-light .theme-swatch-wrapper:hover {
+    -fx-border-color: rgba(0, 0, 0, 0.28);
+}
+
+.theme-light .theme-swatch-wrapper.theme-swatch-active {
+    -fx-border-color: #0078d4;
+    -fx-effect: dropshadow(gaussian, rgba(0, 120, 212, 0.35), 12, 0.25, 0, 0);
+}
+
+.theme-light .settings-card-title {
+    -fx-text-fill: #333333;
+}
+
+.theme-light .settings-card-desc {
+    -fx-text-fill: #666666;
+}
+
+.theme-light .settings-select-row {
+    -fx-background-color: #f5f5f5;
+}
+
+.theme-light .settings-select-icon {
+    -fx-text-fill: #666666;
+}
+
+.theme-light .settings-avatar {
+    -fx-background-color: #cccccc;
+}
+
+.theme-light .settings-account-summary-row {
+    -fx-background-color: #f5f5f5;
+}
+
+.theme-light .settings-account-avatar-hitbox {
+    -fx-background-color: #d8d8d8;
+}
+
+.theme-light .settings-account-avatar-initial {
+    -fx-text-fill: #555555;
+}
+
+.theme-light .settings-account-summary-name {
+    -fx-text-fill: #1a1a1a;
+}
+
+.theme-light .settings-account-summary-email {
+    -fx-text-fill: #666666;
+}
+
+.theme-light .account-flyout-arrow {
+    -fx-fill: #ffffff;
+}
+
+.theme-light .account-flyout-body {
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.18), 12, 0.2, 0, 2);
+}
+
+.theme-light .account-flyout-initial {
+    -fx-text-fill: #333333;
+}
+
+.theme-light .account-flyout-name {
+    -fx-text-fill: #1a1a1a;
+}
+
+.theme-light .account-flyout-email {
+    -fx-text-fill: #666666;
+}
+
+.theme-light .account-flyout-action {
+    -fx-text-fill: #0078d4;
+}
+
+.theme-light .account-flyout-name-field {
+    -fx-background-color: #f3f3f3;
+    -fx-text-fill: #1a1a1a;
+}
+
+.theme-light .account-flyout-cancel {
+    -fx-background-color: #e0e0e0;
+    -fx-text-fill: #333333;
+}
+
+.theme-light .account-menu-root {
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.18), 12, 0.2, 0, 2);
+}
+
+.theme-light .account-menu-row:hover {
+    -fx-background-color: #f0f0f0;
+}
+
+.theme-light .account-menu-row-current {
+    -fx-background-color: rgba(0, 120, 212, 0.1);
+}
+
+.theme-light .account-menu-mini-initial {
+    -fx-text-fill: #333333;
+}
+
+.theme-light .account-menu-name {
+    -fx-text-fill: #1a1a1a;
+}
+
+.theme-light .account-menu-email {
+    -fx-text-fill: #666666;
+}
+
+.theme-light .account-menu-current-mark {
+    -fx-text-fill: #0078d4;
+}
+
+.theme-light .account-menu-add-icon-wrap {
+    -fx-background-color: #d0d0d0;
+}
+
+.theme-light .account-menu-add-plus {
+    -fx-text-fill: #333333;
+}
+
+.theme-light .account-menu-add-text {
+    -fx-text-fill: #333333;
+}
+
+.theme-light .settings-account-combo-arrow {
+    -fx-background-color: #666666;
+}
+
+.theme-light .settings-account-menu-hitbox:hover .settings-account-combo-arrow {
+    -fx-background-color: #333333;
+}
+
+.theme-light .settings-spinner .text-field {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #1a1a1a;
+    -fx-border-color: rgba(0, 0, 0, 0.12);
+}
+
+.theme-light .settings-spinner .increment-arrow-button,
+.theme-light .settings-spinner .decrement-arrow-button {
+    -fx-background-color: #f3f3f3;
+    -fx-border-color: rgba(0, 0, 0, 0.12);
+}
+
+.theme-light .settings-spinner .increment-arrow-button:hover,
+.theme-light .settings-spinner .decrement-arrow-button:hover {
+    -fx-background-color: #e8e8e8;
+}
+
+.theme-light .storage-used {
+    -fx-background-color: linear-gradient(to right, #7eb8b4 0%, #c4b896 55%, #d0d0d0 55%, #d0d0d0 100%);
+}
+
+.theme-light .settings-clean-btn {
+    -fx-background-color: #0078d4;
+    -fx-text-fill: white;
+}
+
+.theme-light .settings-section-heading {
+    -fx-text-fill: #444444;
+}
+
+.theme-light .settings-field-label {
+    -fx-text-fill: #555555;
+}
+
+.theme-light .settings-value-label {
+    -fx-text-fill: #222222;
+}
+
+.theme-light .settings-combo,
+.theme-light .settings-spinner,
+.theme-light .settings-path-field,
+.theme-light .settings-key-field {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #1a1a1a;
+    -fx-border-color: rgba(0, 0, 0, 0.14);
+}
+
+.theme-light .settings-combo:hover,
+.theme-light .settings-spinner:hover,
+.theme-light .settings-path-field:hover,
+.theme-light .settings-key-field:hover {
+    -fx-border-color: rgba(0, 0, 0, 0.22);
+}
+
+.theme-light .settings-combo:focused,
+.theme-light .settings-spinner:focused,
+.theme-light .settings-path-field:focused,
+.theme-light .settings-key-field:focused {
+    -fx-border-color: rgba(0, 120, 212, 0.55);
+}
+
+.theme-light .settings-key-field-recording {
+    -fx-border-color: rgba(0, 120, 212, 0.75);
+}
+
+.theme-light .settings-row-btn {
+    -fx-background-color: #f3f3f3;
+    -fx-text-fill: #1a1a1a;
+    -fx-border-color: rgba(0, 0, 0, 0.12);
+}
+
+.theme-light .settings-row-btn:hover {
+    -fx-background-color: #e8e8e8;
+}
+
+.theme-light .settings-icon-btn {
+    -fx-background-color: #f3f3f3;
+    -fx-text-fill: #0078d4;
+    -fx-border-color: rgba(0, 0, 0, 0.12);
+}
+
+.theme-light .settings-inline-link {
+    -fx-text-fill: #0078d4;
+}
+
+.theme-light .settings-error-label {
+    -fx-text-fill: #c42b1c;
+}
+
+.theme-light .settings-toast {
+    -fx-background-color: rgba(255, 255, 255, 0.95);
+    -fx-text-fill: #222222;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 10, 0.2, 0, 1);
+}
+
+.theme-light .app-content-area {
+    -fx-background-color: #f0f0f0;
+}
+
+.theme-light .app-scale-viewport {
+    -fx-background-color: #f0f0f0;
+}
+
+.theme-light .page-simple-root {
+    -fx-background-color: #ececf4;
+}
+
+.theme-light .page-simple-title {
+    -fx-text-fill: #555555;
+}

@@ -167,11 +167,6 @@ body {
     opacity: 1;
 }
 
-.nav-item.active .nav-text {
-    color: #667eea;
-    font-weight: 600;
-}
-
 .nav-text {
     font-size: 16px;
     font-weight: 500;
@@ -181,9 +176,45 @@ body {
     z-index: 1;
 }
 
-.nav-item:hover .nav-text,
-.nav-item.active .nav-text {
+.nav-icon {
+    font-size: 18px;
+    line-height: 1;
+    position: relative;
+    z-index: 1;
+}
+
+.nav-item:hover:not(.active) .nav-text {
     color: var(--text-primary);
+}
+
+.nav-item.active .nav-text {
+    color: #8b9dff;
+    font-weight: 600;
+}
+
+.nav-item.active:hover .nav-text {
+    color: #aab6ff;
+}
+
+.nav-item.highlight:not(.active) .nav-text {
+    background: var(--nav-highlight-bg);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.nav-item.highlight:not(.active):hover .nav-text {
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    -webkit-text-fill-color: var(--text-primary);
+    color: var(--text-primary);
+}
+
+.nav-item.highlight.active .nav-text {
+    -webkit-text-fill-color: unset;
+    background: none;
+    color: #c4b5fd;
 }
 
 /* 内容区域 */
@@ -208,6 +239,45 @@ body {
 .page.active {
     opacity: 1;
     visibility: visible;
+}
+
+/* 各页空状态（与 index-preview 共用） */
+.page-inner {
+    height: 100%;
+    overflow: auto;
+    padding: 24px 32px;
+}
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: min(360px, 60vh);
+    margin: auto;
+    padding: 48px 24px;
+    text-align: center;
+}
+
+.empty-icon {
+    font-size: 56px;
+    line-height: 1;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 8px 24px rgba(102, 126, 234, 0.25));
+}
+
+.empty-state h2 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: 0.02em;
+}
+
+.empty-state p {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--text-secondary);
+    max-width: 400px;
 }
 
 /* 滚动条样式 */

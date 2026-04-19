@@ -19,7 +19,7 @@
 }
 
 .brand-name {
-    -fx-font-size: 17px;
+    -fx-font-size: 20px;
     -fx-font-weight: bold;
     -fx-text-fill: #ffffff;
 }
@@ -27,9 +27,9 @@
 .menu-chevron-btn {
     -fx-background-color: #2a2a2a;
     -fx-text-fill: #c0c0c0;
-    -fx-font-size: 12px;
-    -fx-background-radius: 6px;
-    -fx-padding: 6 12 6 12;
+    -fx-font-size: 13.5px;
+    -fx-background-radius: 8px;
+    -fx-padding: 8 14 8 14;
 }
 .menu-chevron-btn:hover {
     -fx-background-color: #333333;
@@ -44,6 +44,8 @@
     -fx-background-radius: 10px;
     -fx-border-color: transparent;
     -fx-border-width: 0 0 2 0;
+    /* 避免顶栏变窄时出现「素材…」省略号；极窄时由代码切换为仅图标 + Tooltip */
+    -fx-text-overrun: clip;
 }
 .nav-tab-btn:hover {
     -fx-background-color: rgba(255, 255, 255, 0.06);
@@ -60,6 +62,12 @@
     -fx-text-fill: inherit;
 }
 
+/* 顶栏中间区域过窄：仅图标模式（与 MainController 联动） */
+.nav-tab-btn-compact {
+    -fx-padding: 8 10 8 10;
+    -fx-min-width: 44px;
+}
+
 /* 窗口控制：三套图标统一为「无底纹符号」，去掉 Modena 默认按钮的灰底/立体层 */
 .win-ctrl-btn {
     -fx-background-color: transparent;
@@ -67,15 +75,15 @@
     -fx-background-radius: 0;
     -fx-border-color: transparent;
     -fx-border-width: 0;
-    -fx-padding: 4 10 4 10;
+    -fx-padding: 6 12 6 12;
     -fx-effect: null;
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
     -fx-focus-traversable: false;
     -fx-text-fill: #c0c0c0;
     -fx-font-size: 15px;
-    -fx-min-width: 38px;
-    -fx-min-height: 28px;
+    -fx-min-width: 44px;
+    -fx-min-height: 34px;
     -fx-cursor: hand;
 }
 .win-ctrl-btn:hover {
@@ -449,6 +457,30 @@
     -fx-font-size: 12px;
     -fx-font-weight: bold;
     -fx-padding: 4 2 2 2;
+    -fx-min-width: 214px;
+    -fx-pref-width: 214px;
+    -fx-max-width: 214px;
+    -fx-alignment: center-left;
+}
+
+/* 左侧分组标题：非按钮样式，仅加粗着色，可点击（由代码设置 cursor） */
+.settings-group-heading {
+    -fx-background-color: transparent;
+    -fx-text-fill: #3b9dff;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 4 4 4;
+    -fx-min-width: 214px;
+    -fx-pref-width: 214px;
+    -fx-max-width: 214px;
+}
+
+.settings-group-heading:hover {
+    -fx-text-fill: #6bb6ff;
+}
+
+.settings-anchor {
+    -fx-padding: 0;
 }
 
 .settings-side-item {
@@ -457,6 +489,12 @@
     -fx-background-radius: 6px;
     -fx-alignment: center-left;
     -fx-padding: 10 12 10 12;
+    -fx-min-width: 214px;
+    -fx-pref-width: 214px;
+    -fx-max-width: 214px;
+    /* 去掉 JavaFX 默认聚焦蓝环，避免被误认为「小蓝条」 */
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
 }
 
 .settings-side-item:hover {
@@ -464,15 +502,31 @@
     -fx-text-fill: #ffffff;
 }
 
+.settings-side-item:focused {
+    -fx-background-insets: 0;
+    -fx-background-color: #252525;
+}
+
+.settings-side-item-active:focused {
+    -fx-background-color: rgba(70, 150, 255, 0.14);
+}
+
+/* 当前选中的左侧叶子项：背景 + 左边框 + 加粗（无动画） */
 .settings-side-item-active {
-    -fx-border-color: rgba(70, 150, 255, 0.6);
-    -fx-border-width: 0 0 0 2px;
+    -fx-background-color: rgba(70, 150, 255, 0.14);
+    -fx-text-fill: #f0f0f0;
+    -fx-font-weight: bold;
+    -fx-border-color: rgba(70, 150, 255, 0.85);
+    -fx-border-width: 0 0 0 3px;
 }
 
 .settings-side-row {
     -fx-background-color: #252525;
     -fx-background-radius: 6px;
     -fx-padding: 8 10 8 10;
+    -fx-min-width: 214px;
+    -fx-pref-width: 214px;
+    -fx-max-width: 214px;
 }
 
 .settings-side-label {
@@ -499,6 +553,35 @@
     -fx-background: transparent;
 }
 
+/* 左侧导航独立滚动，与右侧互不影响 */
+.settings-side-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-padding: 0;
+}
+
+.settings-side-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+.settings-side-scroll .scroll-bar:vertical {
+    -fx-pref-width: 8;
+}
+
+.settings-side-scroll .scroll-bar:vertical .track {
+    -fx-background-color: rgba(255, 255, 255, 0.06);
+    -fx-background-radius: 4px;
+}
+
+.settings-side-scroll .scroll-bar:vertical .thumb {
+    -fx-background-color: rgba(255, 255, 255, 0.28);
+    -fx-background-radius: 4px;
+}
+
+.settings-side-scroll .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.4);
+}
+
 .settings-page-title {
     -fx-text-fill: #d9d9d9;
     -fx-font-size: 16px;
@@ -522,35 +605,44 @@
     -fx-font-size: 12px;
 }
 
-.theme-preview {
-    -fx-background-radius: 8px;
-    -fx-border-radius: 8px;
-    -fx-border-color: rgba(255, 255, 255, 0.1);
+/* 设置页：主题模式（深色 / 浅色）左右分栏 — 可点击纯色块 */
+.theme-mode-row {
+    -fx-padding: 8 0 4 0;
 }
 
-.theme-preview-dark {
-    -fx-background-color: #202227;
+.theme-swatch-column {
+    -fx-alignment: center;
+    -fx-cursor: hand;
 }
 
-.theme-preview-light {
-    -fx-background-color: #d1d1d1;
+.theme-swatch-column:disabled {
+    -fx-opacity: 0.45;
+    -fx-cursor: default;
 }
 
-.theme-radio {
+.theme-swatch-wrapper {
     -fx-background-color: transparent;
-    -fx-border-color: #5b5b5b;
-    -fx-border-width: 1px;
-    -fx-border-radius: 10px;
-    -fx-background-radius: 10px;
-    -fx-min-width: 16px;
-    -fx-min-height: 16px;
-    -fx-max-width: 16px;
-    -fx-max-height: 16px;
+    -fx-background-radius: 12px;
+    -fx-border-radius: 12px;
+    -fx-border-color: rgba(255, 255, 255, 0.18);
+    -fx-border-width: 1.5px;
+    -fx-padding: 0;
+    -fx-cursor: hand;
 }
 
-.theme-radio:selected {
-    -fx-background-color: #2b8cff;
-    -fx-border-color: #2b8cff;
+.theme-swatch-wrapper:hover {
+    -fx-border-color: rgba(255, 255, 255, 0.38);
+}
+
+.theme-swatch-wrapper.theme-swatch-active {
+    -fx-border-color: #4fc3f7;
+    -fx-border-width: 2.5px;
+    -fx-effect: dropshadow(gaussian, rgba(79, 195, 247, 0.5), 14, 0.28, 0, 0);
+}
+
+/* 主题预览色块内层：圆角由 FXML 内联色与此处共同保证；填充色在 FXML 内联固定，避免随主题表覆盖 */
+.theme-swatch-fill {
+    -fx-background-radius: 10px;
 }
 
 .settings-select-row {
@@ -583,5 +675,322 @@
     -fx-text-fill: white;
     -fx-background-radius: 8px;
     -fx-padding: 6 12 6 12;
+}
+
+/* 设置页：分组小标题与表单行 */
+.settings-section-heading {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #c8c8c8;
+    -fx-padding: 4 0 0 0;
+}
+
+.settings-form {
+    -fx-padding: 0;
+}
+
+.settings-form-row {
+    -fx-padding: 4 0 4 0;
+}
+
+.settings-field-label {
+    -fx-text-fill: #c5c5c5;
+    -fx-font-size: 13px;
+}
+
+.settings-value-label {
+    -fx-text-fill: #e0e0e0;
+    -fx-font-size: 13px;
+}
+
+.settings-combo,
+.settings-spinner,
+.settings-path-field,
+.settings-key-field {
+    -fx-background-color: #333333;
+    -fx-text-fill: #f0f0f0;
+    -fx-background-radius: 6px;
+    -fx-border-color: rgba(255, 255, 255, 0.12);
+    -fx-border-radius: 6px;
+    -fx-border-width: 1px;
+    -fx-padding: 6 10 6 10;
+}
+
+/* Spinner 内联数字框：深色模式黑底白字 */
+.settings-spinner .text-field {
+    -fx-background-color: #1e1e1e;
+    -fx-text-fill: #e0e0e0;
+    -fx-border-color: #3c3c3c;
+    -fx-border-width: 0 1 0 0;
+    -fx-background-insets: 0;
+    -fx-border-radius: 0;
+}
+
+.settings-spinner .increment-arrow-button,
+.settings-spinner .decrement-arrow-button {
+    -fx-background-color: #2a2a2a;
+    -fx-border-color: #3c3c3c;
+    -fx-border-width: 0 0 0 1;
+}
+
+.settings-spinner .increment-arrow-button:hover,
+.settings-spinner .decrement-arrow-button:hover {
+    -fx-background-color: #383838;
+}
+
+.settings-combo:hover,
+.settings-spinner:hover,
+.settings-path-field:hover,
+.settings-key-field:hover {
+    -fx-border-color: rgba(255, 255, 255, 0.22);
+}
+
+.settings-combo:focused,
+.settings-spinner:focused,
+.settings-path-field:focused,
+.settings-key-field:focused {
+    -fx-border-color: rgba(70, 150, 255, 0.65);
+}
+
+.settings-key-field-recording {
+    -fx-border-color: rgba(70, 150, 255, 0.9);
+    -fx-effect: dropshadow(gaussian, rgba(70, 150, 255, 0.25), 8, 0.2, 0, 0);
+}
+
+.settings-row-btn {
+    -fx-background-color: #3a3a3a;
+    -fx-text-fill: #f0f0f0;
+    -fx-background-radius: 6px;
+    -fx-border-color: rgba(255, 255, 255, 0.12);
+    -fx-border-radius: 6px;
+    -fx-padding: 6 12 6 12;
+}
+
+.settings-row-btn:hover {
+    -fx-background-color: #484848;
+}
+
+.settings-icon-btn {
+    -fx-min-width: 32px;
+    -fx-pref-width: 32px;
+    -fx-background-color: #3a3a3a;
+    -fx-text-fill: #9fd0ff;
+    -fx-background-radius: 16px;
+    -fx-border-color: rgba(255, 255, 255, 0.12);
+    -fx-border-radius: 16px;
+}
+
+.settings-icon-btn:hover {
+    -fx-background-color: #484848;
+}
+
+.settings-inline-link {
+    -fx-text-fill: #6bb6ff;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+
+.settings-error-label {
+    -fx-text-fill: #ff7a7a;
+    -fx-font-size: 12px;
+}
+
+.settings-toast {
+    -fx-background-color: rgba(40, 40, 40, 0.92);
+    -fx-text-fill: #f5f5f5;
+    -fx-padding: 10 16 10 16;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.45), 12, 0.2, 0, 2);
+}
+
+/* —— 账户管理摘要卡片 —— */
+.settings-account-summary-row {
+    -fx-background-color: #2f2f2f;
+    -fx-background-radius: 10px;
+    -fx-padding: 12px 14px;
+    -fx-min-height: 60px;
+    -fx-pref-height: 66px;
+}
+
+.settings-account-avatar-hitbox {
+    -fx-background-color: #555555;
+    -fx-cursor: hand;
+}
+
+.settings-account-avatar-initial {
+    -fx-text-fill: #e8e8e8;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.settings-account-summary-name {
+    -fx-text-fill: #f0f0f0;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.settings-account-summary-email {
+    -fx-text-fill: #9a9a9a;
+    -fx-font-size: 12px;
+}
+
+.settings-account-menu-hitbox {
+    -fx-cursor: hand;
+    -fx-alignment: center;
+}
+
+/* 与 ComboBox 箭头风格接近的实心小三角 */
+.settings-account-combo-arrow {
+    -fx-background-color: #8a8a8a;
+    -fx-shape: "M 0 0 L 5 6 L 10 0 Z";
+}
+
+.settings-account-menu-hitbox:hover .settings-account-combo-arrow {
+    -fx-background-color: #b0b0b0;
+}
+
+.settings-account-menu-open .settings-account-combo-arrow {
+    -fx-rotate: 180;
+}
+
+/* 头像气泡 / 账户下拉（Popup 根节点） */
+.account-flyout-root {
+    -fx-background-color: transparent;
+}
+
+.account-flyout-arrow {
+    -fx-fill: #3a3a3a;
+}
+
+.account-flyout-body {
+    -fx-background-color: #3a3a3a;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.45), 14, 0.25, 0, 2);
+}
+
+.account-flyout-initial {
+    -fx-text-fill: #f0f0f0;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.account-flyout-name {
+    -fx-text-fill: #f5f5f5;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.account-flyout-email {
+    -fx-text-fill: #b0b0b0;
+    -fx-font-size: 12px;
+}
+
+.account-flyout-action {
+    -fx-text-fill: #6bb6ff;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+
+.account-flyout-name-field {
+    -fx-background-color: #2a2a2a;
+    -fx-text-fill: #f0f0f0;
+    -fx-background-radius: 6px;
+    -fx-padding: 6 8 6 8;
+}
+
+.account-flyout-icon-btn {
+    -fx-min-width: 32px;
+    -fx-min-height: 28px;
+    -fx-background-radius: 6px;
+}
+
+.account-flyout-confirm {
+    -fx-background-color: #2d7a3e;
+    -fx-text-fill: white;
+}
+
+.account-flyout-cancel {
+    -fx-background-color: #555555;
+    -fx-text-fill: #f0f0f0;
+}
+
+.account-menu-root {
+    -fx-background-color: #3a3a3a;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.45), 14, 0.25, 0, 2);
+}
+
+.account-menu-row:hover {
+    -fx-background-color: #484848;
+}
+
+.account-menu-row-current {
+    -fx-background-color: rgba(70, 150, 255, 0.12);
+}
+
+.account-menu-mini-initial {
+    -fx-text-fill: #f0f0f0;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.account-menu-name {
+    -fx-text-fill: #f0f0f0;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.account-menu-email {
+    -fx-text-fill: #a8a8a8;
+    -fx-font-size: 11px;
+}
+
+.account-menu-current-mark {
+    -fx-text-fill: #6bb6ff;
+    -fx-font-size: 11px;
+}
+
+.account-menu-add-row:hover {
+    -fx-background-color: #484848;
+}
+
+.account-menu-add-icon-wrap {
+    -fx-background-color: #555555;
+    -fx-background-radius: 14px;
+}
+
+.account-menu-add-plus {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.account-menu-add-text {
+    -fx-text-fill: #d0d0d0;
+    -fx-font-size: 13px;
+}
+
+/* 场景根 StackPane（由 Main 注入 styleClass）与主内容区背景 */
+.app-shell {
+    -fx-background-color: #121212;
+}
+
+.app-content-area {
+    -fx-background-color: #121212;
+}
+
+/* 等比缩放时视口衬底：与主内容区同色，避免透明透出默认浅色形成「白边」 */
+.app-scale-viewport {
+    -fx-background-color: #121212;
+}
+
+/* 简易占位页（素材库 / 草稿箱） */
+.page-simple-root {
+    -fx-background-color: #1a1a2e;
+}
+
+.page-simple-title {
+    -fx-text-fill: #a0a0a0;
+    -fx-font-size: 18px;
 }
 

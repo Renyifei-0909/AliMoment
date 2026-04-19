@@ -1,120 +1,231 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Priority?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane maxHeight="Infinity" maxWidth="Infinity" styleClass="settings-root" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.aiimoment.controller.SettingsPageController">
     <HBox spacing="14" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
-        <VBox minWidth="250" prefWidth="260" spacing="10" styleClass="settings-side">
-            <Label styleClass="settings-group-title" text="通用设置" />
-            <Button mnemonicParsing="false" styleClass="settings-side-item settings-side-item-active" text="主题与外观" />
-            <Button mnemonicParsing="false" styleClass="settings-side-item" text="语言与地区" />
-            <Button mnemonicParsing="false" styleClass="settings-side-item" text="账户管理" />
-            <Button mnemonicParsing="false" styleClass="settings-side-item" text="快捷键" />
-            <Button mnemonicParsing="false" styleClass="settings-side-item" text="缓存管理" />
+        <ScrollPane fx:id="sideNavScrollPane" fitToWidth="true" hbarPolicy="NEVER" minWidth="250" prefWidth="260" maxWidth="260" styleClass="settings-side-scroll" vbarPolicy="AS_NEEDED">
+            <VBox fx:id="sideNavVBox" spacing="10" styleClass="settings-side">
+                <Label fx:id="navGroupGeneral" styleClass="settings-group-heading" text="通用设置" />
+                <Button fx:id="navAccount" mnemonicParsing="false" styleClass="settings-side-item" text="账户管理" />
+                <Button fx:id="navThemeAppearance" mnemonicParsing="false" styleClass="settings-side-item" text="主题与外观" />
+                <Button fx:id="navLanguageRegion" mnemonicParsing="false" styleClass="settings-side-item" text="语言与地区" />
+                <Button fx:id="navShortcuts" mnemonicParsing="false" styleClass="settings-side-item" text="快捷键" />
+                <Button fx:id="navCache" mnemonicParsing="false" styleClass="settings-side-item" text="缓存管理" />
 
-            <Label styleClass="settings-group-title" text="AI功能设置" />
-            <HBox alignment="CENTER_LEFT" styleClass="settings-side-row">
-                <Label styleClass="settings-side-label" text="AI辅助开关" />
-                <Region HBox.hgrow="ALWAYS" />
-                <ToggleButton mnemonicParsing="false" selected="true" styleClass="switch-toggle" />
-            </HBox>
-            <HBox alignment="CENTER_LEFT" styleClass="settings-side-row">
-                <Label styleClass="settings-side-label" text="自动剪辑" />
-                <Region HBox.hgrow="ALWAYS" />
-                <ToggleButton mnemonicParsing="false" selected="true" styleClass="switch-toggle" />
-            </HBox>
-            <Button mnemonicParsing="false" styleClass="settings-side-item" text="朗读字幕" />
-            <Button mnemonicParsing="false" styleClass="settings-side-item" text="AI模型配置" />
-            <Button mnemonicParsing="false" styleClass="settings-side-item" text="语音与音频" />
+                <Label fx:id="navGroupAi" styleClass="settings-group-heading" text="AI功能设置" />
+                <Button fx:id="navAiAssist" mnemonicParsing="false" styleClass="settings-side-item" text="AI辅助开关" />
+                <Button fx:id="navAutoEdit" mnemonicParsing="false" styleClass="settings-side-item" text="自动剪辑" />
+                <Button fx:id="navAiModel" mnemonicParsing="false" styleClass="settings-side-item" text="AI模型配置" />
+                <Button fx:id="navVoiceAudio" mnemonicParsing="false" styleClass="settings-side-item" text="语音与音频" />
 
-            <Label styleClass="settings-group-title" text="项目与导出" />
-            <Button mnemonicParsing="false" styleClass="settings-side-item" text="保存路径" />
-            <Button mnemonicParsing="false" styleClass="settings-side-item" text="自动保存" />
-            <Button mnemonicParsing="false" styleClass="settings-side-item" text="默认导出设置" />
-            <Region VBox.vgrow="ALWAYS" />
-        </VBox>
+                <Label fx:id="navGroupExport" styleClass="settings-group-heading" text="项目与导出" />
+                <Button fx:id="navSavePath" mnemonicParsing="false" styleClass="settings-side-item" text="保存路径" />
+                <Button fx:id="navAutoSave" mnemonicParsing="false" styleClass="settings-side-item" text="自动保存" />
+                <Button fx:id="navDefaultExport" mnemonicParsing="false" styleClass="settings-side-item" text="默认导出设置" />
+            </VBox>
+        </ScrollPane>
 
-        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="settings-scroll" vbarPolicy="AS_NEEDED" HBox.hgrow="ALWAYS">
+        <ScrollPane fx:id="settingsScrollPane" fitToWidth="true" hbarPolicy="NEVER" styleClass="settings-scroll" vbarPolicy="AS_NEEDED" HBox.hgrow="ALWAYS">
             <VBox spacing="12">
-                <Label styleClass="settings-page-title" text="主页与外观" />
+                <VBox id="setting-account-mgmt" fx:id="anchorAccount" spacing="10" styleClass="settings-anchor">
+                    <VBox spacing="10" styleClass="settings-card">
+                        <Label styleClass="settings-card-title" text="账户管理" />
+                        <HBox alignment="CENTER_LEFT" spacing="12" styleClass="settings-account-summary-row">
+                            <StackPane fx:id="accountAvatarHitbox" styleClass="settings-account-avatar-hitbox">
+                                <ImageView fx:id="accountAvatarImage" pickOnBounds="true" preserveRatio="true" smooth="true" />
+                                <Label fx:id="accountAvatarInitial" styleClass="settings-account-avatar-initial" text="?" />
+                            </StackPane>
+                            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                                <Label fx:id="accountSummaryNameLabel" styleClass="settings-account-summary-name" />
+                                <Label fx:id="accountSummaryEmailLabel" styleClass="settings-account-summary-email" />
+                            </VBox>
+                            <StackPane fx:id="accountMenuHitbox" minWidth="32" prefWidth="32" styleClass="settings-account-menu-hitbox">
+                                <Region minWidth="10" maxWidth="10" minHeight="6" maxHeight="6" styleClass="settings-account-combo-arrow" />
+                            </StackPane>
+                        </HBox>
+                    </VBox>
+                </VBox>
 
-                <VBox spacing="10" styleClass="settings-card">
-                    <HBox alignment="CENTER_LEFT" spacing="16">
+                <VBox id="setting-theme-appearance" fx:id="anchorThemeAppearance" spacing="12" styleClass="settings-anchor">
+                    <Label styleClass="settings-page-title" text="主页与外观" />
+                    <VBox spacing="10" styleClass="settings-card">
                         <VBox spacing="6">
                             <Label styleClass="settings-card-title" text="主题方案" />
                             <Label styleClass="settings-card-desc" text="选择你喜欢的应用主题" />
                         </VBox>
-                        <Region HBox.hgrow="ALWAYS" />
-                        <HBox spacing="14">
-                            <VBox spacing="8">
-                                <Region minHeight="86" minWidth="160" styleClass="theme-preview theme-preview-dark" />
-                                <HBox alignment="CENTER_LEFT" spacing="8">
-                                    <ToggleButton mnemonicParsing="false" selected="true" styleClass="theme-radio" />
-                                    <Label styleClass="settings-side-label" text="深色" />
-                                </HBox>
+                        <HBox fx:id="themeModeModule" alignment="CENTER" spacing="36" styleClass="theme-mode-row">
+                            <VBox alignment="CENTER" spacing="8" styleClass="theme-swatch-column" HBox.hgrow="ALWAYS">
+                                <StackPane fx:id="themeDarkSwatch" maxHeight="168" maxWidth="392" minHeight="152" minWidth="392" prefHeight="160" prefWidth="392" styleClass="theme-swatch-wrapper">
+                                    <Region maxHeight="Infinity" maxWidth="Infinity" style="-fx-background-color: #1E1E1E; -fx-background-radius: 10px;" styleClass="theme-swatch-fill" />
+                                </StackPane>
+                                <Label styleClass="settings-side-label" text="深色" />
                             </VBox>
-                            <VBox spacing="8">
-                                <Region minHeight="86" minWidth="160" styleClass="theme-preview theme-preview-light" />
-                                <HBox alignment="CENTER_LEFT" spacing="8">
-                                    <ToggleButton mnemonicParsing="false" styleClass="theme-radio" />
-                                    <Label styleClass="settings-side-label" text="浅色" />
-                                </HBox>
+                            <VBox alignment="CENTER" spacing="8" styleClass="theme-swatch-column" HBox.hgrow="ALWAYS">
+                                <StackPane fx:id="themeLightSwatch" maxHeight="168" maxWidth="392" minHeight="152" minWidth="392" prefHeight="160" prefWidth="392" styleClass="theme-swatch-wrapper">
+                                    <Region maxHeight="Infinity" maxWidth="Infinity" style="-fx-background-color: #F5F5F5; -fx-background-radius: 10px;" styleClass="theme-swatch-fill" />
+                                </StackPane>
+                                <Label styleClass="settings-side-label" text="浅色" />
                             </VBox>
                         </HBox>
-                    </HBox>
-                    <Separator />
-                    <HBox alignment="CENTER_LEFT">
-                        <Label styleClass="settings-side-label" text="自动跟随系统主题" />
-                        <Region HBox.hgrow="ALWAYS" />
-                        <ToggleButton mnemonicParsing="false" selected="true" styleClass="switch-toggle" />
-                    </HBox>
+                        <Separator />
+                        <HBox alignment="CENTER_LEFT" spacing="12" styleClass="settings-form-row">
+                            <Label styleClass="settings-field-label" minWidth="140" text="自动跟随系统主题" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <ToggleButton fx:id="followSystemThemeToggle" mnemonicParsing="false" selected="false" styleClass="switch-toggle" />
+                        </HBox>
+                    </VBox>
                 </VBox>
 
-                <VBox spacing="10" styleClass="settings-card">
-                    <Label styleClass="settings-card-title" text="语言与地区" />
-                    <HBox alignment="CENTER_LEFT" styleClass="settings-select-row">
-                        <Label styleClass="settings-side-label" text="简体中文" />
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Label styleClass="settings-select-icon" text="☰" />
-                    </HBox>
+                <VBox id="setting-language-region" fx:id="anchorLanguageRegion" spacing="10" styleClass="settings-anchor">
+                    <Label styleClass="settings-section-heading" text="通用设置" />
+                    <VBox spacing="10" styleClass="settings-card">
+                        <Label styleClass="settings-card-title" text="语言与地区" />
+                        <VBox spacing="10" styleClass="settings-form">
+                            <HBox alignment="CENTER_LEFT" spacing="12" styleClass="settings-form-row">
+                                <Label styleClass="settings-field-label" minWidth="140" text="语言（地区）" />
+                                <ComboBox fx:id="languageLocaleCombo" prefWidth="220" styleClass="settings-combo" />
+                            </HBox>
+                        </VBox>
+                    </VBox>
                 </VBox>
 
-                <VBox spacing="10" styleClass="settings-card">
-                    <Label styleClass="settings-card-title" text="账户管理" />
-                    <HBox alignment="CENTER_LEFT" styleClass="settings-select-row">
-                        <Region minHeight="44" minWidth="44" styleClass="settings-avatar" />
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Label styleClass="settings-select-icon" text="⌄" />
-                    </HBox>
+                <VBox id="setting-shortcuts" fx:id="anchorShortcuts" spacing="10" styleClass="settings-anchor">
+                    <VBox spacing="10" styleClass="settings-card">
+                        <Label styleClass="settings-card-title" text="快捷键" />
+                        <VBox fx:id="shortcutRowsVBox" spacing="8" styleClass="settings-form" />
+                        <Hyperlink fx:id="shortcutResetAllLink" styleClass="settings-inline-link" text="恢复全部默认" />
+                    </VBox>
                 </VBox>
 
-                <VBox spacing="10" styleClass="settings-card">
-                    <Label styleClass="settings-card-title" text="快捷键" />
-                    <HBox alignment="CENTER_LEFT" styleClass="settings-select-row">
-                        <Label styleClass="settings-card-desc" text="查看并自定义快捷键映射" />
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Label styleClass="settings-select-icon" text="⌄" />
-                    </HBox>
+                <VBox id="setting-cache-mgmt" fx:id="anchorCache" spacing="10" styleClass="settings-anchor">
+                    <VBox spacing="10" styleClass="settings-card">
+                        <Label styleClass="settings-card-title" text="缓存管理" />
+                        <HBox alignment="CENTER_LEFT" spacing="12" styleClass="settings-form-row">
+                            <Label styleClass="settings-field-label" minWidth="140" text="当前缓存" />
+                            <Label fx:id="cacheSizeLabel" styleClass="settings-value-label" text="—" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Button fx:id="cacheClearBtn" mnemonicParsing="false" styleClass="settings-row-btn" text="清除缓存" />
+                        </HBox>
+                    </VBox>
                 </VBox>
 
-                <VBox spacing="10" styleClass="settings-card">
-                    <Label styleClass="settings-card-title" text="缓存管理" />
-                    <HBox alignment="CENTER_LEFT" spacing="10">
-                        <Region HBox.hgrow="ALWAYS" styleClass="storage-bar storage-used" />
-                        <Button mnemonicParsing="false" styleClass="settings-clean-btn" text="清理" />
-                    </HBox>
-                    <Label styleClass="settings-card-desc" text="APP已用内存  |  设备已用空间  |  设备可用空间" />
+                <VBox id="setting-ai-assist" fx:id="anchorAiAssist" spacing="10" styleClass="settings-anchor">
+                    <Label styleClass="settings-section-heading" text="AI功能设置" />
+                    <VBox spacing="10" styleClass="settings-card">
+                        <Label styleClass="settings-card-title" text="AI辅助开关" />
+                        <HBox alignment="CENTER_LEFT" spacing="12" styleClass="settings-form-row">
+                            <Label styleClass="settings-field-label" minWidth="140" text="启用 AI 辅助" />
+                            <Label styleClass="settings-card-desc" text="关闭后，自动剪辑、模型与语音相关选项将不可用" wrapText="true" HBox.hgrow="ALWAYS" />
+                            <ToggleButton fx:id="aiAssistToggle" mnemonicParsing="false" selected="true" styleClass="switch-toggle" />
+                        </HBox>
+                    </VBox>
+                </VBox>
+
+                <VBox id="setting-auto-edit" fx:id="anchorAutoEdit" spacing="10" styleClass="settings-anchor">
+                    <VBox spacing="10" styleClass="settings-card">
+                        <Label styleClass="settings-card-title" text="自动剪辑" />
+                        <VBox spacing="10" styleClass="settings-form">
+                            <HBox alignment="CENTER_LEFT" spacing="12" styleClass="settings-form-row">
+                                <Label styleClass="settings-field-label" minWidth="140" text="启用自动剪辑" />
+                                <Region HBox.hgrow="ALWAYS" />
+                                <ToggleButton fx:id="autoEditToggle" mnemonicParsing="false" selected="true" styleClass="switch-toggle" />
+                            </HBox>
+                            <HBox fx:id="autoEditThresholdRow" alignment="CENTER_LEFT" spacing="12" styleClass="settings-form-row">
+                                <Label styleClass="settings-field-label" minWidth="140" text="剪辑阈值（秒）" />
+                                <Spinner fx:id="autoEditThresholdSpinner" editable="true" prefWidth="100" styleClass="settings-spinner" />
+                            </HBox>
+                        </VBox>
+                    </VBox>
+                </VBox>
+
+                <VBox id="setting-ai-model" fx:id="anchorAiModel" spacing="10" styleClass="settings-anchor">
+                    <VBox spacing="10" styleClass="settings-card">
+                        <Label styleClass="settings-card-title" text="AI模型配置" />
+                        <HBox alignment="CENTER_LEFT" spacing="12" styleClass="settings-form-row">
+                            <Label styleClass="settings-field-label" minWidth="140" text="推理模型" />
+                            <ComboBox fx:id="aiModelCombo" prefWidth="220" styleClass="settings-combo" />
+                            <Button fx:id="aiModelInfoBtn" mnemonicParsing="false" styleClass="settings-icon-btn" text="ⓘ" />
+                        </HBox>
+                    </VBox>
+                </VBox>
+
+                <VBox id="setting-voice-audio" fx:id="anchorVoiceAudio" spacing="10" styleClass="settings-anchor">
+                    <VBox spacing="10" styleClass="settings-card">
+                        <Label styleClass="settings-card-title" text="语音与音频" />
+                        <VBox spacing="10" styleClass="settings-form">
+                            <HBox alignment="CENTER_LEFT" spacing="12" styleClass="settings-form-row">
+                                <Label styleClass="settings-field-label" minWidth="140" text="输入设备" />
+                                <ComboBox fx:id="audioInputCombo" prefWidth="220" styleClass="settings-combo" HBox.hgrow="SOMETIMES" />
+                                <Button fx:id="audioInputTestBtn" mnemonicParsing="false" styleClass="settings-row-btn" text="测试" />
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" spacing="12" styleClass="settings-form-row">
+                                <Label styleClass="settings-field-label" minWidth="140" text="输出设备" />
+                                <ComboBox fx:id="audioOutputCombo" prefWidth="220" styleClass="settings-combo" HBox.hgrow="SOMETIMES" />
+                                <Button fx:id="audioOutputTestBtn" mnemonicParsing="false" styleClass="settings-row-btn" text="测试" />
+                            </HBox>
+                        </VBox>
+                    </VBox>
+                </VBox>
+
+                <VBox id="setting-save-path" fx:id="anchorSavePath" spacing="10" styleClass="settings-anchor">
+                    <Label styleClass="settings-section-heading" text="项目与导出" />
+                    <VBox spacing="10" styleClass="settings-card">
+                        <Label styleClass="settings-card-title" text="保存路径" />
+                        <VBox spacing="6" styleClass="settings-form">
+                            <HBox alignment="CENTER_LEFT" spacing="12" styleClass="settings-form-row">
+                                <Label styleClass="settings-field-label" minWidth="140" text="默认目录" />
+                                <TextField fx:id="savePathField" editable="false" focusTraversable="true" prefWidth="300" styleClass="settings-path-field" HBox.hgrow="ALWAYS" />
+                                <Button fx:id="savePathBrowseBtn" mnemonicParsing="false" styleClass="settings-row-btn" text="浏览…" />
+                            </HBox>
+                            <Label fx:id="savePathErrorLabel" managed="false" styleClass="settings-error-label" text="" visible="false" />
+                        </VBox>
+                    </VBox>
+                </VBox>
+
+                <VBox id="setting-auto-save" fx:id="anchorAutoSave" spacing="10" styleClass="settings-anchor">
+                    <VBox spacing="10" styleClass="settings-card">
+                        <Label styleClass="settings-card-title" text="自动保存" />
+                        <VBox spacing="10" styleClass="settings-form">
+                            <HBox alignment="CENTER_LEFT" spacing="12" styleClass="settings-form-row">
+                                <Label styleClass="settings-field-label" minWidth="140" text="启用自动保存" />
+                                <Region HBox.hgrow="ALWAYS" />
+                                <ToggleButton fx:id="autoSaveToggle" mnemonicParsing="false" selected="true" styleClass="switch-toggle" />
+                            </HBox>
+                            <HBox fx:id="autoSaveIntervalRow" alignment="CENTER_LEFT" spacing="12" styleClass="settings-form-row">
+                                <Label styleClass="settings-field-label" minWidth="140" text="间隔（分钟）" />
+                                <Spinner fx:id="autoSaveIntervalSpinner" editable="true" prefWidth="90" styleClass="settings-spinner" />
+                            </HBox>
+                        </VBox>
+                    </VBox>
+                </VBox>
+
+                <VBox id="setting-default-export" fx:id="anchorDefaultExport" spacing="10" styleClass="settings-anchor">
+                    <VBox spacing="10" styleClass="settings-card">
+                        <Label styleClass="settings-card-title" text="默认导出设置" />
+                        <HBox alignment="CENTER_LEFT" spacing="12" styleClass="settings-form-row">
+                            <Label styleClass="settings-field-label" minWidth="140" text="导出预设" />
+                            <ComboBox fx:id="exportPresetCombo" prefWidth="220" styleClass="settings-combo" />
+                        </HBox>
+                    </VBox>
                 </VBox>
             </VBox>
         </ScrollPane>
     </HBox>
+
+    <Label fx:id="settingsToastLabel" alignment="CENTER" maxWidth="280" mouseTransparent="true" pickOnBounds="false" styleClass="settings-toast" text="" visible="false" wrapText="true" AnchorPane.rightAnchor="16" AnchorPane.topAnchor="12" />
 </AnchorPane>

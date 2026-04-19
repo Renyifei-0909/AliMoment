@@ -14,10 +14,10 @@
 
     <top>
         <VBox spacing="0">
-            <BorderPane fx:id="topChrome" minHeight="52" styleClass="top-bar">
+            <BorderPane fx:id="topChrome" minHeight="56" styleClass="top-bar">
                 <left>
-                    <HBox alignment="CENTER_LEFT" spacing="12">
-                        <StackPane fx:id="brandLogoContainer" maxHeight="40" maxWidth="40" minHeight="40" minWidth="40" />
+                    <HBox alignment="CENTER_LEFT" spacing="14">
+                        <StackPane fx:id="brandLogoContainer" maxHeight="48" maxWidth="48" minHeight="48" minWidth="48" />
                         <Label styleClass="brand-name" text="Alimoment" />
                         <Button fx:id="navMenuBtn" mnemonicParsing="false" styleClass="menu-chevron-btn" text="菜单  ▾" />
                     </HBox>
@@ -55,7 +55,7 @@
                     <HBox fx:id="windowControls" alignment="CENTER_RIGHT" spacing="4">
                         <Button fx:id="minimizeBtn" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" styleClass="win-ctrl-btn">
                             <graphic>
-                                <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
+                                <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
                                         <Image url="@images/p1.png" />
                                     </image>
@@ -64,7 +64,7 @@
                         </Button>
                         <Button fx:id="maximizeBtn" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" styleClass="win-ctrl-btn">
                             <graphic>
-                                <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
+                                <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
                                         <Image url="@images/p2.png" />
                                     </image>
@@ -73,7 +73,7 @@
                         </Button>
                         <Button fx:id="closeBtn" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" styleClass="win-ctrl-btn">
                             <graphic>
-                                <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
+                                <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
                                         <Image url="@images/p3.png" />
                                     </image>
@@ -87,7 +87,7 @@
     </top>
 
     <center>
-        <AnchorPane fx:id="contentArea" style="-fx-background-color: #121212;">
+        <AnchorPane fx:id="contentArea" styleClass="app-content-area">
             <AnchorPane fx:id="pageMaterial" visible="false" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
             <AnchorPane fx:id="pageDraft" visible="false" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
             <AnchorPane fx:id="pageSearch" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />

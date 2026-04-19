@@ -1,0 +1,42 @@
+/* 浅色下的对话框样式（与 dialog.css 结构一致） */
+
+.dialog-pane.alimoment-dialog {
+    -fx-background-color: #ffffff;
+    -fx-border-color: rgba(0, 120, 212, 0.2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.18), 20, 0.12, 0, 6);
+}
+
+.dialog-pane.alimoment-dialog > .header-panel {
+    -fx-background-color: linear-gradient(to right, rgba(0, 120, 212, 0.08), rgba(0, 212, 196, 0.06));
+}
+
+.dialog-pane.alimoment-dialog > .header-panel .label {
+    -fx-text-fill: #1a1a1a;
+}
+
+.dialog-pane.alimoment-dialog .content.label,
+.dialog-pane.alimoment-dialog > .content .label {
+    -fx-text-fill: #444444;
+}
+
+.dialog-pane.alimoment-dialog > .button-bar > .container {
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: rgba(0, 0, 0, 0.08);
+}
+
+.dialog-pane.alimoment-dialog .button {
+    -fx-background-color: linear-gradient(to right, #0078d4, #009688);
+    -fx-text-fill: #ffffff;
+}
+
+.dialog-pane.alimoment-dialog .button:hover {
+    -fx-background-color: linear-gradient(to right, #1a8ce8, #00bfa5);
+}
+
+.dialog-pane.alimoment-dialog .button:pressed {
+    -fx-background-color: linear-gradient(to right, #006cbd, #00897b);
+}
+
+.dialog-error-badge {
+    -fx-border-color: #ffffff;
+}
