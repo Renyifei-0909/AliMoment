@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -534,7 +536,7 @@ public class SmartClipSearchApp extends Application {
         VBox group = createSettingsGroup("保存路径");
         HBox row = new HBox(16);
         row.setAlignment(Pos.CENTER_LEFT);
-        TextField pathField = new TextField("/Users/username/Videos/Alimoment");
+        TextField pathField = new TextField(getDefaultSavePath());
         pathField.getStyleClass().add("setting-control");
         pathField.setPrefWidth(300);
         Button browse = new Button("浏览");
@@ -997,6 +999,11 @@ public class SmartClipSearchApp extends Application {
         alert.setHeaderText(null);
         alert.setContentText("已选中视频片段：" + description);
         alert.showAndWait();
+    }
+
+    private String getDefaultSavePath() {
+        Path defaultPath = Paths.get(System.getProperty("user.home"), "Videos", "Alimoment");
+        return defaultPath.toString();
     }
 
     private void applyCss(Scene scene) {
