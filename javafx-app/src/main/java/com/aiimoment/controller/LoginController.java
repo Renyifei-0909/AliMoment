@@ -41,6 +41,14 @@ public class LoginController {
     @FXML
     private Label starE;
     @FXML
+    private Label starF;
+    @FXML
+    private Label starG;
+    @FXML
+    private Label starH;
+    @FXML
+    private Label starI;
+    @FXML
     private Button loginMinimizeBtn;
     @FXML
     private Button loginMaximizeBtn;
@@ -95,7 +103,7 @@ public class LoginController {
     }
 
     private void setupStarTwinkleAnimation() {
-        List<Label> stars = Arrays.asList(twinkleStar, starA, starB, starC, starD, starE);
+        List<Label> stars = Arrays.asList(twinkleStar, starA, starB, starC, starD, starE, starF, starG, starH, starI);
         int i = 0;
         for (Label star : stars) {
             if (star == null) {
