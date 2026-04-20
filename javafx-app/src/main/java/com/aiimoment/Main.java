@@ -1,6 +1,7 @@
 package com.aiimoment;
 
 import javafx.animation.PauseTransition;
+import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -27,6 +28,7 @@ import javafx.util.Duration;
 import java.util.Objects;
 
 import com.aiimoment.ui.WindowResizeHelper;
+import com.aiimoment.controller.LoginController;
 
 /**
  * Windows 上 {@link StageStyle#UNDECORATED} 窗口在最大化时，Glass 客户区与 JavaFX {@link Scene}
@@ -174,11 +176,24 @@ public class Main extends Application {
         StackPane shell = new StackPane(loaded);
         shell.getStyleClass().add("app-shell");
 
-        Scene scene = new Scene(shell);
+        FXMLLoader loginLoader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/LoginView.fxml")));
+        Parent loginRoot = loginLoader.load();
+        LoginController loginController = loginLoader.getController();
+
+        StackPane sceneRoot = new StackPane(shell, loginRoot);
+        Scene scene = new Scene(sceneRoot);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/app.css")).toExternalForm());
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/theme-light.css")).toExternalForm());
         AppTheme.applySaved(shell, scene);
         installGlobalExitShortcut(scene, primaryStage);
+
+        loginController.setOnLoginSuccess(() -> {
+            FadeTransition fade = new FadeTransition(Duration.millis(320), loginRoot);
+            fade.setFromValue(1.0);
+            fade.setToValue(0.0);
+            fade.setOnFinished(evt -> sceneRoot.getChildren().remove(loginRoot));
+            fade.play();
+        });
 
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setTitle("AIiMoment");

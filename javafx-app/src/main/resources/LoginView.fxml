@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.aiimoment.controller.LoginController"
+            styleClass="login-root">
+    <children>
+        <AnchorPane styleClass="login-grid-overlay" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+
+        <Label fx:id="twinkleStar" styleClass="login-twinkle-star" text="✦"
+               AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="60.0"/>
+        <Label fx:id="starA" styleClass="login-twinkle-star-sm" text="✦"
+               AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="96.0"/>
+        <Label fx:id="starB" styleClass="login-twinkle-star-sm" text="✦"
+               AnchorPane.leftAnchor="520.0" AnchorPane.topAnchor="190.0"/>
+        <Label fx:id="starC" styleClass="login-twinkle-star-sm" text="✦"
+               AnchorPane.leftAnchor="90.0" AnchorPane.bottomAnchor="140.0"/>
+        <Label fx:id="starD" styleClass="login-twinkle-star-sm" text="✦"
+               AnchorPane.rightAnchor="340.0" AnchorPane.bottomAnchor="108.0"/>
+        <Label fx:id="starE" styleClass="login-twinkle-star-sm" text="✦"
+               AnchorPane.rightAnchor="86.0" AnchorPane.topAnchor="210.0"/>
+
+        <HBox alignment="CENTER" spacing="48.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <padding>
+                <Insets bottom="48.0" left="36.0" right="36.0" top="48.0"/>
+            </padding>
+
+            <VBox maxWidth="560.0" spacing="16.0">
+                <HBox alignment="CENTER_LEFT" spacing="14.0">
+                    <ImageView fitHeight="34.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@images/ali_logo.png"/>
+                        </image>
+                    </ImageView>
+                    <Label styleClass="login-brand" text="AliMoment"/>
+                </HBox>
+                <Label styleClass="login-title" text="语义理解AI视频剪辑"/>
+                <Label styleClass="login-subtitle" text="让剪辑成为动动嘴就能完成的轻量化任务"/>
+
+                <VBox spacing="12.0">
+                    <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="login-feature-card">
+                        <Label styleClass="login-feature-icon" text="🗂"/>
+                        <VBox spacing="2.0">
+                            <Label styleClass="login-feature-title" text="智能剪辑"/>
+                            <Label styleClass="login-feature-desc" text="AI自动识别精彩瞬间"/>
+                        </VBox>
+                    </HBox>
+                    <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="login-feature-card">
+                        <Label styleClass="login-feature-icon" text="✨"/>
+                        <VBox spacing="2.0">
+                            <Label styleClass="login-feature-title" text="一键美化"/>
+                            <Label styleClass="login-feature-desc" text="专业级调色与特效"/>
+                        </VBox>
+                    </HBox>
+                    <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="login-feature-card">
+                        <Label styleClass="login-feature-icon" text="⚡"/>
+                        <VBox spacing="2.0">
+                            <Label styleClass="login-feature-title" text="极速渲染"/>
+                            <Label styleClass="login-feature-desc" text="云端加速，秒级导出"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </VBox>
+
+            <StackPane alignment="CENTER_RIGHT">
+                <VBox maxWidth="470.0" minWidth="380.0" spacing="14.0" styleClass="login-card">
+                    <Label styleClass="login-card-title" text="欢迎回来"/>
+                    <Label styleClass="login-card-subtitle" text="登录以继续创作您的精彩视频"/>
+
+                    <VBox spacing="7.0">
+                        <Label styleClass="login-field-label" text="邮箱"/>
+                        <TextField fx:id="emailField" promptText="your@email.com" styleClass="login-input"/>
+                    </VBox>
+
+                    <VBox spacing="7.0">
+                        <Label styleClass="login-field-label" text="密码"/>
+                        <PasswordField fx:id="passwordField" promptText="请输入密码" styleClass="login-input"/>
+                    </VBox>
+
+                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                        <CheckBox fx:id="rememberCheck" styleClass="login-check" text="记住我"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Hyperlink focusTraversable="false" styleClass="login-link" text="忘记密码?"/>
+                    </HBox>
+
+                    <Button fx:id="loginButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                            onAction="#onLogin" styleClass="login-submit-btn" text="登录"/>
+
+                    <Label fx:id="errorLabel" managed="false" styleClass="login-error-label" text=""/>
+
+                    <HBox alignment="CENTER" spacing="6.0">
+                        <Label styleClass="login-card-subtitle" text="还没有账号?"/>
+                        <Hyperlink focusTraversable="false" styleClass="login-link" text="立即注册"/>
+                    </HBox>
+                </VBox>
+            </StackPane>
+        </HBox>
+
+        <HBox alignment="CENTER_RIGHT" spacing="4.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="8.0">
+            <Button fx:id="loginMinimizeBtn" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" styleClass="win-ctrl-btn">
+                <graphic>
+                    <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@images/p1.png"/>
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button fx:id="loginMaximizeBtn" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" styleClass="win-ctrl-btn">
+                <graphic>
+                    <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@images/p2.png"/>
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button fx:id="loginCloseBtn" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" styleClass="win-ctrl-btn">
+                <graphic>
+                    <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@images/p3.png"/>
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+        </HBox>
+    </children>
+</AnchorPane>
