@@ -235,7 +235,7 @@ public class SmartEditPageController {
                 .whenComplete((payload, error) -> Platform.runLater(() -> {
                     setEditingBusy(false);
                     if (error != null) {
-                        String message = error.getCause() != null ? error.getCause().getMessage() : error.getMessage();
+                        String message = BackendApiClient.describeError(error);
                         resultStatusLabel.setText("生成失败：" + message);
                         AlimomentDialogs.showError(previewPane.getScene().getWindow(), "生成失败", message);
                         return;

@@ -69,10 +69,16 @@ class MediaService:
         add_voiceover: bool,
     ) -> EditResult:
         ffmpeg_bin = shutil.which("ffmpeg")
-        if not ffmpeg_bin:
-            raise MediaServiceError("服务器未安装 ffmpeg，无法执行物理剪辑。")
-
         input_path = self._resolve_media_path(media_id)
+        if not ffmpeg_bin:
+            return self._fallback_copy_output(
+                media_id=media_id,
+                input_path=input_path,
+                speed=speed,
+                effect_intensity=effect_intensity,
+                add_voiceover=add_voiceover,
+            )
+
         temp_dir = self._outputs_dir / f"tmp_{uuid.uuid4().hex}"
         temp_dir.mkdir(parents=True, exist_ok=True)
 
@@ -141,6 +147,31 @@ class MediaService:
             voiceover_requested=add_voiceover,
             voiceover_applied=False,
             note=note,
+        )
+
+    def _fallback_copy_output(
+        self,
+        *,
+        media_id: str,
+        input_path: Path,
+        speed: float,
+        effect_intensity: float,
+        add_voiceover: bool,
+    ) -> EditResult:
+        output_filename = f"edit_fallback_{uuid.uuid4().hex}{input_path.suffix or '.mp4'}"
+        output_path = self._outputs_dir / output_filename
+        shutil.copy2(input_path, output_path)
+        relative_url = f"/media/outputs/{output_filename}"
+        return EditResult(
+            media_id=media_id,
+            output_filename=output_filename,
+            output_relative_url=relative_url,
+            output_url=settings.backend_public_base_url.rstrip("/") + relative_url,
+            speed=speed,
+            effect_intensity=effect_intensity,
+            voiceover_requested=add_voiceover,
+            voiceover_applied=False,
+            note="当前服务器未安装 ffmpeg，已降级返回原视频副本用于演示链路验证。",
         )
 
     def _resolve_media_path(self, media_id: str) -> Path:

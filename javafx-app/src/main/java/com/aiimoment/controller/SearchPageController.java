@@ -347,7 +347,7 @@ public class SearchPageController {
                 Platform.runLater(() -> {
                     setSearchBusy(false);
                     if (error != null) {
-                        String message = error.getCause() != null ? error.getCause().getMessage() : error.getMessage();
+                        String message = BackendApiClient.describeError(error);
                         setSearchStatus("检索失败：" + message);
                         AlimomentDialogs.showError(videoPane.getScene().getWindow(), "检索失败", message);
                         return;
@@ -400,7 +400,7 @@ public class SearchPageController {
                 Platform.runLater(() -> {
                     setSearchBusy(false);
                     if (error != null) {
-                        String message = error.getCause() != null ? error.getCause().getMessage() : error.getMessage();
+                        String message = BackendApiClient.describeError(error);
                         setSearchStatus("素材库加载失败：" + message);
                         return;
                     }

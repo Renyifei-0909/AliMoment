@@ -173,6 +173,24 @@ public class BackendApiClient {
         return "后端请求失败，HTTP " + statusCode + "：" + body;
     }
 
+    public static String describeError(Throwable error) {
+        if (error == null) {
+            return "未知错误";
+        }
+        Throwable current = error;
+        while (current.getCause() != null && current.getCause() != current) {
+            current = current.getCause();
+        }
+        String message = current.getMessage();
+        if (message == null || message.isBlank()) {
+            message = error.getMessage();
+        }
+        if (message == null || message.isBlank()) {
+            message = current.getClass().getSimpleName();
+        }
+        return message != null && !message.isBlank() ? message : "未知错误";
+    }
+
     private static final class SearchRequest {
         @SerializedName("asset_id")
         private final String assetId;
