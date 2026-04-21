@@ -4,6 +4,11 @@
 
 This backend wraps the existing `PC-Net` inference flow as a FastAPI service and now exposes a lightweight business API for demo assets.
 
+Important repository convention:
+- the `AliMoment` repo does not need to carry the full `PC-Net` project, checkpoints, or HDF5 assets
+- those runtime assets should live outside the repo on the target server
+- this backend only needs absolute paths from `.env`
+
 Current capability:
 - Load a trained `PC-Net` checkpoint
 - Read video features from the configured HDF5 file
@@ -17,7 +22,7 @@ Current limitation:
 - It relies on the original `PC-Net` code path, which currently requires CUDA
 
 In other words, this is the right deployment shape if your server already has:
-- the `PC-Net` folder
+- the deployed `PC-Net` folder
 - the trained checkpoint
 - the matching HDF5 feature file
 - a GPU environment that has already run `PC-Net` successfully
@@ -87,7 +92,7 @@ cp .env.example .env
 
 Then edit `.env` and make sure these are correct:
 
-- `PCNET_ROOT`: absolute path to the deployed `PC-Net` folder
+- `PCNET_ROOT`: absolute path to the deployed external `PC-Net` folder
 - `PCNET_CHECKPOINT_PATH`: absolute path to `model-best.pt`
 - `PCNET_FEATURE_PATH`: absolute path to the matching HDF5 feature file
 - `PCNET_DEVICE`: usually `cuda:0`
@@ -99,6 +104,7 @@ Notes:
 - `PCNET_CONFIG_PATH` should point to the matching dataset config, such as ActivityNet
 - `PCNET_FEATURE_PATH` overrides the `feature_path` inside the checkpoint config, which is useful on the server
 - Keep `LLM_ENABLED=false` if you have not configured a reachable OpenAI-compatible endpoint yet
+- If these values are empty or wrong, the backend can still start, but `/pcnet/health` and `/api/search` will report that PC-Net is not ready
 
 ## 5. Demo assets manifest
 
@@ -177,7 +183,7 @@ curl -X POST http://127.0.0.1:8000/api/search \
 
 ## 8. Run one inference request
 
-Use a known `video_id` and its duration from your dataset json, for example from `PC-Net/data/activitynet/test_trivial.json`.
+Use a known `video_id` and its duration from your deployed dataset json, for example from `.../PC-Net/data/activitynet/test_trivial.json` on the server.
 
 Example:
 

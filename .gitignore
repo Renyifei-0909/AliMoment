@@ -10,3 +10,7 @@ Thumbs.db
 *.swp
 .idea/
 *.iml
+
+# External model/runtime assets
+PC-Net/
+PC-Net-local/

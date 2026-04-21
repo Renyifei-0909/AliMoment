@@ -19,15 +19,11 @@ class Settings:
     backend_host: str = os.getenv("BACKEND_HOST", "0.0.0.0")
     backend_port: int = int(os.getenv("BACKEND_PORT", "8000"))
 
-    pcnet_root: str = os.getenv("PCNET_ROOT", str(repo_root / "PC-Net"))
-    pcnet_config_path: str = os.getenv(
-        "PCNET_CONFIG_PATH",
-        str(repo_root / "PC-Net" / "config" / "activitynet" / "main_train_test.json"),
-    )
-    pcnet_checkpoint_path: str = os.getenv(
-        "PCNET_CHECKPOINT_PATH",
-        str(repo_root / "PC-Net" / "checkpoints" / "ActivityNet" / "8_2025-05-14_14-07-12" / "model-best.pt"),
-    )
+    # PC-Net code, configs, checkpoints, and features are expected to live
+    # outside this repo and be injected via environment variables.
+    pcnet_root: str = os.getenv("PCNET_ROOT", "")
+    pcnet_config_path: str = os.getenv("PCNET_CONFIG_PATH", "")
+    pcnet_checkpoint_path: str = os.getenv("PCNET_CHECKPOINT_PATH", "")
     pcnet_feature_path: str = os.getenv("PCNET_FEATURE_PATH", "")
     pcnet_device: str = os.getenv("PCNET_DEVICE", "cuda:0")
     pcnet_top_k: int = int(os.getenv("PCNET_TOP_K", "5"))

@@ -180,6 +180,13 @@ class PCNetService:
             )
 
     def _load_internal(self) -> None:
+        if not settings.pcnet_root:
+            raise PCNetServiceError("PCNET_ROOT is empty. Please set it in backend/.env to your deployed PC-Net folder.")
+        if not settings.pcnet_config_path:
+            raise PCNetServiceError("PCNET_CONFIG_PATH is empty. Please set it in backend/.env.")
+        if not settings.pcnet_checkpoint_path:
+            raise PCNetServiceError("PCNET_CHECKPOINT_PATH is empty. Please set it in backend/.env.")
+
         self._pcnet_root = ensure_pcnet_importable(settings.pcnet_root)
         self._config_path = Path(settings.pcnet_config_path).expanduser().resolve()
         self._checkpoint_path = Path(settings.pcnet_checkpoint_path).expanduser().resolve()
