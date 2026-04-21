@@ -44,7 +44,7 @@ pick_port_and_tunnel() {
       return 0
     fi
     if ! lsof -iTCP:"$port" -sTCP:LISTEN >/dev/null 2>&1; then
-      echo "Opening SSH tunnel ${port} -> ${SERVER_HOST}:${REMOTE_PORT}"
+      echo "Opening SSH tunnel ${port} -> ${SERVER_HOST}:${REMOTE_PORT}" >&2
       ssh -f -N -L "${port}:127.0.0.1:${REMOTE_PORT}" "${SERVER_USER}@${SERVER_HOST}"
       sleep 1
       if probe_health "$port" >/dev/null 2>&1; then
@@ -57,11 +57,16 @@ pick_port_and_tunnel() {
 }
 
 TARGET_PORT="$(pick_port_and_tunnel "${LOCAL_PORT}")" || {
-  echo "Unable to establish a healthy tunnel to ${SERVER_HOST}:${REMOTE_PORT}."
-  echo "Please make sure the server backend is running, then retry."
+  echo "Unable to establish a healthy tunnel to ${SERVER_HOST}:${REMOTE_PORT}." >&2
+  echo "Please make sure the server backend is running, then retry." >&2
   exit 1
 }
 
-echo "Using local tunnel port: ${TARGET_PORT}"
+if ! [[ "${TARGET_PORT}" =~ ^[0-9]+$ ]]; then
+  echo "Tunnel script returned an invalid port value: ${TARGET_PORT}" >&2
+  exit 1
+fi
+
+echo "Using local tunnel port: ${TARGET_PORT}" >&2
 
 exec ./run-with-api.sh "http://127.0.0.1:${TARGET_PORT}"
