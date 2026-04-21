@@ -184,7 +184,7 @@ public class Main extends Application {
         Scene scene = new Scene(sceneRoot);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/app.css")).toExternalForm());
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/theme-light.css")).toExternalForm());
-        AppTheme.applySaved(shell, scene);
+        AppTheme.applySaved(sceneRoot, scene);
         installGlobalExitShortcut(scene, primaryStage);
 
         loginController.setOnLoginSuccess(() -> {

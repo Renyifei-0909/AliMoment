@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-from typing import List
-
-from fastapi import APIRouter, Body, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Request
 
 from app.api.schemas import EditRequest, EditResponse, MediaUploadResponse
 from app.services.media_service import MediaServiceError, get_media_service
@@ -11,11 +9,12 @@ router = APIRouter(prefix="/api", tags=["media"])
 
 
 @router.post("/media/upload", response_model=MediaUploadResponse)
-def upload_media(
-    raw_body: bytes = Body(...),
+async def upload_media(
+    request: Request,
     filename: str = Query(..., min_length=1),
 ) -> dict:
     try:
+        raw_body = await request.body()
         uploaded = get_media_service().save_upload(original_filename=filename, content=raw_body)
     except MediaServiceError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc

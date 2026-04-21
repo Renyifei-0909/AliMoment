@@ -163,18 +163,35 @@ public class SmartEditPageController {
         disposeMedia();
         try {
             Media media = new Media(uri.toString());
+            media.setOnError(() -> Platform.runLater(() -> {
+                Throwable err = media.getError();
+                String msg = err != null ? err.getMessage() : "未知错误";
+                AlimomentDialogs.showError(previewPane.getScene().getWindow(), "无法加载视频", "无法加载该视频。\n\n" + msg);
+                disposeMedia();
+            }));
             mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.setOnError(() -> Platform.runLater(() -> {
+                Exception ex = mediaPlayer.getError();
+                String msg = ex != null ? ex.getMessage() : "播放出错";
+                AlimomentDialogs.showError(previewPane.getScene().getWindow(), "播放失败", msg);
+                disposeMedia();
+            }));
             mediaView = new MediaView(mediaPlayer);
             mediaView.setPreserveRatio(true);
+            mediaView.setSmooth(true);
+            mediaView.setMouseTransparent(true);
             mediaView.fitWidthProperty().bind(previewPane.widthProperty().subtract(8));
             mediaView.fitHeightProperty().bind(previewPane.heightProperty().subtract(8));
             previewPane.getChildren().add(0, mediaView);
-            previewPlaceholder.setVisible(false);
-            previewPlaceholder.setManaged(false);
-            previewPane.getStyleClass().remove("smart-preview-empty");
-            previewPane.setCursor(Cursor.DEFAULT);
-            mediaPlayer.play();
-            toolStatusLabel.setText("视频已导入，可进行分割、变速、剪辑、特效操作。");
+            toolStatusLabel.setText("正在加载视频预览...");
+            mediaPlayer.setOnReady(() -> {
+                previewPlaceholder.setVisible(false);
+                previewPlaceholder.setManaged(false);
+                previewPane.getStyleClass().remove("smart-preview-empty");
+                previewPane.setCursor(Cursor.DEFAULT);
+                mediaPlayer.play();
+                toolStatusLabel.setText("视频已导入，可进行分割、变速、剪辑、特效操作。");
+            });
         } catch (Exception ex) {
             AlimomentDialogs.showError(previewPane.getScene().getWindow(), "打开失败", "打开视频失败。\n\n" + ex.getMessage());
             disposeMedia();

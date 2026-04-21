@@ -198,21 +198,25 @@ public class SearchPageController {
 
             mediaView = new MediaView(mediaPlayer);
             mediaView.setPreserveRatio(true);
+            mediaView.setSmooth(true);
+            mediaView.setMouseTransparent(true);
             mediaView.fitWidthProperty().bind(videoPane.widthProperty().subtract(8));
             mediaView.fitHeightProperty().bind(videoPane.heightProperty().subtract(8));
             videoPane.getChildren().add(0, mediaView);
-
-            videoPlaceholder.setVisible(false);
-            videoPlaceholder.setManaged(false);
-            videoPane.getStyleClass().remove("video-placeholder-empty");
-            if (timelinePane != null) {
-                timelinePane.setCursor(Cursor.HAND);
-            }
+            setSearchStatus("正在加载本地视频预览...");
 
             mediaPlayer.setOnReady(() -> {
+                videoPlaceholder.setVisible(false);
+                videoPlaceholder.setManaged(false);
+                videoPane.getStyleClass().remove("video-placeholder-empty");
+                if (timelinePane != null) {
+                    timelinePane.setCursor(Cursor.HAND);
+                }
                 updateTimeLabel();
                 updateTimelineProgress();
                 playPauseBtn.setText("⏸");
+                setSearchStatus("本地视频已载入，可点击检索结果直接跳转片段。");
+                mediaPlayer.play();
             });
             mediaPlayer.currentTimeProperty().addListener((o, a, b) -> {
                 updateTimeLabel();
@@ -222,9 +226,6 @@ public class SearchPageController {
                 mediaPlayer.pause();
                 playPauseBtn.setText("▶");
             });
-
-            mediaPlayer.play();
-            playPauseBtn.setText("⏸");
         } catch (Exception ex) {
             AlimomentDialogs.showError(videoPane.getScene().getWindow(), "打开失败", "打开视频失败。\n\n" + ex.getMessage());
             disposeMedia();
