@@ -51,9 +51,11 @@ class SearchService:
     def _losses_to_scores(losses: List[float]) -> List[float]:
         if not losses:
             return []
-        weights = [math.exp(-loss) for loss in losses]
-        total = sum(weights) or 1.0
-        return [weight / total for weight in weights]
+        best_loss = min(losses)
+        # This is a relative confidence score, not a calibrated probability.
+        # Top-1 is anchored at 1.0 and the rest decay according to the gap
+        # from the best candidate, which reads much better in the demo UI.
+        return [math.exp(-(loss - best_loss)) for loss in losses]
 
 
 _search_service: Optional[SearchService] = None

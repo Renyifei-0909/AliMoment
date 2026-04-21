@@ -455,11 +455,11 @@ public class SearchPageController {
         Region sp = new Region();
         HBox.setHgrow(sp, Priority.ALWAYS);
         Label badge = new Label(String.format("%d%%", Math.round(result.score * 100)));
-        badge.getStyleClass().add(result.score >= 0.5 ? "badge-high" : "badge-mid");
+        badge.getStyleClass().add(result.score >= 0.8 ? "badge-high" : "badge-mid");
         top.getChildren().addAll(t, sp, badge);
 
         String translated = payload.translatedQuery != null ? payload.translatedQuery : "";
-        Label d = new Label("Top-" + result.rank + " 片段，英文检索词：" + translated);
+        Label d = new Label("Top-" + result.rank + " 片段，相对匹配度展示，英文检索词：" + translated);
         d.getStyleClass().add("result-desc");
         d.setMaxWidth(Double.MAX_VALUE);
         d.setWrapText(true);
