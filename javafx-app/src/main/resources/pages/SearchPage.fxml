@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
@@ -43,6 +44,11 @@
 
             <VBox minWidth="320" prefWidth="400" spacing="14" HBox.hgrow="NEVER">
                 <Label styleClass="search-panel-title" text="智能搜索" />
+                <VBox spacing="6">
+                    <Label styleClass="section-heading" text="演示素材" />
+                    <ComboBox fx:id="assetComboBox" maxWidth="1.7976931348623157E308" promptText="正在加载素材库..." styleClass="search-asset-combo" />
+                    <Label fx:id="searchStatusLabel" styleClass="search-status-label" text="正在连接后端..." wrapText="true" />
+                </VBox>
                 <VBox spacing="8" styleClass="card-surface" style="-fx-padding: 12;">
                     <StackPane styleClass="search-input-shell">
                         <TextArea fx:id="searchField" prefRowCount="5" promptText="描述您要查找的视频片段…例如：找到两个人在野外骑行的场景" styleClass="search-text-area" wrapText="true" />

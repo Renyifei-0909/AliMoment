@@ -1,5 +1,6 @@
 package com.aiimoment.controller;
 
+import com.aiimoment.api.BackendApiClient;
 import com.aiimoment.ui.AlimomentDialogs;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -8,7 +9,9 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.TextArea;
 import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
@@ -25,9 +28,12 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
+import javafx.util.StringConverter;
 
 import java.io.File;
 import java.net.URI;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 
 public class SearchPageController {
@@ -49,6 +55,10 @@ public class SearchPageController {
     @FXML
     private Button searchSubmitBtn;
     @FXML
+    private ComboBox<BackendApiClient.AssetSummary> assetComboBox;
+    @FXML
+    private Label searchStatusLabel;
+    @FXML
     private FlowPane historyPane;
     @FXML
     private VBox resultsBox;
@@ -59,22 +69,19 @@ public class SearchPageController {
 
     private MediaPlayer mediaPlayer;
     private MediaView mediaView;
+    private VBox activeResultCard;
+    private BackendApiClient.SearchResultItem activeResult;
+    private final BackendApiClient apiClient = new BackendApiClient();
 
     /** 当前播放进度占总时长比例 0..1，驱动索引条青色已播段宽度 */
     private final SimpleDoubleProperty playRatio = new SimpleDoubleProperty(0);
+    private final SimpleDoubleProperty selectionStartRatio = new SimpleDoubleProperty(0);
+    private final SimpleDoubleProperty selectionWidthRatio = new SimpleDoubleProperty(0);
 
     @FXML
     public void initialize() {
-        loadSampleResults();
+        configureAssetPicker();
         searchSubmitBtn.setOnAction(e -> onSearch());
-        if (historyPane != null) {
-            for (var n : historyPane.getChildren()) {
-                if (n instanceof Button) {
-                    Button chip = (Button) n;
-                    chip.setOnAction(ev -> searchField.setText(chip.getText()));
-                }
-            }
-        }
         if (railMenuBtn != null) {
             railMenuBtn.setOnAction(e -> { /* 侧栏菜单占位 */ });
         }
@@ -85,6 +92,9 @@ public class SearchPageController {
         seekEndBtn.setOnAction(e -> seekEnd());
 
         buildTimelineLayers();
+        setSearchStatus("正在连接后端：" + apiClient.getBaseUrl());
+        setSearchBusy(true);
+        loadAssets();
     }
 
     private void buildTimelineLayers() {
@@ -113,6 +123,13 @@ public class SearchPageController {
         teal.prefHeightProperty().bind(timelinePane.heightProperty());
         teal.prefWidthProperty().bind(Bindings.multiply(timelinePane.widthProperty(), playRatio));
 
+        Region selection = new Region();
+        selection.getStyleClass().setAll("timeline-selection-layer");
+        selection.setMouseTransparent(true);
+        selection.prefHeightProperty().bind(timelinePane.heightProperty());
+        selection.prefWidthProperty().bind(Bindings.multiply(timelinePane.widthProperty(), selectionWidthRatio));
+        selection.layoutXProperty().bind(Bindings.multiply(timelinePane.widthProperty(), selectionStartRatio));
+
         Rectangle clip = new Rectangle();
         clip.widthProperty().bind(timelinePane.widthProperty());
         clip.heightProperty().bind(timelinePane.heightProperty());
@@ -120,7 +137,7 @@ public class SearchPageController {
         clip.setArcHeight(20);
         timelinePane.setClip(clip);
 
-        timelinePane.getChildren().addAll(gray, brown, teal);
+        timelinePane.getChildren().addAll(gray, brown, selection, teal);
         timelinePane.setOnMouseClicked(this::onTimelineClicked);
     }
 
@@ -232,6 +249,9 @@ public class SearchPageController {
         videoTimeLabel.setText("00:00:00 / 00:00:00");
         playPauseBtn.setText("▶");
         playRatio.set(0);
+        if (activeResult != null) {
+            updateSelectedSegment(activeResult);
+        }
         if (timelinePane != null) {
             timelinePane.setCursor(Cursor.DEFAULT);
         }
@@ -310,47 +330,236 @@ public class SearchPageController {
     private void onSearch() {
         String q = searchField.getText() != null ? searchField.getText().trim() : "";
         if (q.isEmpty()) {
+            setSearchStatus("请输入检索描述后再发起搜索。");
             return;
         }
-        resultsBox.getChildren().add(0, buildResultCard("00:00:00 - 00:00:12", "与检索相关：" + q, 0.78));
+        BackendApiClient.AssetSummary asset = assetComboBox != null ? assetComboBox.getValue() : null;
+        if (asset == null || asset.assetId == null || asset.assetId.isBlank()) {
+            setSearchStatus("素材库尚未准备好，请稍后重试。");
+            return;
+        }
+
+        setSearchBusy(true);
+        setSearchStatus("正在检索素材《" + asset.title + "》...");
+        clearResults();
+
+        apiClient.search(asset.assetId, q).whenComplete((payload, error) ->
+                Platform.runLater(() -> {
+                    setSearchBusy(false);
+                    if (error != null) {
+                        String message = error.getCause() != null ? error.getCause().getMessage() : error.getMessage();
+                        setSearchStatus("检索失败：" + message);
+                        AlimomentDialogs.showError(videoPane.getScene().getWindow(), "检索失败", message);
+                        return;
+                    }
+                    renderSearchResults(payload);
+                }));
     }
 
-    private void loadSampleResults() {
-        resultsBox.getChildren().add(buildResultCard(
-                "00:01:23 - 00:01:35",
-                "小女孩在公园中央的草地上快乐的奔跑，阳光洒在她脸上。",
-                0.92));
-        resultsBox.getChildren().add(buildResultCard(
-                "00:02:45 - 00:03:10",
-                "小女孩穿着粉色裙子在喷泉旁旋转跳舞",
-                0.87));
-        resultsBox.getChildren().add(buildResultCard(
-                "00:03:50 - 00:04:15",
-                "小女孩和小狗在沙坑里一起玩耍的画面",
-                0.76));
+    private void configureAssetPicker() {
+        if (assetComboBox == null) {
+            return;
+        }
+
+        assetComboBox.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(BackendApiClient.AssetSummary asset) {
+                if (asset == null) {
+                    return "";
+                }
+                return asset.title + " · " + formatSeconds(asset.duration);
+            }
+
+            @Override
+            public BackendApiClient.AssetSummary fromString(String string) {
+                return null;
+            }
+        });
+        assetComboBox.setCellFactory(list -> new ListCell<>() {
+            @Override
+            protected void updateItem(BackendApiClient.AssetSummary item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : item.title + " · " + formatSeconds(item.duration));
+            }
+        });
+        assetComboBox.valueProperty().addListener((obs, oldValue, newValue) -> {
+            activeResult = null;
+            activeResultCard = null;
+            selectionStartRatio.set(0);
+            selectionWidthRatio.set(0);
+            clearResults();
+            populateSuggestedQueries(newValue);
+            if (newValue != null) {
+                setSearchStatus("当前素材：" + newValue.title + "，可直接输入中文检索。");
+            }
+        });
     }
 
-    private static VBox buildResultCard(String time, String desc, double score) {
+    private void loadAssets() {
+        apiClient.fetchAssets().whenComplete((assets, error) ->
+                Platform.runLater(() -> {
+                    setSearchBusy(false);
+                    if (error != null) {
+                        String message = error.getCause() != null ? error.getCause().getMessage() : error.getMessage();
+                        setSearchStatus("素材库加载失败：" + message);
+                        return;
+                    }
+
+                    List<BackendApiClient.AssetSummary> safeAssets = assets != null ? assets : Collections.emptyList();
+                    assetComboBox.getItems().setAll(safeAssets);
+                    if (safeAssets.isEmpty()) {
+                        assetComboBox.setPromptText("暂无可用素材");
+                        setSearchStatus("后端已连接，但当前没有可用演示素材。");
+                        return;
+                    }
+
+                    assetComboBox.getSelectionModel().selectFirst();
+                    setSearchStatus("素材库已连接，共 " + safeAssets.size() + " 个演示素材。");
+                }));
+    }
+
+    private void renderSearchResults(BackendApiClient.SearchPayload payload) {
+        clearResults();
+        if (payload == null || payload.results == null || payload.results.isEmpty()) {
+            setSearchStatus("未找到匹配片段，可以换一个描述再试。");
+            resultsBox.getChildren().add(buildInfoCard("暂无结果", "这次检索没有返回可用片段。"));
+            return;
+        }
+
+        VBox firstCard = null;
+        BackendApiClient.SearchResultItem firstResult = null;
+        for (BackendApiClient.SearchResultItem result : payload.results) {
+            VBox card = buildResultCard(payload, result);
+            if (firstCard == null) {
+                firstCard = card;
+                firstResult = result;
+            }
+            resultsBox.getChildren().add(card);
+        }
+
+        setSearchStatus("检索完成：" + payload.originalQuery + " -> " + payload.translatedQuery + "，返回 " + payload.results.size() + " 个片段。");
+        if (firstCard != null && firstResult != null) {
+            activateResult(firstCard, firstResult);
+        }
+    }
+
+    private VBox buildResultCard(BackendApiClient.SearchPayload payload, BackendApiClient.SearchResultItem result) {
         VBox card = new VBox(6);
         card.getStyleClass().add("result-card");
+        card.setCursor(Cursor.HAND);
 
         HBox top = new HBox(12);
         top.setAlignment(Pos.CENTER_LEFT);
-        Label t = new Label(time);
+        Label t = new Label(formatSeconds(result.startTime) + " - " + formatSeconds(result.endTime));
         t.getStyleClass().add("result-time");
         Region sp = new Region();
         HBox.setHgrow(sp, Priority.ALWAYS);
-        Label badge = new Label(String.format("%d%%", Math.round(score * 100)));
-        badge.getStyleClass().add(score >= 0.85 ? "badge-high" : "badge-mid");
+        Label badge = new Label(String.format("%d%%", Math.round(result.score * 100)));
+        badge.getStyleClass().add(result.score >= 0.5 ? "badge-high" : "badge-mid");
         top.getChildren().addAll(t, sp, badge);
 
-        Label d = new Label(desc);
+        String translated = payload.translatedQuery != null ? payload.translatedQuery : "";
+        Label d = new Label("Top-" + result.rank + " 片段，英文检索词：" + translated);
         d.getStyleClass().add("result-desc");
         d.setMaxWidth(Double.MAX_VALUE);
         d.setWrapText(true);
 
         VBox.setMargin(top, new Insets(0, 0, 0, 0));
         card.getChildren().addAll(top, d);
+        card.setOnMouseClicked(event -> activateResult(card, result));
         return card;
+    }
+
+    private VBox buildInfoCard(String title, String desc) {
+        VBox card = new VBox(6);
+        card.getStyleClass().add("result-card");
+
+        Label t = new Label(title);
+        t.getStyleClass().add("result-time");
+
+        Label d = new Label(desc);
+        d.getStyleClass().add("result-desc");
+        d.setWrapText(true);
+
+        card.getChildren().addAll(t, d);
+        return card;
+    }
+
+    private void activateResult(VBox card, BackendApiClient.SearchResultItem result) {
+        if (activeResultCard != null) {
+            activeResultCard.getStyleClass().remove("result-card-active");
+        }
+        activeResultCard = card;
+        activeResult = result;
+        if (!card.getStyleClass().contains("result-card-active")) {
+            card.getStyleClass().add("result-card-active");
+        }
+
+        updateSelectedSegment(result);
+
+        if (mediaPlayer != null) {
+            mediaPlayer.seek(Duration.seconds(result.startTime));
+            mediaPlayer.play();
+            playPauseBtn.setText("⏸");
+            setSearchStatus("已跳转到片段起点：" + formatSeconds(result.startTime));
+        } else {
+            setSearchStatus("已定位片段：" + formatSeconds(result.startTime) + " - " + formatSeconds(result.endTime) + "。导入同源视频后可直接预览。");
+        }
+    }
+
+    private void updateSelectedSegment(BackendApiClient.SearchResultItem result) {
+        BackendApiClient.AssetSummary asset = assetComboBox != null ? assetComboBox.getValue() : null;
+        if (asset == null || asset.duration <= 0 || result == null) {
+            selectionStartRatio.set(0);
+            selectionWidthRatio.set(0);
+            return;
+        }
+        double start = Math.max(0, Math.min(1, result.startTime / asset.duration));
+        double end = Math.max(0, Math.min(1, result.endTime / asset.duration));
+        selectionStartRatio.set(start);
+        selectionWidthRatio.set(Math.max(0, end - start));
+    }
+
+    private void populateSuggestedQueries(BackendApiClient.AssetSummary asset) {
+        if (historyPane == null) {
+            return;
+        }
+        historyPane.getChildren().clear();
+        List<String> queries = asset != null && asset.suggestedQueries != null ? asset.suggestedQueries : Collections.emptyList();
+        if (queries.isEmpty()) {
+            Button chip = new Button("暂无建议检索词");
+            chip.getStyleClass().add("history-chip");
+            chip.setDisable(true);
+            historyPane.getChildren().add(chip);
+            return;
+        }
+
+        for (String query : queries) {
+            Button chip = new Button(query);
+            chip.getStyleClass().add("history-chip");
+            chip.setOnAction(ev -> searchField.setText(query));
+            historyPane.getChildren().add(chip);
+        }
+    }
+
+    private void clearResults() {
+        resultsBox.getChildren().clear();
+    }
+
+    private void setSearchBusy(boolean busy) {
+        searchSubmitBtn.setDisable(busy);
+        if (assetComboBox != null) {
+            assetComboBox.setDisable(busy);
+        }
+    }
+
+    private void setSearchStatus(String message) {
+        if (searchStatusLabel != null) {
+            searchStatusLabel.setText(message);
+        }
+    }
+
+    private static String formatSeconds(double seconds) {
+        return formatDuration(Duration.seconds(seconds));
     }
 }

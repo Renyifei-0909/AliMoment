@@ -228,12 +228,35 @@
     -fx-background-color: #1084d8;
 }
 
+.search-asset-combo {
+    -fx-background-color: #1f1f1f;
+    -fx-background-radius: 10px;
+    -fx-border-color: rgba(255, 255, 255, 0.08);
+    -fx-border-radius: 10px;
+    -fx-padding: 2px;
+}
+
+.search-asset-combo .list-cell {
+    -fx-text-fill: #e0e0e0;
+    -fx-background-color: transparent;
+}
+
+.search-status-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #8fb7cf;
+}
+
 .result-card {
     -fx-background-color: #252525;
     -fx-background-radius: 10px;
     -fx-padding: 12 14 12 14;
     -fx-border-color: rgba(255, 255, 255, 0.05);
     -fx-border-radius: 10px;
+}
+
+.result-card-active {
+    -fx-border-color: rgba(79, 195, 247, 0.9);
+    -fx-border-width: 1px;
 }
 
 .result-time {
@@ -320,6 +343,10 @@
 
 .timeline-played-layer {
     -fx-background-color: #168070;
+}
+
+.timeline-selection-layer {
+    -fx-background-color: rgba(79, 195, 247, 0.42);
 }
 
 .icon-tool-btn {
@@ -1137,4 +1164,3 @@
     -fx-text-fill: #ff8e8e;
     -fx-font-size: 13px;
 }
-

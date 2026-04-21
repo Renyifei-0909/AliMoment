@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, HTTPException
+from typing import Optional
+
+from fastapi import APIRouter, Body, HTTPException, Query
 
 from app.api.schemas import SearchRequest, SearchResponse
 from app.pcnet_service.service import PCNetServiceError
@@ -11,12 +13,26 @@ router = APIRouter(prefix="/api", tags=["search"])
 
 
 @router.post("/search", response_model=SearchResponse)
-def search(payload: SearchRequest) -> dict:
+def search(
+    payload: Optional[SearchRequest] = Body(None),
+    asset_id: Optional[str] = Query(None),
+    query: Optional[str] = Query(None),
+    top_k: Optional[int] = Query(None),
+) -> dict:
+    resolved_asset_id = payload.asset_id if payload is not None else asset_id
+    resolved_query = payload.query if payload is not None else query
+    resolved_top_k = payload.top_k if payload is not None else top_k
+
+    if not resolved_asset_id or not str(resolved_asset_id).strip():
+        raise HTTPException(status_code=422, detail="asset_id is required")
+    if not resolved_query or not str(resolved_query).strip():
+        raise HTTPException(status_code=422, detail="query is required")
+
     try:
         result = get_search_service().search(
-            asset_id=payload.asset_id,
-            query=payload.query,
-            top_k=payload.top_k,
+            asset_id=str(resolved_asset_id).strip(),
+            query=str(resolved_query).strip(),
+            top_k=resolved_top_k,
         )
     except (AssetServiceError, PCNetServiceError) as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc

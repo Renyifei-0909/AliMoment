@@ -27,6 +27,24 @@ cd javafx-app
 chmod +x mvnw
 ./mvnw javafx:run
 
+如果需要连接远程后端：
+
+cd javafx-app
+chmod +x run-with-api.sh
+./run-with-api.sh http://服务器IP:8000
+
+如果后端跑在实验室服务器，推荐直接用一体化脚本：
+
+服务器：
+cd backend
+chmod +x run-backend.sh
+./run-backend.sh
+
+Mac：
+cd javafx-app
+chmod +x run-demo.sh
+./run-demo.sh 服务器IP 用户名
+
 说明：
 - 现在 `javafx-app/pom.xml` 与 `electron-app/java-ui/pom.xml` 会根据当前系统自动选择 JavaFX 平台依赖（Windows/macOS/Linux）
 - 如果是首次在 macOS 上运行，建议使用 JDK 17

@@ -184,8 +184,29 @@
     -fx-text-fill: #111111;
 }
 
+.theme-light .search-asset-combo {
+    -fx-background-color: #ffffff;
+    -fx-border-color: rgba(0, 0, 0, 0.08);
+}
+
+.theme-light .search-asset-combo .list-cell {
+    -fx-text-fill: #1f1f1f;
+}
+
+.theme-light .search-status-label {
+    -fx-text-fill: #356983;
+}
+
 .theme-light .section-heading {
     -fx-text-fill: #555555;
+}
+
+.theme-light .result-card-active {
+    -fx-border-color: rgba(42, 157, 132, 0.85);
+}
+
+.theme-light .timeline-selection-layer {
+    -fx-background-color: rgba(42, 157, 132, 0.30);
 }
 
 .theme-light .smart-edit-root {
