@@ -13,6 +13,7 @@ import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.file.Files;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Collections;
@@ -31,6 +32,7 @@ public class BackendApiClient {
     public BackendApiClient() {
         this.httpClient = HttpClient.newBuilder()
                 .connectTimeout(Duration.ofSeconds(5))
+                .version(HttpClient.Version.HTTP_1_1)
                 .build();
         this.gson = new Gson();
         this.baseUrl = resolveBaseUrl();
@@ -69,13 +71,18 @@ public class BackendApiClient {
     public CompletableFuture<UploadPayload> uploadMedia(File file) {
         HttpRequest request;
         try {
+            byte[] bytes = Files.readAllBytes(file.toPath());
             request = HttpRequest.newBuilder()
                     .uri(URI.create(baseUrl + "/api/media/upload?filename=" + encode(file.getName())))
                     .timeout(Duration.ofMinutes(5))
+                    .version(HttpClient.Version.HTTP_1_1)
                     .header("Content-Type", "application/octet-stream")
-                    .POST(HttpRequest.BodyPublishers.ofFile(file.toPath()))
+                    .header("Accept", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofByteArray(bytes))
                     .build();
         } catch (FileNotFoundException exc) {
+            return CompletableFuture.failedFuture(exc);
+        } catch (IOException exc) {
             return CompletableFuture.failedFuture(exc);
         }
         return send(request, UploadEnvelope.class)

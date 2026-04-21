@@ -43,6 +43,8 @@ public class SearchPageController {
     @FXML
     private VBox videoPlaceholder;
     @FXML
+    private Label videoPlaceholderHintLabel;
+    @FXML
     private Label videoTimeLabel;
     @FXML
     private Button seekStartBtn;
@@ -180,6 +182,7 @@ public class SearchPageController {
     private void loadVideo(URI uri) {
         disposeMedia();
         try {
+            setVideoPlaceholderHint("正在加载视频预览...");
             Media media = new Media(uri.toString());
             media.setOnError(() -> Platform.runLater(() -> {
                 Throwable err = media.getError();
@@ -206,16 +209,24 @@ public class SearchPageController {
             setSearchStatus("正在加载本地视频预览...");
 
             mediaPlayer.setOnReady(() -> {
-                videoPlaceholder.setVisible(false);
-                videoPlaceholder.setManaged(false);
                 videoPane.getStyleClass().remove("video-placeholder-empty");
                 if (timelinePane != null) {
                     timelinePane.setCursor(Cursor.HAND);
                 }
+                if (media.getWidth() > 0 && media.getHeight() > 0) {
+                    videoPlaceholder.setVisible(false);
+                    videoPlaceholder.setManaged(false);
+                    setSearchStatus("本地视频已载入，可点击检索结果直接跳转片段。");
+                } else {
+                    videoPlaceholder.setVisible(true);
+                    videoPlaceholder.setManaged(true);
+                    videoPlaceholder.toFront();
+                    setVideoPlaceholderHint("视频已载入，但当前编码无法在 JavaFX 中渲染画面。\n建议改用 H.264 编码 MP4。");
+                    setSearchStatus("本地视频已载入，但当前编码无法预览画面；仍可继续做检索联调。");
+                }
                 updateTimeLabel();
                 updateTimelineProgress();
                 playPauseBtn.setText("⏸");
-                setSearchStatus("本地视频已载入，可点击检索结果直接跳转片段。");
                 mediaPlayer.play();
             });
             mediaPlayer.currentTimeProperty().addListener((o, a, b) -> {
@@ -244,6 +255,8 @@ public class SearchPageController {
         }
         videoPlaceholder.setVisible(true);
         videoPlaceholder.setManaged(true);
+        videoPlaceholder.toFront();
+        setVideoPlaceholderHint("点击导入视频");
         if (!videoPane.getStyleClass().contains("video-placeholder-empty")) {
             videoPane.getStyleClass().add("video-placeholder-empty");
         }
@@ -255,6 +268,12 @@ public class SearchPageController {
         }
         if (timelinePane != null) {
             timelinePane.setCursor(Cursor.DEFAULT);
+        }
+    }
+
+    private void setVideoPlaceholderHint(String text) {
+        if (videoPlaceholderHintLabel != null) {
+            videoPlaceholderHintLabel.setText(text);
         }
     }
 

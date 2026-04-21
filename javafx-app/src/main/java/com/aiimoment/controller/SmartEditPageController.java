@@ -59,6 +59,8 @@ public class SmartEditPageController {
     @FXML
     private VBox previewPlaceholder;
     @FXML
+    private Label previewPlaceholderHintLabel;
+    @FXML
     private VBox resultListBox;
 
     private MediaPlayer mediaPlayer;
@@ -162,6 +164,7 @@ public class SmartEditPageController {
     private void loadVideo(URI uri) {
         disposeMedia();
         try {
+            setPreviewPlaceholderHint("正在加载视频预览...");
             Media media = new Media(uri.toString());
             media.setOnError(() -> Platform.runLater(() -> {
                 Throwable err = media.getError();
@@ -185,12 +188,20 @@ public class SmartEditPageController {
             previewPane.getChildren().add(0, mediaView);
             toolStatusLabel.setText("正在加载视频预览...");
             mediaPlayer.setOnReady(() -> {
-                previewPlaceholder.setVisible(false);
-                previewPlaceholder.setManaged(false);
                 previewPane.getStyleClass().remove("smart-preview-empty");
                 previewPane.setCursor(Cursor.DEFAULT);
+                if (media.getWidth() > 0 && media.getHeight() > 0) {
+                    previewPlaceholder.setVisible(false);
+                    previewPlaceholder.setManaged(false);
+                    toolStatusLabel.setText("视频已导入，可进行分割、变速、剪辑、特效操作。");
+                } else {
+                    previewPlaceholder.setVisible(true);
+                    previewPlaceholder.setManaged(true);
+                    previewPlaceholder.toFront();
+                    setPreviewPlaceholderHint("视频已导入，但当前编码无法在 JavaFX 中渲染画面。\n上传和剪辑仍可继续。");
+                    toolStatusLabel.setText("视频已导入，但当前编码无法预览画面；仍可继续上传和剪辑。");
+                }
                 mediaPlayer.play();
-                toolStatusLabel.setText("视频已导入，可进行分割、变速、剪辑、特效操作。");
             });
         } catch (Exception ex) {
             AlimomentDialogs.showError(previewPane.getScene().getWindow(), "打开失败", "打开视频失败。\n\n" + ex.getMessage());
@@ -210,11 +221,19 @@ public class SmartEditPageController {
         }
         previewPlaceholder.setVisible(true);
         previewPlaceholder.setManaged(true);
+        previewPlaceholder.toFront();
+        setPreviewPlaceholderHint("点击导入视频");
         if (!previewPane.getStyleClass().contains("smart-preview-empty")) {
             previewPane.getStyleClass().add("smart-preview-empty");
         }
         previewPane.setCursor(Cursor.HAND);
         clipStart = Duration.ZERO;
+    }
+
+    private void setPreviewPlaceholderHint(String text) {
+        if (previewPlaceholderHintLabel != null) {
+            previewPlaceholderHintLabel.setText(text);
+        }
     }
 
     private void onOneClickEdit() {

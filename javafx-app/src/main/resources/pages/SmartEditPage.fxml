@@ -44,7 +44,7 @@
             <StackPane fx:id="previewPane" styleClass="smart-preview-pane smart-preview-empty" VBox.vgrow="ALWAYS">
                 <VBox fx:id="previewPlaceholder" alignment="CENTER" spacing="10">
                     <Label styleClass="play-overlay" text="▶" />
-                    <Label styleClass="video-import-hint" text="点击导入视频" />
+                    <Label fx:id="previewPlaceholderHintLabel" styleClass="video-import-hint" text="点击导入视频" wrapText="true" />
                 </VBox>
             </StackPane>
             <HBox alignment="CENTER_LEFT" spacing="12">

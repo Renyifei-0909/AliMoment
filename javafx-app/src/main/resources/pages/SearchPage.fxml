@@ -27,7 +27,7 @@
                 <StackPane fx:id="videoPane" minHeight="280" styleClass="card-surface video-placeholder video-placeholder-empty" VBox.vgrow="ALWAYS">
                     <VBox fx:id="videoPlaceholder" alignment="CENTER" spacing="10" StackPane.alignment="CENTER">
                         <Label styleClass="play-overlay" text="▶" />
-                        <Label styleClass="video-import-hint" text="点击导入视频" />
+                        <Label fx:id="videoPlaceholderHintLabel" styleClass="video-import-hint" text="点击导入视频" wrapText="true" />
                     </VBox>
                 </StackPane>
                 <HBox alignment="CENTER_LEFT" spacing="16">
