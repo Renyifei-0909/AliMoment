@@ -3,8 +3,10 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.pcnet_service.router import router as pcnet_router
 
 app = FastAPI(title="Alimoment API", version="0.1.0")
+app.include_router(pcnet_router)
 
 
 @app.get("/health")
