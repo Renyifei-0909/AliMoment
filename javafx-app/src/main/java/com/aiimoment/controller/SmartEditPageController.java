@@ -1,6 +1,8 @@
 package com.aiimoment.controller;
 
+import com.aiimoment.api.BackendApiClient;
 import com.aiimoment.ui.AlimomentDialogs;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
@@ -62,6 +64,9 @@ public class SmartEditPageController {
     private MediaPlayer mediaPlayer;
     private MediaView mediaView;
     private Duration clipStart = Duration.ZERO;
+    private File selectedVideoFile;
+    private String uploadedMediaId;
+    private final BackendApiClient apiClient = new BackendApiClient();
 
     @FXML
     public void initialize() {
@@ -80,16 +85,7 @@ public class SmartEditPageController {
         undoBtn.setOnAction(e -> toolStatusLabel.setText("已撤销上一步操作"));
         redoBtn.setOnAction(e -> toolStatusLabel.setText("已恢复上一步操作"));
 
-        oneClickEditBtn.setOnAction(e -> {
-            String demand = demandInput.getText() == null ? "" : demandInput.getText().trim();
-            if (demand.isEmpty()) {
-                resultStatusLabel.setText("请先输入创作需求，再执行一键剪辑。");
-                return;
-            }
-            String voiceText = autoVoiceCheck.isSelected() ? "已开启自动配音。" : "未开启自动配音。";
-            resultStatusLabel.setText("已开始一键剪辑：根据你的需求生成作品，" + voiceText);
-            resultListBox.getChildren().add(new Label("已生成：智能剪辑任务（" + shortDemand(demand) + "）"));
-        });
+        oneClickEditBtn.setOnAction(e -> onOneClickEdit());
     }
 
     private void onSplit() {
@@ -158,6 +154,8 @@ public class SmartEditPageController {
         if (file == null) {
             return;
         }
+        selectedVideoFile = file;
+        uploadedMediaId = null;
         loadVideo(file.toURI());
     }
 
@@ -200,6 +198,128 @@ public class SmartEditPageController {
         }
         previewPane.setCursor(Cursor.HAND);
         clipStart = Duration.ZERO;
+    }
+
+    private void onOneClickEdit() {
+        String demand = demandInput.getText() == null ? "" : demandInput.getText().trim();
+        if (demand.isEmpty()) {
+            resultStatusLabel.setText("请先输入创作需求，再执行一键剪辑。");
+            return;
+        }
+        if (selectedVideoFile == null) {
+            resultStatusLabel.setText("请先导入本地视频，再执行一键剪辑。");
+            return;
+        }
+
+        Duration[] segment = resolveEditSegment();
+        double start = segment[0].toSeconds();
+        double end = segment[1].toSeconds();
+        if (end <= start) {
+            resultStatusLabel.setText("当前剪辑范围无效，请调整时间后重试。");
+            return;
+        }
+
+        setEditingBusy(true);
+        resultStatusLabel.setText("正在上传视频到后端...");
+
+        ensureUploadedMedia().thenCompose(upload ->
+                        apiClient.editMedia(
+                                upload.mediaId,
+                                start,
+                                end,
+                                speedSlider.getValue(),
+                                effectSlider.getValue(),
+                                demand,
+                                autoVoiceCheck.isSelected()
+                        ))
+                .whenComplete((payload, error) -> Platform.runLater(() -> {
+                    setEditingBusy(false);
+                    if (error != null) {
+                        String message = error.getCause() != null ? error.getCause().getMessage() : error.getMessage();
+                        resultStatusLabel.setText("生成失败：" + message);
+                        AlimomentDialogs.showError(previewPane.getScene().getWindow(), "生成失败", message);
+                        return;
+                    }
+                    renderEditResult(payload, start, end, demand);
+                }));
+    }
+
+    private java.util.concurrent.CompletableFuture<BackendApiClient.UploadPayload> ensureUploadedMedia() {
+        if (uploadedMediaId != null && !uploadedMediaId.isBlank() && selectedVideoFile != null) {
+            BackendApiClient.UploadPayload payload = new BackendApiClient.UploadPayload();
+            payload.mediaId = uploadedMediaId;
+            payload.originalFilename = selectedVideoFile.getName();
+            payload.filename = uploadedMediaId;
+            payload.fileSize = selectedVideoFile.length();
+            return java.util.concurrent.CompletableFuture.completedFuture(payload);
+        }
+        return apiClient.uploadMedia(selectedVideoFile).thenApply(payload -> {
+            uploadedMediaId = payload.mediaId;
+            return payload;
+        });
+    }
+
+    private Duration[] resolveEditSegment() {
+        double keep = trimSlider.getValue();
+        double total = mediaPlayer != null && mediaPlayer.getTotalDuration() != null && !mediaPlayer.getTotalDuration().isUnknown()
+                ? mediaPlayer.getTotalDuration().toSeconds()
+                : Math.max(keep, 1.0);
+
+        double start;
+        if (clipStart.greaterThan(Duration.ZERO)) {
+            start = clipStart.toSeconds();
+        } else if (mediaPlayer != null) {
+            start = Math.max(0, mediaPlayer.getCurrentTime().toSeconds() - keep / 2.0);
+        } else {
+            start = 0;
+        }
+
+        double end = Math.min(total, start + keep);
+        if (end <= start) {
+            end = Math.min(total, start + 3.0);
+        }
+        return new Duration[]{Duration.seconds(start), Duration.seconds(end)};
+    }
+
+    private void renderEditResult(BackendApiClient.EditPayload payload, double start, double end, String demand) {
+        String videoUrl = apiClient.resolveUrl(
+                payload.outputRelativeUrl != null && !payload.outputRelativeUrl.isBlank() ? payload.outputRelativeUrl : payload.outputUrl
+        );
+        resultListBox.getChildren().clear();
+
+        resultStatusLabel.setText(
+                "生成完成：" + formatDuration(Duration.seconds(start)) + " - " + formatDuration(Duration.seconds(end))
+                        + "，速度 x" + String.format(Locale.ROOT, "%.2f", payload.speed)
+        );
+        resultListBox.getChildren().add(resultStatusLabel);
+
+        Label taskLabel = new Label("创作需求：" + shortDemand(demand));
+        taskLabel.getStyleClass().add("smart-edit-status");
+        resultListBox.getChildren().add(taskLabel);
+
+        Label urlLabel = new Label("成片地址：" + videoUrl);
+        urlLabel.getStyleClass().add("smart-edit-status");
+        urlLabel.setWrapText(true);
+        resultListBox.getChildren().add(urlLabel);
+
+        if (payload.note != null && !payload.note.isBlank()) {
+            Label noteLabel = new Label(payload.note);
+            noteLabel.getStyleClass().add("smart-edit-status");
+            noteLabel.setWrapText(true);
+            resultListBox.getChildren().add(noteLabel);
+        }
+
+        loadVideo(URI.create(videoUrl));
+        toolStatusLabel.setText("已生成成片，并切换到生成结果预览。");
+    }
+
+    private void setEditingBusy(boolean busy) {
+        oneClickEditBtn.setDisable(busy);
+        splitBtn.setDisable(busy);
+        speedBtn.setDisable(busy);
+        trimBtn.setDisable(busy);
+        effectBtn.setDisable(busy);
+        deleteBtn.setDisable(busy);
     }
 
     private static String shortDemand(String demand) {

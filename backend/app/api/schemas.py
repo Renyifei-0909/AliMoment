@@ -48,3 +48,49 @@ class SearchResponseData(BaseModel):
 
 class SearchResponse(ApiResponse):
     data: SearchResponseData
+
+
+class MediaUploadResponseData(BaseModel):
+    media_id: str
+    filename: str
+    original_filename: str
+    file_size: int
+
+
+class MediaUploadResponse(ApiResponse):
+    data: MediaUploadResponseData
+
+
+class EditSegment(BaseModel):
+    start: float = Field(..., ge=0)
+    end: float = Field(..., ge=0)
+
+
+class EditOptions(BaseModel):
+    speed: float = Field(1.0, ge=0.5, le=3.0)
+    effect_intensity: float = Field(0.0, ge=0.0, le=100.0)
+    demand: str = ""
+    add_voiceover: bool = False
+
+
+class EditRequest(BaseModel):
+    media_id: str = Field(..., min_length=1)
+    segments: List[EditSegment] = Field(..., min_length=1)
+    options: EditOptions = Field(default_factory=EditOptions)
+
+
+class EditResponseData(BaseModel):
+    media_id: str
+    output_filename: str
+    output_relative_url: str
+    output_url: str
+    segments: List[EditSegment]
+    speed: float
+    effect_intensity: float
+    voiceover_requested: bool
+    voiceover_applied: bool
+    note: str = ""
+
+
+class EditResponse(ApiResponse):
+    data: EditResponseData

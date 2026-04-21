@@ -6,6 +6,7 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from app.api.routes_assets import router as assets_router
+from app.api.routes_media import router as media_router
 from app.api.routes_search import router as search_router
 from app.config import settings
 from app.database import get_db
@@ -15,6 +16,7 @@ app = FastAPI(title="Alimoment API", version="0.1.0")
 settings.ensure_runtime_dirs()
 app.include_router(pcnet_router)
 app.include_router(assets_router)
+app.include_router(media_router)
 app.include_router(search_router)
 app.mount("/media/outputs", StaticFiles(directory=Path(settings.storage_outputs_dir), check_dir=False), name="media-outputs")
 

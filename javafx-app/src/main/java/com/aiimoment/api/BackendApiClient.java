@@ -6,6 +6,8 @@ import com.google.gson.JsonParser;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.IOException;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -62,6 +64,61 @@ public class BackendApiClient {
                 .build();
         return send(request, SearchEnvelope.class)
                 .thenApply(response -> response != null ? response.data : null);
+    }
+
+    public CompletableFuture<UploadPayload> uploadMedia(File file) {
+        HttpRequest request;
+        try {
+            request = HttpRequest.newBuilder()
+                    .uri(URI.create(baseUrl + "/api/media/upload?filename=" + encode(file.getName())))
+                    .timeout(Duration.ofMinutes(5))
+                    .header("Content-Type", "application/octet-stream")
+                    .POST(HttpRequest.BodyPublishers.ofFile(file.toPath()))
+                    .build();
+        } catch (FileNotFoundException exc) {
+            return CompletableFuture.failedFuture(exc);
+        }
+        return send(request, UploadEnvelope.class)
+                .thenApply(response -> response != null ? response.data : null);
+    }
+
+    public CompletableFuture<EditPayload> editMedia(
+            String mediaId,
+            double start,
+            double end,
+            double speed,
+            double effectIntensity,
+            String demand,
+            boolean addVoiceover
+    ) {
+        EditRequest payload = new EditRequest(
+                mediaId,
+                Collections.singletonList(new EditSegment(start, end)),
+                new EditOptions(speed, effectIntensity, demand, addVoiceover)
+        );
+        String body = gson.toJson(payload);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(baseUrl + "/api/edit"))
+                .timeout(Duration.ofMinutes(5))
+                .header("Content-Type", "application/json")
+                .header("Accept", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(body, StandardCharsets.UTF_8))
+                .build();
+        return send(request, EditEnvelope.class)
+                .thenApply(response -> response != null ? response.data : null);
+    }
+
+    public String resolveUrl(String pathOrUrl) {
+        if (pathOrUrl == null || pathOrUrl.isBlank()) {
+            return baseUrl;
+        }
+        if (pathOrUrl.startsWith("http://") || pathOrUrl.startsWith("https://")) {
+            return pathOrUrl;
+        }
+        if (pathOrUrl.startsWith("/")) {
+            return baseUrl + pathOrUrl;
+        }
+        return baseUrl + "/" + pathOrUrl;
     }
 
     private <T> CompletableFuture<T> send(HttpRequest request, Class<T> responseType) {
@@ -132,9 +189,58 @@ public class BackendApiClient {
         private List<AssetSummary> data;
     }
 
+    private static final class UploadEnvelope {
+        private String status;
+        private UploadPayload data;
+    }
+
     private static final class SearchEnvelope {
         private String status;
         private SearchPayload data;
+    }
+
+    private static final class EditEnvelope {
+        private String status;
+        private EditPayload data;
+    }
+
+    private static final class EditRequest {
+        @SerializedName("media_id")
+        private final String mediaId;
+        private final List<EditSegment> segments;
+        private final EditOptions options;
+
+        private EditRequest(String mediaId, List<EditSegment> segments, EditOptions options) {
+            this.mediaId = mediaId;
+            this.segments = segments;
+            this.options = options;
+        }
+    }
+
+    private static final class EditSegment {
+        private final double start;
+        private final double end;
+
+        private EditSegment(double start, double end) {
+            this.start = start;
+            this.end = end;
+        }
+    }
+
+    private static final class EditOptions {
+        private final double speed;
+        @SerializedName("effect_intensity")
+        private final double effectIntensity;
+        private final String demand;
+        @SerializedName("add_voiceover")
+        private final boolean addVoiceover;
+
+        private EditOptions(double speed, double effectIntensity, String demand, boolean addVoiceover) {
+            this.speed = speed;
+            this.effectIntensity = effectIntensity;
+            this.demand = demand;
+            this.addVoiceover = addVoiceover;
+        }
     }
 
     public static final class AssetSummary {
@@ -188,5 +294,40 @@ public class BackendApiClient {
         public String assetStatus;
         @SerializedName("query_normalizer_mode")
         public String queryNormalizerMode;
+    }
+
+    public static final class UploadPayload {
+        @SerializedName("media_id")
+        public String mediaId;
+        public String filename;
+        @SerializedName("original_filename")
+        public String originalFilename;
+        @SerializedName("file_size")
+        public long fileSize;
+    }
+
+    public static final class EditPayload {
+        @SerializedName("media_id")
+        public String mediaId;
+        @SerializedName("output_filename")
+        public String outputFilename;
+        @SerializedName("output_relative_url")
+        public String outputRelativeUrl;
+        @SerializedName("output_url")
+        public String outputUrl;
+        public List<EditResultSegment> segments;
+        public double speed;
+        @SerializedName("effect_intensity")
+        public double effectIntensity;
+        @SerializedName("voiceover_requested")
+        public boolean voiceoverRequested;
+        @SerializedName("voiceover_applied")
+        public boolean voiceoverApplied;
+        public String note;
+    }
+
+    public static final class EditResultSegment {
+        public double start;
+        public double end;
     }
 }
