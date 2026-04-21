@@ -30,6 +30,7 @@ chmod +x mvnw
 说明：
 - 现在 `javafx-app/pom.xml` 与 `electron-app/java-ui/pom.xml` 会根据当前系统自动选择 JavaFX 平台依赖（Windows/macOS/Linux）
 - 如果是首次在 macOS 上运行，建议使用 JDK 17
+- Apple Silicon（M 系列）Mac 也已补充 `mac-aarch64` 兼容配置
 
 Java 桌面演示（electron-app/java-ui）
 -------------------------------------

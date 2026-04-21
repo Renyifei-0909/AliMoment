@@ -5,7 +5,7 @@ import pickle
 import threading
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
 import h5py
 import nltk
@@ -34,21 +34,21 @@ class PCNetService:
     def __init__(self) -> None:
         self._lock = threading.Lock()
         self._loaded = False
-        self._load_error: str | None = None
+        self._load_error: Optional[str] = None
 
-        self._pcnet_root: Path | None = None
-        self._config_path: Path | None = None
-        self._checkpoint_path: Path | None = None
-        self._feature_path: Path | None = None
+        self._pcnet_root: Optional[Path] = None
+        self._config_path: Optional[Path] = None
+        self._checkpoint_path: Optional[Path] = None
+        self._feature_path: Optional[Path] = None
 
-        self._dataset_config: dict[str, Any] | None = None
-        self._checkpoint_config: dict[str, Any] | None = None
-        self._keep_vocab: dict[str, int] | None = None
-        self._vocab: dict[str, Any] | None = None
+        self._dataset_config: Optional[dict[str, Any]] = None
+        self._checkpoint_config: Optional[dict[str, Any]] = None
+        self._keep_vocab: Optional[dict[str, int]] = None
+        self._vocab: Optional[dict[str, Any]] = None
 
         self._device: str = settings.pcnet_device
         self._model: Any = None
-        self._feature_file: h5py.File | None = None
+        self._feature_file: Optional[h5py.File] = None
         self._cal_nll_loss = None
 
     def describe(self) -> dict[str, Any]:
@@ -96,8 +96,8 @@ class PCNetService:
         video_id: str,
         duration: float,
         query: str,
-        top_k: int | None = None,
-        use_vote: bool | None = None,
+        top_k: Optional[int] = None,
+        use_vote: Optional[bool] = None,
     ) -> PCNetInferenceResult:
         self.load()
 
@@ -392,7 +392,7 @@ class PCNetService:
         torch.cuda.manual_seed_all(seed + 4)
 
 
-_pcnet_service: PCNetService | None = None
+_pcnet_service: Optional[PCNetService] = None
 
 
 def get_pcnet_service() -> PCNetService:

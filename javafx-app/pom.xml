@@ -12,6 +12,7 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <javafx.version>17.0.10</javafx.version>
         <javafx.platform>win</javafx.platform>
     </properties>
 
@@ -19,19 +20,19 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>11.0.2</version>
+            <version>${javafx.version}</version>
             <classifier>${javafx.platform}</classifier>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>11.0.2</version>
+            <version>${javafx.version}</version>
             <classifier>${javafx.platform}</classifier>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-media</artifactId>
-            <version>11.0.2</version>
+            <version>${javafx.version}</version>
             <classifier>${javafx.platform}</classifier>
         </dependency>
     </dependencies>
@@ -46,6 +47,36 @@
             </activation>
             <properties>
                 <javafx.platform>mac</javafx.platform>
+            </properties>
+        </profile>
+        <profile>
+            <id>javafx-mac-aarch64</id>
+            <activation>
+                <os>
+                    <family>mac</family>
+                </os>
+                <property>
+                    <name>os.arch</name>
+                    <value>aarch64</value>
+                </property>
+            </activation>
+            <properties>
+                <javafx.platform>mac-aarch64</javafx.platform>
+            </properties>
+        </profile>
+        <profile>
+            <id>javafx-mac-arm64</id>
+            <activation>
+                <os>
+                    <family>mac</family>
+                </os>
+                <property>
+                    <name>os.arch</name>
+                    <value>arm64</value>
+                </property>
+            </activation>
+            <properties>
+                <javafx.platform>mac-aarch64</javafx.platform>
             </properties>
         </profile>
         <profile>

@@ -2,9 +2,10 @@ from __future__ import annotations
 
 import sys
 from pathlib import Path
+from typing import Union
 
 
-def ensure_pcnet_importable(pcnet_root: str | Path) -> Path:
+def ensure_pcnet_importable(pcnet_root: Union[str, Path]) -> Path:
     root = Path(pcnet_root).expanduser().resolve()
     if not root.exists():
         raise FileNotFoundError(f"PC-Net root does not exist: {root}")
