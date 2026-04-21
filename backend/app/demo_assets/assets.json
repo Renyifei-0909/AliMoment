@@ -1,0 +1,93 @@
+{
+  "demo_activitynet_001": {
+    "asset_id": "demo_activitynet_001",
+    "source_video_id": "v_0MtST08F2Xc",
+    "dataset": "ActivityNet",
+    "title": "人物清扫落叶",
+    "duration": 36.85,
+    "video_path": "",
+    "status": "metadata_ready",
+    "enabled": true,
+    "suggested_queries": [
+      "person raking fallen leaves",
+      "raking leaves from the ground"
+    ],
+    "query_aliases": {
+      "扫落叶": "person raking fallen leaves",
+      "耙落叶": "raking fallen leaves",
+      "清扫落叶": "person raking fallen leaves"
+    }
+  },
+  "demo_activitynet_002": {
+    "asset_id": "demo_activitynet_002",
+    "source_video_id": "v_08wKlw4a_so",
+    "dataset": "ActivityNet",
+    "title": "女士在草坪边清扫落叶",
+    "duration": 25.31,
+    "video_path": "",
+    "status": "metadata_ready",
+    "enabled": true,
+    "suggested_queries": [
+      "lady raking leaves on the lawn",
+      "woman raking leaves near sidewalk"
+    ],
+    "query_aliases": {
+      "女士扫落叶": "lady raking leaves on the lawn",
+      "草坪扫落叶": "woman raking leaves near sidewalk"
+    }
+  },
+  "demo_activitynet_003": {
+    "asset_id": "demo_activitynet_003",
+    "source_video_id": "v_pPGniqIBs-U",
+    "dataset": "ActivityNet",
+    "title": "男子抱着孩子看向镜头",
+    "duration": 66.92,
+    "video_path": "",
+    "status": "metadata_ready",
+    "enabled": true,
+    "suggested_queries": [
+      "man holding a small child and smiling",
+      "man carrying a child looking at camera"
+    ],
+    "query_aliases": {
+      "抱着孩子": "man holding a small child and smiling",
+      "男子抱小孩": "man carrying a child looking at camera"
+    }
+  },
+  "demo_activitynet_004": {
+    "asset_id": "demo_activitynet_004",
+    "source_video_id": "v_ogQozSI5V8U",
+    "dataset": "ActivityNet",
+    "title": "木地板走廊场景",
+    "duration": 36.55,
+    "video_path": "",
+    "status": "metadata_ready",
+    "enabled": true,
+    "suggested_queries": [
+      "hallway with a wooden floor",
+      "wooden floor hallway scene"
+    ],
+    "query_aliases": {
+      "木地板走廊": "hallway with a wooden floor",
+      "走廊场景": "wooden floor hallway scene"
+    }
+  },
+  "demo_activitynet_005": {
+    "asset_id": "demo_activitynet_005",
+    "source_video_id": "v_-G8N5FxjZbw",
+    "dataset": "ActivityNet",
+    "title": "男子演奏风笛",
+    "duration": 116.61,
+    "video_path": "",
+    "status": "metadata_ready",
+    "enabled": true,
+    "suggested_queries": [
+      "man playing bagpipes",
+      "bagpipes performance with bicycles behind"
+    ],
+    "query_aliases": {
+      "吹风笛": "man playing bagpipes",
+      "男子演奏风笛": "bagpipes performance with bicycles behind"
+    }
+  }
+}

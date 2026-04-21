@@ -6,3 +6,9 @@ __pycache__/
 .env
 .pytest_cache/
 .mypy_cache/
+storage/inputs/*
+storage/features/*
+storage/outputs/*
+!storage/inputs/.gitkeep
+!storage/features/.gitkeep
+!storage/outputs/.gitkeep
