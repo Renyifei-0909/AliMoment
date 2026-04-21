@@ -24,8 +24,11 @@ url = f"http://127.0.0.1:{port}/health"
 try:
     with urllib.request.urlopen(url, timeout=2) as resp:
         text = resp.read().decode("utf-8")
-        print(text)
-        sys.exit(0)
+        data = json.loads(text)
+        if data.get("status") == "ok":
+            print(text)
+            sys.exit(0)
+        sys.exit(1)
 except Exception:
     sys.exit(1)
 PY

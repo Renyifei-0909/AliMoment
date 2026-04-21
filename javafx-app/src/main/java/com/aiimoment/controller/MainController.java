@@ -183,7 +183,22 @@ public class MainController {
         } catch (Exception e) {
             System.err.println("[FXML] 加载失败: " + fxmlPath + " — " + e.getMessage());
             e.printStackTrace();
-            Label err = new Label("页面加载失败（" + fxmlPath + "）\n" + e.getClass().getSimpleName() + ": " + e.getMessage());
+            Throwable root = e;
+            while (root.getCause() != null && root.getCause() != root) {
+                root = root.getCause();
+            }
+            String detail = root.getMessage();
+            if (detail == null || detail.isBlank()) {
+                detail = e.getMessage();
+            }
+            if (detail == null || detail.isBlank()) {
+                detail = root.getClass().getSimpleName();
+            }
+            Label err = new Label(
+                    "页面加载失败（" + fxmlPath + "）\n"
+                            + e.getClass().getSimpleName() + ": " + e.getMessage()
+                            + "\n根因: " + detail
+            );
             err.setWrapText(true);
             err.setStyle("-fx-text-fill: #ff6666; -fx-padding: 16; -fx-font-size: 12px;");
             container.getChildren().add(err);
