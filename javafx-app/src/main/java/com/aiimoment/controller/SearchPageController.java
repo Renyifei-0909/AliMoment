@@ -35,6 +35,7 @@ import java.net.URI;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
 
 public class SearchPageController {
 
@@ -177,6 +178,38 @@ public class SearchPageController {
             return;
         }
         loadVideo(file.toURI());
+        setSearchStatus("本地视频已导入，正在向后端生成代理预览...");
+        uploadPreviewProxy(file);
+    }
+
+    private void uploadPreviewProxy(File file) {
+        CompletableFuture<BackendApiClient.UploadPayload> future = apiClient.uploadMedia(file);
+        future.whenComplete((payload, error) -> Platform.runLater(() -> {
+            if (error != null) {
+                String message = BackendApiClient.describeError(error);
+                setSearchStatus("代理预览生成失败，当前继续使用本地文件：" + message);
+                return;
+            }
+            if (payload == null) {
+                setSearchStatus("后端未返回代理预览信息，当前继续使用本地文件。");
+                return;
+            }
+            if (payload.previewRelativeUrl != null && payload.previewRelativeUrl.startsWith("/media/previews/")) {
+                String previewUrl = apiClient.resolveUrl(
+                        payload.previewRelativeUrl != null && !payload.previewRelativeUrl.isBlank()
+                                ? payload.previewRelativeUrl
+                                : payload.previewUrl
+                );
+                setSearchStatus("代理预览已生成，正在切换到后端可播放版本...");
+                loadVideo(URI.create(previewUrl));
+                return;
+            }
+            if (payload.previewNote != null && !payload.previewNote.isBlank()) {
+                setSearchStatus(payload.previewNote);
+            } else {
+                setSearchStatus("当前继续使用本地视频预览。");
+            }
+        }));
     }
 
     private void loadVideo(URI uri) {

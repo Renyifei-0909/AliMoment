@@ -26,6 +26,10 @@ async def upload_media(
             "filename": uploaded.filename,
             "original_filename": uploaded.original_filename,
             "file_size": uploaded.file_size,
+            "preview_filename": uploaded.preview_filename,
+            "preview_relative_url": uploaded.preview_relative_url,
+            "preview_url": uploaded.preview_url,
+            "preview_note": uploaded.preview_note,
         },
     }
 

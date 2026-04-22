@@ -55,6 +55,10 @@ class MediaUploadResponseData(BaseModel):
     filename: str
     original_filename: str
     file_size: int
+    preview_filename: str
+    preview_relative_url: str
+    preview_url: str
+    preview_note: str = ""
 
 
 class MediaUploadResponse(ApiResponse):

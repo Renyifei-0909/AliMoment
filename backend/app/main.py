@@ -18,6 +18,8 @@ app.include_router(pcnet_router)
 app.include_router(assets_router)
 app.include_router(media_router)
 app.include_router(search_router)
+app.mount("/media/inputs", StaticFiles(directory=Path(settings.storage_inputs_dir), check_dir=False), name="media-inputs")
+app.mount("/media/previews", StaticFiles(directory=Path(settings.storage_previews_dir), check_dir=False), name="media-previews")
 app.mount("/media/outputs", StaticFiles(directory=Path(settings.storage_outputs_dir), check_dir=False), name="media-outputs")
 
 

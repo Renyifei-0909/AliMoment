@@ -36,6 +36,7 @@ class Settings:
     )
     storage_root: str = os.getenv("STORAGE_ROOT", str(backend_root / "storage"))
     storage_inputs_dir: str = os.getenv("STORAGE_INPUTS_DIR", str(Path(storage_root) / "inputs"))
+    storage_previews_dir: str = os.getenv("STORAGE_PREVIEWS_DIR", str(Path(storage_root) / "previews"))
     storage_features_dir: str = os.getenv("STORAGE_FEATURES_DIR", str(Path(storage_root) / "features"))
     storage_outputs_dir: str = os.getenv("STORAGE_OUTPUTS_DIR", str(Path(storage_root) / "outputs"))
     backend_public_base_url: str = os.getenv("BACKEND_PUBLIC_BASE_URL", "http://127.0.0.1:8000")
@@ -50,6 +51,7 @@ class Settings:
     def ensure_runtime_dirs(self) -> None:
         Path(self.storage_root).mkdir(parents=True, exist_ok=True)
         Path(self.storage_inputs_dir).mkdir(parents=True, exist_ok=True)
+        Path(self.storage_previews_dir).mkdir(parents=True, exist_ok=True)
         Path(self.storage_features_dir).mkdir(parents=True, exist_ok=True)
         Path(self.storage_outputs_dir).mkdir(parents=True, exist_ok=True)
 

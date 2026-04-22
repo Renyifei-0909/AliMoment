@@ -67,7 +67,7 @@ public class SmartEditPageController {
     private MediaView mediaView;
     private Duration clipStart = Duration.ZERO;
     private File selectedVideoFile;
-    private String uploadedMediaId;
+    private BackendApiClient.UploadPayload uploadedMedia;
     private final BackendApiClient apiClient = new BackendApiClient();
 
     @FXML
@@ -157,7 +157,7 @@ public class SmartEditPageController {
             return;
         }
         selectedVideoFile = file;
-        uploadedMediaId = null;
+        uploadedMedia = null;
         loadVideo(file.toURI());
     }
 
@@ -281,17 +281,36 @@ public class SmartEditPageController {
     }
 
     private java.util.concurrent.CompletableFuture<BackendApiClient.UploadPayload> ensureUploadedMedia() {
-        if (uploadedMediaId != null && !uploadedMediaId.isBlank() && selectedVideoFile != null) {
-            BackendApiClient.UploadPayload payload = new BackendApiClient.UploadPayload();
-            payload.mediaId = uploadedMediaId;
-            payload.originalFilename = selectedVideoFile.getName();
-            payload.filename = uploadedMediaId;
-            payload.fileSize = selectedVideoFile.length();
-            return java.util.concurrent.CompletableFuture.completedFuture(payload);
+        if (uploadedMedia != null && uploadedMedia.mediaId != null && !uploadedMedia.mediaId.isBlank()) {
+            return java.util.concurrent.CompletableFuture.completedFuture(uploadedMedia);
         }
         return apiClient.uploadMedia(selectedVideoFile).thenApply(payload -> {
-            uploadedMediaId = payload.mediaId;
+            uploadedMedia = payload;
+            switchToGeneratedPreviewIfAvailable(payload);
             return payload;
+        });
+    }
+
+    private void switchToGeneratedPreviewIfAvailable(BackendApiClient.UploadPayload payload) {
+        if (payload == null) {
+            return;
+        }
+        String relative = payload.previewRelativeUrl;
+        if (relative == null || !relative.startsWith("/media/previews/")) {
+            if (payload.previewNote != null && !payload.previewNote.isBlank()) {
+                toolStatusLabel.setText(payload.previewNote);
+            }
+            return;
+        }
+        String previewUrl = apiClient.resolveUrl(
+                relative != null && !relative.isBlank() ? relative : payload.previewUrl
+        );
+        if (previewUrl == null || previewUrl.isBlank()) {
+            return;
+        }
+        Platform.runLater(() -> {
+            toolStatusLabel.setText("已切换到后端代理预览，界面兼容性更稳定。");
+            loadVideo(URI.create(previewUrl));
         });
     }
 

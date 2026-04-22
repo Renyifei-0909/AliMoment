@@ -329,6 +329,14 @@ public class BackendApiClient {
         public String originalFilename;
         @SerializedName("file_size")
         public long fileSize;
+        @SerializedName("preview_filename")
+        public String previewFilename;
+        @SerializedName("preview_relative_url")
+        public String previewRelativeUrl;
+        @SerializedName("preview_url")
+        public String previewUrl;
+        @SerializedName("preview_note")
+        public String previewNote;
     }
 
     public static final class EditPayload {

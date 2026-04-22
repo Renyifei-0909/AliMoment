@@ -21,6 +21,10 @@ class UploadedMedia:
     original_filename: str
     file_size: int
     path: Path
+    preview_filename: str
+    preview_relative_url: str
+    preview_url: str
+    preview_note: str
 
 
 @dataclass
@@ -39,6 +43,7 @@ class EditResult:
 class MediaService:
     def __init__(self) -> None:
         self._inputs_dir = Path(settings.storage_inputs_dir)
+        self._previews_dir = Path(settings.storage_previews_dir)
         self._outputs_dir = Path(settings.storage_outputs_dir)
 
     def save_upload(self, *, original_filename: str, content: bytes) -> UploadedMedia:
@@ -50,6 +55,10 @@ class MediaService:
         media_id = f"{uuid.uuid4().hex}{suffix.lower()}"
         target = self._inputs_dir / media_id
         target.write_bytes(content)
+        preview_filename, preview_relative_url, preview_note = self._ensure_preview_proxy(
+            media_id=media_id,
+            input_path=target,
+        )
 
         return UploadedMedia(
             media_id=media_id,
@@ -57,6 +66,10 @@ class MediaService:
             original_filename=safe_name,
             file_size=len(content),
             path=target,
+            preview_filename=preview_filename,
+            preview_relative_url=preview_relative_url,
+            preview_url=self._build_public_url(preview_relative_url),
+            preview_note=preview_note,
         )
 
     def edit(
@@ -174,12 +187,51 @@ class MediaService:
             note="当前服务器未安装 ffmpeg，已降级返回原视频副本用于演示链路验证。",
         )
 
+    def _ensure_preview_proxy(self, *, media_id: str, input_path: Path) -> tuple[str, str, str]:
+        ffmpeg_bin = shutil.which("ffmpeg")
+        if not ffmpeg_bin:
+            relative_url = f"/media/inputs/{media_id}"
+            return media_id, relative_url, "当前服务器未安装 ffmpeg，预览先回退为原始上传文件。"
+
+        preview_filename = f"preview_{Path(media_id).stem}.mp4"
+        output_path = self._previews_dir / preview_filename
+        command = [
+            ffmpeg_bin,
+            "-y",
+            "-i",
+            str(input_path),
+            "-vf",
+            "scale='min(1280,iw)':-2:force_original_aspect_ratio=decrease",
+            "-c:v",
+            "libx264",
+            "-preset",
+            "veryfast",
+            "-crf",
+            "23",
+            "-c:a",
+            "aac",
+            "-movflags",
+            "+faststart",
+            str(output_path),
+        ]
+        try:
+            self._run_subprocess(command)
+        except MediaServiceError:
+            relative_url = f"/media/inputs/{media_id}"
+            return media_id, relative_url, "代理预览生成失败，已回退为原始上传文件。"
+
+        return preview_filename, f"/media/previews/{preview_filename}", "已生成可预览代理文件。"
+
     def _resolve_media_path(self, media_id: str) -> Path:
         filename = Path(media_id).name
         path = self._inputs_dir / filename
         if not path.exists():
             raise MediaServiceError(f"找不到上传视频：{media_id}")
         return path
+
+    @staticmethod
+    def _build_public_url(relative_url: str) -> str:
+        return settings.backend_public_base_url.rstrip("/") + relative_url
 
     @staticmethod
     def _run_ffmpeg_segment(
