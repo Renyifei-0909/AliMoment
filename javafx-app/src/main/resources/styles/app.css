@@ -1021,6 +1021,472 @@
     -fx-font-size: 18px;
 }
 
+/* Material page */
+.material-root {
+    -fx-background-color: #15161a;
+}
+
+.material-sidebar {
+    -fx-padding: 16 14 16 14;
+    -fx-spacing: 10;
+    -fx-background-color: #15161a;
+    -fx-border-color: rgba(255, 255, 255, 0.08);
+    -fx-border-width: 0 1 0 0;
+}
+
+.material-add-btn {
+    -fx-background-color: linear-gradient(to right, #00d4b8, #1060ff);
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10px;
+    -fx-padding: 10 12 10 12;
+}
+
+.material-add-btn:hover {
+    -fx-opacity: 0.9;
+}
+
+.material-section-title {
+    -fx-text-fill: #6d7282;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 4 2 2 2;
+}
+
+.material-filter-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #8b91a0;
+    -fx-font-size: 13px;
+    -fx-alignment: center-left;
+    -fx-background-radius: 8px;
+    -fx-border-color: transparent;
+    -fx-border-radius: 8px;
+    -fx-padding: 10 12 10 12;
+}
+
+.material-filter-btn:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+    -fx-text-fill: #d7deef;
+}
+
+.material-filter-btn-active {
+    -fx-background-color: rgba(0, 212, 184, 0.13);
+    -fx-border-color: rgba(0, 212, 184, 0.4);
+    -fx-text-fill: #5de0cb;
+}
+
+.material-main {
+    -fx-background-color: #1a1b1f;
+}
+
+.material-toolbar {
+    -fx-padding: 12 16 12 16;
+    -fx-background-color: #17181c;
+    -fx-border-color: rgba(255, 255, 255, 0.08);
+    -fx-border-width: 0 0 1 0;
+    -fx-spacing: 10;
+}
+
+.material-search-field {
+    -fx-pref-width: 260px;
+    -fx-background-color: #20222a;
+    -fx-text-fill: #dbe2f1;
+    -fx-prompt-text-fill: #727b90;
+    -fx-background-radius: 8px;
+    -fx-border-color: #343846;
+    -fx-border-radius: 8px;
+    -fx-padding: 7 10 7 10;
+}
+
+.material-view-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #7f8799;
+    -fx-font-size: 12px;
+    -fx-background-radius: 8px;
+    -fx-padding: 7 12 7 12;
+}
+
+.material-view-btn:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.06);
+    -fx-text-fill: #dbe2f1;
+}
+
+.material-view-btn-active {
+    -fx-background-color: rgba(0, 212, 184, 0.12);
+    -fx-text-fill: #5de0cb;
+}
+
+.material-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+.material-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+.material-scroll .scroll-bar:vertical {
+    -fx-pref-width: 10px;
+}
+
+.material-scroll .scroll-bar:vertical .track {
+    -fx-background-color: rgba(255, 255, 255, 0.06);
+    -fx-background-radius: 6px;
+}
+
+.material-scroll .scroll-bar:vertical .thumb {
+    -fx-background-color: rgba(255, 255, 255, 0.25);
+    -fx-background-radius: 6px;
+}
+
+.material-scroll .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.42);
+}
+
+.material-content-shell {
+    -fx-padding: 14;
+    -fx-background-color: transparent;
+}
+
+.material-grid-card {
+    -fx-background-color: #22242d;
+    -fx-background-radius: 12px;
+    -fx-border-color: rgba(255, 255, 255, 0.07);
+    -fx-border-radius: 12px;
+    -fx-cursor: hand;
+}
+
+.material-grid-card:hover {
+    -fx-border-color: rgba(0, 212, 184, 0.5);
+}
+
+.material-preview {
+    -fx-min-height: 108px;
+    -fx-background-color: #13151a;
+    -fx-background-radius: 12 12 0 0;
+}
+
+.material-preview-icon {
+    -fx-text-fill: rgba(0, 212, 184, 0.7);
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+}
+
+.material-duration-badge {
+    -fx-background-color: rgba(0, 0, 0, 0.7);
+    -fx-text-fill: #d2d8e6;
+    -fx-background-radius: 6px;
+    -fx-padding: 2 6 2 6;
+    -fx-font-size: 11px;
+}
+
+.material-name {
+    -fx-text-fill: #dde4f3;
+    -fx-font-size: 13px;
+}
+
+.material-meta {
+    -fx-text-fill: #7c8393;
+    -fx-font-size: 11px;
+}
+
+.material-list-row {
+    -fx-background-color: #22242d;
+    -fx-background-radius: 12px;
+    -fx-border-color: rgba(255, 255, 255, 0.07);
+    -fx-border-radius: 12px;
+    -fx-cursor: hand;
+}
+
+.material-list-row:hover {
+    -fx-border-color: rgba(0, 212, 184, 0.45);
+}
+
+.material-list-thumb {
+    -fx-background-color: #13151a;
+    -fx-background-radius: 8px;
+}
+
+.material-list-thumb-icon {
+    -fx-text-fill: rgba(0, 212, 184, 0.72);
+    -fx-font-size: 22px;
+}
+
+.material-type-tag {
+    -fx-background-color: rgba(16, 96, 255, 0.18);
+    -fx-text-fill: #8fb0ff;
+    -fx-background-radius: 10px;
+    -fx-padding: 4 10 4 10;
+    -fx-font-size: 11px;
+}
+
+.material-empty-state {
+    -fx-text-fill: #75809a;
+    -fx-font-size: 14px;
+}
+
+/* Draft page */
+.draft-root {
+    -fx-background-color: #1a1b1f;
+}
+
+.draft-toolbar {
+    -fx-padding: 12 16 12 16;
+    -fx-background-color: #15161a;
+    -fx-border-color: rgba(255, 255, 255, 0.08);
+    -fx-border-width: 0 0 1 0;
+    -fx-spacing: 10;
+}
+
+.draft-search-field {
+    -fx-pref-width: 220px;
+    -fx-background-color: #20222a;
+    -fx-text-fill: #dbe2f1;
+    -fx-prompt-text-fill: #727b90;
+    -fx-background-radius: 8px;
+    -fx-border-color: #343846;
+    -fx-border-radius: 8px;
+    -fx-padding: 7 10 7 10;
+}
+
+.draft-toolbar-divider {
+    -fx-pref-width: 1px;
+    -fx-min-height: 24px;
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+}
+
+.draft-filter-btn {
+    -fx-background-color: #1f2128;
+    -fx-text-fill: #878ea0;
+    -fx-font-size: 12px;
+    -fx-background-radius: 8px;
+    -fx-border-color: transparent;
+    -fx-border-radius: 8px;
+    -fx-padding: 7 12 7 12;
+}
+
+.draft-filter-btn:hover {
+    -fx-background-color: #262933;
+    -fx-text-fill: #dce2f2;
+}
+
+.draft-filter-btn-active {
+    -fx-background-color: rgba(0, 212, 184, 0.12);
+    -fx-border-color: rgba(0, 212, 184, 0.35);
+    -fx-text-fill: #5de0cb;
+}
+
+.draft-view-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #7e8698;
+    -fx-font-size: 12px;
+    -fx-background-radius: 8px;
+    -fx-padding: 7 12 7 12;
+}
+
+.draft-view-btn:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.06);
+    -fx-text-fill: #dce2f2;
+}
+
+.draft-view-btn-active {
+    -fx-background-color: rgba(0, 212, 184, 0.12);
+    -fx-text-fill: #5de0cb;
+}
+
+.draft-new-btn {
+    -fx-background-color: linear-gradient(to right, #00d4b8, #1060ff);
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 9px;
+    -fx-padding: 8 14 8 14;
+}
+
+.draft-new-btn:hover {
+    -fx-opacity: 0.9;
+}
+
+.draft-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+.draft-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+.draft-scroll .scroll-bar:vertical {
+    -fx-pref-width: 10px;
+}
+
+.draft-scroll .scroll-bar:vertical .track {
+    -fx-background-color: rgba(255, 255, 255, 0.06);
+    -fx-background-radius: 6px;
+}
+
+.draft-scroll .scroll-bar:vertical .thumb {
+    -fx-background-color: rgba(255, 255, 255, 0.25);
+    -fx-background-radius: 6px;
+}
+
+.draft-scroll .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.42);
+}
+
+.draft-content-shell {
+    -fx-padding: 14;
+}
+
+.draft-grid-card {
+    -fx-background-color: #1f2128;
+    -fx-background-radius: 12px;
+    -fx-border-color: rgba(255, 255, 255, 0.08);
+    -fx-border-radius: 12px;
+    -fx-cursor: hand;
+}
+
+.draft-grid-card:hover {
+    -fx-border-color: rgba(0, 212, 184, 0.42);
+}
+
+.draft-thumb {
+    -fx-background-color: #121318;
+    -fx-background-radius: 12 12 0 0;
+}
+
+.draft-thumb-icon {
+    -fx-text-fill: rgba(0, 212, 184, 0.22);
+    -fx-font-size: 44px;
+}
+
+.draft-duration-badge {
+    -fx-background-color: rgba(0, 0, 0, 0.68);
+    -fx-text-fill: #d3d9e7;
+    -fx-font-size: 11px;
+    -fx-background-radius: 6px;
+    -fx-padding: 2 6 2 6;
+}
+
+.draft-duration-badge-small {
+    -fx-background-color: rgba(0, 0, 0, 0.7);
+    -fx-text-fill: #d3d9e7;
+    -fx-font-size: 10px;
+    -fx-background-radius: 6px;
+    -fx-padding: 1 5 1 5;
+}
+
+.draft-title {
+    -fx-text-fill: #dbe2f2;
+    -fx-font-size: 13px;
+}
+
+.draft-meta {
+    -fx-text-fill: #798095;
+    -fx-font-size: 11px;
+}
+
+.draft-status-editing {
+    -fx-background-color: rgba(0, 212, 184, 0.14);
+    -fx-text-fill: #5de0cb;
+    -fx-background-radius: 8px;
+    -fx-padding: 2 8 2 8;
+    -fx-font-size: 11px;
+}
+
+.draft-status-completed {
+    -fx-background-color: rgba(52, 211, 153, 0.14);
+    -fx-text-fill: #67e0ae;
+    -fx-background-radius: 8px;
+    -fx-padding: 2 8 2 8;
+    -fx-font-size: 11px;
+}
+
+.draft-progress-label {
+    -fx-text-fill: #798095;
+    -fx-font-size: 11px;
+}
+
+.draft-progress-value {
+    -fx-text-fill: #5de0cb;
+    -fx-font-size: 11px;
+}
+
+.draft-progress-bar {
+    -fx-pref-height: 7px;
+}
+
+.draft-progress-bar > .track {
+    -fx-background-color: #2b2e38;
+    -fx-background-radius: 8px;
+}
+
+.draft-progress-bar > .bar {
+    -fx-background-color: linear-gradient(to right, #00d4b8, #1060ff);
+    -fx-background-radius: 8px;
+}
+
+.draft-list-row {
+    -fx-background-color: #1f2128;
+    -fx-background-radius: 12px;
+    -fx-border-color: rgba(255, 255, 255, 0.08);
+    -fx-border-radius: 12px;
+}
+
+.draft-list-row:hover {
+    -fx-border-color: rgba(0, 212, 184, 0.4);
+}
+
+.draft-list-thumb {
+    -fx-background-color: #121318;
+    -fx-background-radius: 8px;
+}
+
+.draft-list-thumb-icon {
+    -fx-text-fill: rgba(0, 212, 184, 0.22);
+    -fx-font-size: 30px;
+}
+
+.draft-action-btn-primary {
+    -fx-background-color: linear-gradient(to right, #00d4b8, #1060ff);
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 11px;
+    -fx-background-radius: 8px;
+    -fx-padding: 6 10 6 10;
+}
+
+.draft-action-btn-muted {
+    -fx-background-color: rgba(255, 255, 255, 0.08);
+    -fx-text-fill: #8f97aa;
+    -fx-font-size: 11px;
+    -fx-background-radius: 8px;
+    -fx-padding: 6 10 6 10;
+}
+
+.draft-action-btn-danger {
+    -fx-background-color: rgba(220, 50, 50, 0.16);
+    -fx-text-fill: #f07b7b;
+    -fx-font-size: 11px;
+    -fx-background-radius: 8px;
+    -fx-padding: 6 10 6 10;
+}
+
+.draft-empty-icon {
+    -fx-font-size: 42px;
+    -fx-text-fill: rgba(0, 212, 184, 0.32);
+}
+
+.draft-empty-title {
+    -fx-text-fill: #8c95ab;
+    -fx-font-size: 16px;
+}
+
+.draft-empty-subtitle {
+    -fx-text-fill: #666f83;
+    -fx-font-size: 12px;
+}
+
 /* Login page */
 .login-root {
     -fx-background-color: #000000;

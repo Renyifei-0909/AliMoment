@@ -1,8 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="Infinity" maxWidth="Infinity" styleClass="page-simple-root" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.aiimoment.controller.DraftPageController">
-    <Label text="草稿箱页面" styleClass="page-simple-title" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20" />
+<AnchorPane maxHeight="Infinity" maxWidth="Infinity" styleClass="draft-root" stylesheets="@../styles/app.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.aiimoment.controller.DraftPageController">
+    <VBox spacing="0.0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+        <HBox alignment="CENTER_LEFT" styleClass="draft-toolbar">
+            <TextField fx:id="searchField" promptText="搜索草稿..." styleClass="draft-search-field" />
+            <Region styleClass="draft-toolbar-divider" />
+            <HBox spacing="6.0">
+                <Button fx:id="allStatusBtn" mnemonicParsing="false" styleClass="draft-filter-btn draft-filter-btn-active" text="全部" />
+                <Button fx:id="editingStatusBtn" mnemonicParsing="false" styleClass="draft-filter-btn" text="编辑中" />
+                <Button fx:id="completedStatusBtn" mnemonicParsing="false" styleClass="draft-filter-btn" text="已完成" />
+            </HBox>
+            <Region styleClass="draft-toolbar-divider" />
+            <HBox spacing="6.0">
+                <Button fx:id="gridViewBtn" mnemonicParsing="false" styleClass="draft-view-btn draft-view-btn-active" text="网格" />
+                <Button fx:id="listViewBtn" mnemonicParsing="false" styleClass="draft-view-btn" text="列表" />
+            </HBox>
+            <Region HBox.hgrow="ALWAYS" />
+            <Button fx:id="newDraftBtn" mnemonicParsing="false" styleClass="draft-new-btn" text="+ 新建草稿" />
+        </HBox>
+
+        <ScrollPane fx:id="contentScrollPane" fitToWidth="true" hbarPolicy="NEVER" styleClass="draft-scroll" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS">
+            <StackPane styleClass="draft-content-shell">
+                <FlowPane fx:id="gridPane" hgap="14.0" prefWrapLength="980.0" vgap="14.0" />
+                <VBox fx:id="listBox" managed="false" spacing="10.0" visible="false" />
+                <VBox fx:id="emptyStateBox" alignment="CENTER" managed="false" spacing="8.0" visible="false">
+                    <Label styleClass="draft-empty-icon" text="🗂" />
+                    <Label styleClass="draft-empty-title" text="暂无草稿" />
+                    <Label styleClass="draft-empty-subtitle" text="开始创建您的第一个视频草稿" />
+                </VBox>
+            </StackPane>
+        </ScrollPane>
+    </VBox>
 </AnchorPane>
