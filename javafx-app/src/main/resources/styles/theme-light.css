@@ -33,9 +33,9 @@
     -fx-text-fill: #222222;
 }
 .theme-light .nav-tab-btn-active {
-    -fx-background-color: rgba(0, 120, 212, 0.12);
-    -fx-text-fill: #0078d4;
-    -fx-border-color: #0078d4;
+    -fx-background-color: linear-gradient(to right, rgba(48, 220, 177, 0.20) 0%, rgba(28, 214, 200, 0.22) 55%, rgba(31, 202, 216, 0.22) 100%);
+    -fx-text-fill: #0f5e52;
+    -fx-border-color: rgba(42, 184, 154, 0.75);
 }
 
 .theme-light .win-ctrl-btn {
@@ -86,18 +86,21 @@
 }
 
 .theme-light .search-input-shell {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #cccccc;
+    /* 浅色主题下也保持「蓝绿渐变描边 + 黑底」的检索输入框风格 */
+    -fx-background-color: linear-gradient(to right, #30dcb1 0%, #1cc6f7 55%, #1191f7 100%), #0b0d12;
+    -fx-background-insets: 0, 1;
+    -fx-background-radius: 14px, 13px;
+    -fx-border-color: transparent;
 }
 
 .theme-light .search-text-area {
-    -fx-control-inner-background: #ffffff;
-    -fx-text-fill: #222222;
-    -fx-prompt-text-fill: #888888;
+    -fx-control-inner-background: #0b0d12;
+    -fx-text-fill: #e6eefc;
+    -fx-prompt-text-fill: #768097;
 }
 
 .theme-light .search-text-area .content {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #0b0d12;
 }
 
 .theme-light .history-chip {
@@ -109,11 +112,11 @@
 }
 
 .theme-light .search-submit-btn {
-    -fx-background-color: #0078d4;
+    -fx-background-color: linear-gradient(to right, #30dcb1 0%, #1cc6f7 55%, #1191f7 100%);
     -fx-text-fill: #ffffff;
 }
 .theme-light .search-submit-btn:hover {
-    -fx-background-color: #1084d8;
+    -fx-background-color: linear-gradient(to right, #35e8b8 0%, #23d2f8 55%, #14a2f9 100%);
 }
 
 .theme-light .result-card {
@@ -725,6 +728,60 @@
 /* Draft page (light theme) */
 .theme-light .draft-root {
     -fx-background-color: #f0f0f0;
+}
+
+.theme-light .draft-folder-pane {
+    -fx-background-color: #fafafa;
+    -fx-border-color: rgba(0, 0, 0, 0.08);
+}
+
+.theme-light .draft-folder-header {
+    -fx-border-color: rgba(0, 0, 0, 0.08);
+}
+
+.theme-light .draft-folder-title {
+    -fx-text-fill: #333333;
+}
+
+.theme-light .draft-create-folder-btn {
+    -fx-background-color: rgba(0, 120, 212, 0.12);
+    -fx-text-fill: #0078d4;
+    -fx-border-color: rgba(0, 120, 212, 0.45);
+}
+
+.theme-light .draft-create-folder-btn:hover {
+    -fx-background-color: rgba(0, 120, 212, 0.2);
+}
+
+.theme-light .draft-folder-tree .tree-cell {
+    -fx-text-fill: #555555;
+}
+
+.theme-light .draft-folder-tree .tree-cell:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.06);
+    -fx-text-fill: #111111;
+}
+
+.theme-light .draft-folder-tree .tree-cell:selected {
+    -fx-background-color: rgba(0, 120, 212, 0.12);
+    -fx-text-fill: #0078d4;
+}
+
+.theme-light .draft-main-pane {
+    -fx-background-color: #f0f0f0;
+}
+
+.theme-light .draft-current-folder-bar {
+    -fx-background-color: #ffffff;
+    -fx-border-color: rgba(0, 0, 0, 0.08);
+}
+
+.theme-light .draft-current-folder-prefix {
+    -fx-text-fill: #777777;
+}
+
+.theme-light .draft-current-folder-label {
+    -fx-text-fill: #333333;
 }
 
 .theme-light .draft-toolbar {

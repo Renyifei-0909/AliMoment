@@ -43,7 +43,7 @@
             </VBox>
 
             <VBox minWidth="320" prefWidth="400" spacing="14" HBox.hgrow="NEVER">
-                <Label styleClass="search-panel-title" text="智能搜索" />
+                <Label styleClass="search-panel-title" text="智能检索" />
                 <VBox spacing="6">
                     <Label styleClass="section-heading" text="演示素材" />
                     <ComboBox fx:id="assetComboBox" maxWidth="1.7976931348623157E308" promptText="正在加载素材库..." styleClass="search-asset-combo" />
@@ -54,20 +54,18 @@
                         <TextArea fx:id="searchField" prefRowCount="5" promptText="描述您要查找的视频片段…例如：找到两个人在野外骑行的场景" styleClass="search-text-area" wrapText="true" />
                     </StackPane>
                     <HBox alignment="CENTER_RIGHT" spacing="8">
-                        <Button mnemonicParsing="false" styleClass="icon-tool-btn" text="▢" />
-                        <Button mnemonicParsing="false" styleClass="icon-tool-btn" text="🌐" />
                         <Button mnemonicParsing="false" styleClass="icon-tool-btn" text="📎" />
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="searchSubmitBtn" mnemonicParsing="false" styleClass="search-submit-btn" text="↑" />
+                        <Button fx:id="searchSubmitBtn" mnemonicParsing="false" styleClass="search-submit-btn" text="一键检索" />
                     </HBox>
                 </VBox>
-                <Label styleClass="section-heading" text="搜索历史" />
+                <Label styleClass="section-heading" text="检索历史" />
                 <FlowPane fx:id="historyPane" hgap="8" vgap="8">
                     <Button mnemonicParsing="false" styleClass="history-chip" text="家长陪伴小朋友玩乐" />
                     <Button mnemonicParsing="false" styleClass="history-chip" text="小朋友们一起搭积木" />
                     <Button mnemonicParsing="false" styleClass="history-chip" text="小朋友们自己玩耍" />
                 </FlowPane>
-                <Label styleClass="section-heading" text="搜索结果" />
+                <Label styleClass="section-heading" text="检索结果" />
                 <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent; -fx-background: transparent;" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS">
                     <VBox fx:id="resultsBox" spacing="10" style="-fx-background-color: transparent;">
                         <padding>

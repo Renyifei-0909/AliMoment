@@ -52,14 +52,18 @@
     -fx-text-fill: #e0e0e0;
 }
 .nav-tab-btn-active {
-    -fx-background-color: rgba(0, 120, 212, 0.18);
-    -fx-text-fill: #4fc3f7;
-    -fx-border-color: #0078d4;
+    -fx-background-color: linear-gradient(to right, rgba(48, 220, 177, 0.28) 0%, rgba(28, 214, 200, 0.30) 55%, rgba(31, 202, 216, 0.30) 100%);
+    -fx-text-fill: #dffcf4;
+    -fx-border-color: rgba(48, 220, 177, 0.78);
 }
 
 .nav-tab-icon {
     -fx-font-size: 18px;
     -fx-text-fill: inherit;
+}
+
+.nav-tab-image {
+    -fx-opacity: 0.92;
 }
 
 /* 顶栏中间区域过窄：仅图标模式（与 MainController 联动） */
@@ -178,27 +182,27 @@
 }
 
 .search-input-shell {
-    -fx-background-color: #121212;
-    -fx-background-radius: 14px;
-    -fx-border-color: #ffffff;
-    -fx-border-width: 1px;
-    -fx-border-radius: 14px;
+    /* 外层渐变描边 + 内层黑底 */
+    -fx-background-color: linear-gradient(to right, #30dcb1 0%, #1cc6f7 55%, #1191f7 100%), #0b0d12;
+    -fx-background-insets: 0, 1;
+    -fx-background-radius: 14px, 13px;
+    -fx-border-color: transparent;
     -fx-padding: 1px;
 }
 
 .search-text-area {
     -fx-background-color: transparent;
-    -fx-control-inner-background: #121212;
+    -fx-control-inner-background: #0b0d12;
     -fx-background-insets: 0;
     -fx-background-radius: 12px;
     -fx-font-size: 13px;
-    -fx-text-fill: #e0e0e0;
-    -fx-prompt-text-fill: #666666;
+    -fx-text-fill: #e6eefc;
+    -fx-prompt-text-fill: #768097;
     -fx-border-color: transparent;
 }
 
 .search-text-area .content {
-    -fx-background-color: #121212;
+    -fx-background-color: #0b0d12;
     -fx-background-radius: 12px;
     -fx-background-insets: 0;
     -fx-padding: 10px 12px 10px 12px;
@@ -216,16 +220,17 @@
 }
 
 .search-submit-btn {
-    -fx-background-color: #0078d4;
+    -fx-background-color: linear-gradient(to right, #30dcb1 0%, #1cc6f7 55%, #1191f7 100%);
     -fx-text-fill: #ffffff;
-    -fx-font-size: 14px;
-    -fx-min-width: 40px;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-min-width: 96px;
     -fx-min-height: 40px;
-    -fx-background-radius: 20px;
-    -fx-padding: 0;
+    -fx-background-radius: 10px;
+    -fx-padding: 0 14 0 14;
 }
 .search-submit-btn:hover {
-    -fx-background-color: #1084d8;
+    -fx-background-color: linear-gradient(to right, #35e8b8 0%, #23d2f8 55%, #14a2f9 100%);
 }
 
 .search-asset-combo {
@@ -1229,6 +1234,89 @@
 /* Draft page */
 .draft-root {
     -fx-background-color: #1a1b1f;
+}
+
+.draft-folder-pane {
+    -fx-background-color: #15161a;
+    -fx-border-color: rgba(255, 255, 255, 0.08);
+    -fx-border-width: 0 1 0 0;
+}
+
+.draft-folder-header {
+    -fx-padding: 12 12 10 12;
+    -fx-border-color: rgba(255, 255, 255, 0.08);
+    -fx-border-width: 0 0 1 0;
+}
+
+.draft-folder-title {
+    -fx-text-fill: #c7cede;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.draft-create-folder-btn {
+    -fx-background-color: rgba(0, 212, 184, 0.12);
+    -fx-text-fill: #5de0cb;
+    -fx-background-radius: 7px;
+    -fx-border-color: rgba(0, 212, 184, 0.4);
+    -fx-border-radius: 7px;
+    -fx-font-size: 11px;
+    -fx-padding: 5 8 5 8;
+}
+
+.draft-create-folder-btn:hover {
+    -fx-background-color: rgba(0, 212, 184, 0.2);
+}
+
+.draft-folder-tree {
+    -fx-background-color: transparent;
+    -fx-control-inner-background: transparent;
+    -fx-padding: 8;
+}
+
+.draft-folder-tree .tree-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #8e95a8;
+    -fx-font-size: 12px;
+    -fx-padding: 6 8 6 8;
+    -fx-background-radius: 6px;
+}
+
+.draft-folder-tree .tree-cell:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.06);
+    -fx-text-fill: #dce2f2;
+}
+
+.draft-folder-tree .tree-cell:selected {
+    -fx-background-color: rgba(0, 212, 184, 0.14);
+    -fx-text-fill: #5de0cb;
+}
+
+.draft-folder-tree .tree-cell:filled:selected:focused {
+    -fx-background-color: rgba(0, 212, 184, 0.14);
+}
+
+.draft-main-pane {
+    -fx-background-color: #1a1b1f;
+}
+
+.draft-current-folder-bar {
+    -fx-padding: 8 14 8 14;
+    -fx-background-color: #17181c;
+    -fx-border-color: rgba(255, 255, 255, 0.08);
+    -fx-border-width: 0 0 1 0;
+    -fx-spacing: 6;
+}
+
+.draft-current-folder-prefix {
+    -fx-text-fill: #6f778a;
+    -fx-font-size: 11px;
+}
+
+.draft-current-folder-label {
+    -fx-text-fill: #dbe2f2;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
 }
 
 .draft-toolbar {

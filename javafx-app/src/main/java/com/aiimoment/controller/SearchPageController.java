@@ -383,7 +383,7 @@ public class SearchPageController {
     private void onSearch() {
         String q = searchField.getText() != null ? searchField.getText().trim() : "";
         if (q.isEmpty()) {
-            setSearchStatus("请输入检索描述后再发起搜索。");
+            setSearchStatus("请输入检索描述后再发起检索。");
             return;
         }
         BackendApiClient.AssetSummary asset = assetComboBox != null ? assetComboBox.getValue() : null;

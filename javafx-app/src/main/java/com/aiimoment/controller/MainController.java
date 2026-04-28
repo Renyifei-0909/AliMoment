@@ -25,8 +25,8 @@ public class MainController {
 
     private static final String NAV_STYLE = "nav-tab-btn";
     private static final String NAV_COMPACT_STYLE = "nav-tab-btn-compact";
-    /** 中间导航条可用宽度低于此值时改为「仅图标 + Tooltip」（Office / 浏览器窄工具栏常见做法） */
-    private static final double NAV_COMPACT_WIDTH_THRESHOLD = 920;
+    /** 设为负值：保持导航「图标 + 文字」常显，不进入仅图标折叠模式 */
+    private static final double NAV_COMPACT_WIDTH_THRESHOLD = -1;
 
     @FXML
     private BorderPane topChrome;
@@ -89,6 +89,7 @@ public class MainController {
         }
 
         loadBrandLogo();
+        loadNavIcons();
         captureNavLabelsAndSetupAdaptiveNav();
         setActiveNavButton(navSearch);
         Platform.runLater(this::syncNavCompactToCurrentWidth);
@@ -161,6 +162,30 @@ public class MainController {
         } else {
             brandLogoContainer.getChildren().setAll(AliBrandLogo.build(40));
         }
+    }
+
+    private void loadNavIcons() {
+        setNavButtonIcon(navMaterial, "/images/p0.1.png");
+        setNavButtonIcon(navDraft, "/images/p0.2.png");
+        setNavButtonIcon(navSearch, "/images/p0.3.png");
+        setNavButtonIcon(navSmartEdit, "/images/p0.4.png");
+        setNavButtonIcon(navSettings, "/images/p0.5.png");
+    }
+
+    private void setNavButtonIcon(Button button, String resourcePath) {
+        if (button == null || resourcePath == null || resourcePath.isBlank()) {
+            return;
+        }
+        var url = getClass().getResource(resourcePath);
+        if (url == null) {
+            return;
+        }
+        ImageView iv = new ImageView(new Image(url.toExternalForm(), 18, 18, true, true, true));
+        iv.getStyleClass().add("nav-tab-image");
+        iv.setSmooth(true);
+        iv.setPreserveRatio(true);
+        button.setGraphic(iv);
+        button.setContentDisplay(ContentDisplay.TOP);
     }
 
     private void initializePageContent() {

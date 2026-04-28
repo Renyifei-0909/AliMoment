@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
@@ -27,19 +28,36 @@
                 <Button fx:id="listViewBtn" mnemonicParsing="false" styleClass="draft-view-btn" text="列表" />
             </HBox>
             <Region HBox.hgrow="ALWAYS" />
-            <Button fx:id="newDraftBtn" mnemonicParsing="false" styleClass="draft-new-btn" text="+ 新建草稿" />
         </HBox>
 
-        <ScrollPane fx:id="contentScrollPane" fitToWidth="true" hbarPolicy="NEVER" styleClass="draft-scroll" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS">
-            <StackPane styleClass="draft-content-shell">
-                <FlowPane fx:id="gridPane" hgap="14.0" prefWrapLength="980.0" vgap="14.0" />
-                <VBox fx:id="listBox" managed="false" spacing="10.0" visible="false" />
-                <VBox fx:id="emptyStateBox" alignment="CENTER" managed="false" spacing="8.0" visible="false">
-                    <Label styleClass="draft-empty-icon" text="🗂" />
-                    <Label styleClass="draft-empty-title" text="暂无草稿" />
-                    <Label styleClass="draft-empty-subtitle" text="开始创建您的第一个视频草稿" />
-                </VBox>
-            </StackPane>
-        </ScrollPane>
+        <HBox spacing="0.0" VBox.vgrow="ALWAYS">
+            <VBox minWidth="250.0" prefWidth="250.0" styleClass="draft-folder-pane">
+                <HBox alignment="CENTER_LEFT" styleClass="draft-folder-header">
+                    <Label styleClass="draft-folder-title" text="草稿夹预览" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button fx:id="createFolderBtn" mnemonicParsing="false" styleClass="draft-create-folder-btn" text="+ 新建草稿夹" />
+                </HBox>
+                <TreeView fx:id="folderTreeView" styleClass="draft-folder-tree" VBox.vgrow="ALWAYS" />
+            </VBox>
+
+            <VBox styleClass="draft-main-pane" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT" styleClass="draft-current-folder-bar">
+                    <Label styleClass="draft-current-folder-prefix" text="当前草稿夹:" />
+                    <Label fx:id="currentFolderLabel" styleClass="draft-current-folder-label" text="全部草稿" />
+                </HBox>
+
+                <ScrollPane fx:id="contentScrollPane" fitToWidth="true" hbarPolicy="NEVER" styleClass="draft-scroll" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS">
+                    <StackPane styleClass="draft-content-shell">
+                        <FlowPane fx:id="gridPane" hgap="14.0" prefWrapLength="980.0" vgap="14.0" />
+                        <VBox fx:id="listBox" managed="false" spacing="10.0" visible="false" />
+                        <VBox fx:id="emptyStateBox" alignment="CENTER" managed="false" spacing="8.0" visible="false">
+                            <Label styleClass="draft-empty-icon" text="🗂" />
+                            <Label styleClass="draft-empty-title" text="暂无草稿" />
+                            <Label styleClass="draft-empty-subtitle" text="开始创建您的第一个视频草稿" />
+                        </VBox>
+                    </StackPane>
+                </ScrollPane>
+            </VBox>
+        </HBox>
     </VBox>
 </AnchorPane>
