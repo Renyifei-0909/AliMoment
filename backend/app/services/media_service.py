@@ -3,11 +3,13 @@ from __future__ import annotations
 import shutil
 import subprocess
 import uuid
+import json
 from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional
 
 from app.config import settings
+from app.integrations.narrato.compose_adapter import NarratoComposeError, get_compose_adapter
 
 
 class MediaServiceError(RuntimeError):
@@ -81,6 +83,15 @@ class MediaService:
         effect_intensity: float,
         add_voiceover: bool,
     ) -> EditResult:
+        if settings.edit_engine.lower() == "narrato":
+            return self._edit_with_narrato(
+                media_id=media_id,
+                segments=segments,
+                speed=speed,
+                effect_intensity=effect_intensity,
+                add_voiceover=add_voiceover,
+            )
+
         ffmpeg_bin = shutil.which("ffmpeg")
         input_path = self._resolve_media_path(media_id)
         if not ffmpeg_bin:
@@ -161,6 +172,100 @@ class MediaService:
             voiceover_applied=False,
             note=note,
         )
+
+    def _edit_with_narrato(
+        self,
+        *,
+        media_id: str,
+        segments: List[dict],
+        speed: float,
+        effect_intensity: float,
+        add_voiceover: bool,
+    ) -> EditResult:
+        input_path = self._resolve_media_path(media_id)
+        script_path = self._build_narrato_script(media_id=media_id, segments=segments)
+        narrato_task_id = f"edit_{uuid.uuid4().hex}"
+
+        params = {
+            "video_clip_json_path": str(script_path),
+            "video_origin_path": str(input_path),
+            "tts_engine": settings.narrato_tts_engine,
+            "voice_name": settings.narrato_voice_name,
+            "voice_rate": 1.0,
+            "voice_pitch": 1.0,
+            "subtitle_enabled": False,
+            "font_name": "Microsoft YaHei",
+            "font_size": 24,
+            "text_fore_color": "#FFFFFF",
+            "subtitle_position": "bottom",
+            "custom_position": 70.0,
+            "n_threads": settings.narrato_n_threads,
+            "video_aspect": "16:9",
+            "tts_volume": 1.0,
+            "original_volume": 1.0,
+            "bgm_volume": 0.0,
+        }
+
+        try:
+            result = get_compose_adapter().run_compose_blocking(task_id=narrato_task_id, params=params)
+        except NarratoComposeError as exc:
+            raise MediaServiceError(f"Narrato 合成失败: {exc}") from exc
+
+        output_urls = result.get("output_urls") or []
+        copied_paths = result.get("videos") or []
+        if not output_urls or not copied_paths:
+            raise MediaServiceError("Narrato 未返回可用输出视频")
+
+        output_filename = Path(copied_paths[0]).name
+        output_relative_url = f"/media/outputs/{output_filename}"
+        note = (
+            "已通过 Narrato 引擎生成视频。"
+            " 当前参数 speed/effect_intensity 由 Narrato 流程忽略。"
+        )
+        if add_voiceover:
+            note += " add_voiceover 已透传 Narrato 默认语音策略。"
+
+        return EditResult(
+            media_id=media_id,
+            output_filename=output_filename,
+            output_relative_url=output_relative_url,
+            output_url=output_urls[0],
+            speed=speed,
+            effect_intensity=effect_intensity,
+            voiceover_requested=add_voiceover,
+            voiceover_applied=add_voiceover,
+            note=note,
+        )
+
+    def _build_narrato_script(self, *, media_id: str, segments: List[dict]) -> Path:
+        script_items = []
+        for index, segment in enumerate(segments, start=1):
+            start = float(segment["start"])
+            end = float(segment["end"])
+            if end <= start:
+                raise MediaServiceError("剪辑片段的结束时间必须大于开始时间。")
+            script_items.append(
+                {
+                    "_id": index,
+                    "timestamp": f"{self._seconds_to_srt_time(start)}-{self._seconds_to_srt_time(end)}",
+                    "picture": "",
+                    "narration": "",
+                    "OST": 1,
+                }
+            )
+
+        script_path = Path(settings.storage_features_dir) / f"narrato_script_{media_id}_{uuid.uuid4().hex}.json"
+        script_path.parent.mkdir(parents=True, exist_ok=True)
+        script_path.write_text(json.dumps(script_items, ensure_ascii=False, indent=2), encoding="utf-8")
+        return script_path
+
+    @staticmethod
+    def _seconds_to_srt_time(seconds: float) -> str:
+        millis = int(round(seconds * 1000))
+        hours, rem = divmod(millis, 3600000)
+        minutes, rem = divmod(rem, 60000)
+        secs, ms = divmod(rem, 1000)
+        return f"{hours:02d}:{minutes:02d}:{secs:02d},{ms:03d}"
 
     def _fallback_copy_output(
         self,

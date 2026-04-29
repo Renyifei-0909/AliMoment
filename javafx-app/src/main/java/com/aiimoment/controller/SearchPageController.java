@@ -75,6 +75,9 @@ public class SearchPageController {
     private VBox activeResultCard;
     private BackendApiClient.SearchResultItem activeResult;
     private final BackendApiClient apiClient = new BackendApiClient();
+    private URI localVideoUri;
+    private URI proxyVideoUri;
+    private URI activeVideoUri;
 
     /** 当前播放进度占总时长比例 0..1，驱动索引条青色已播段宽度 */
     private final SimpleDoubleProperty playRatio = new SimpleDoubleProperty(0);
@@ -177,7 +180,9 @@ public class SearchPageController {
         if (file == null) {
             return;
         }
-        loadVideo(file.toURI());
+        localVideoUri = file.toURI();
+        proxyVideoUri = null;
+        loadVideo(localVideoUri, "本地视频", Duration.ZERO);
         setSearchStatus("本地视频已导入，正在向后端生成代理预览...");
         uploadPreviewProxy(file);
     }
@@ -200,8 +205,10 @@ public class SearchPageController {
                                 ? payload.previewRelativeUrl
                                 : payload.previewUrl
                 );
-                setSearchStatus("代理预览已生成，正在切换到后端可播放版本...");
-                loadVideo(URI.create(previewUrl));
+                proxyVideoUri = URI.create(previewUrl);
+                Duration resumeAt = mediaPlayer != null ? mediaPlayer.getCurrentTime() : Duration.ZERO;
+                setSearchStatus("代理预览已生成，正在切换到稳定播放源...");
+                loadVideo(proxyVideoUri, "代理视频", resumeAt);
                 return;
             }
             if (payload.previewNote != null && !payload.previewNote.isBlank()) {
@@ -212,7 +219,7 @@ public class SearchPageController {
         }));
     }
 
-    private void loadVideo(URI uri) {
+    private void loadVideo(URI uri, String sourceLabel, Duration resumeAt) {
         disposeMedia();
         try {
             setVideoPlaceholderHint("正在加载视频预览...");
@@ -220,6 +227,13 @@ public class SearchPageController {
             media.setOnError(() -> Platform.runLater(() -> {
                 Throwable err = media.getError();
                 String msg = err != null ? err.getMessage() : "未知错误";
+                boolean isProxy = proxyVideoUri != null && proxyVideoUri.equals(uri);
+                boolean hasLocalFallback = localVideoUri != null && !localVideoUri.equals(uri);
+                if (isProxy && hasLocalFallback) {
+                    setSearchStatus("代理视频加载失败，已回退到本地视频播放。");
+                    loadVideo(localVideoUri, "本地视频", Duration.ZERO);
+                    return;
+                }
                 AlimomentDialogs.showError(videoPane.getScene().getWindow(), "无法加载视频", "无法加载该视频。\n\n" + msg);
                 disposeMedia();
             }));
@@ -228,6 +242,13 @@ public class SearchPageController {
             mediaPlayer.setOnError(() -> Platform.runLater(() -> {
                 Exception ex = mediaPlayer.getError();
                 String msg = ex != null ? ex.getMessage() : "播放出错";
+                boolean isProxy = proxyVideoUri != null && proxyVideoUri.equals(uri);
+                boolean hasLocalFallback = localVideoUri != null && !localVideoUri.equals(uri);
+                if (isProxy && hasLocalFallback) {
+                    setSearchStatus("代理视频播放异常，已回退到本地视频。");
+                    loadVideo(localVideoUri, "本地视频", Duration.ZERO);
+                    return;
+                }
                 AlimomentDialogs.showError(videoPane.getScene().getWindow(), "播放失败", msg);
                 disposeMedia();
             }));
@@ -239,9 +260,10 @@ public class SearchPageController {
             mediaView.fitWidthProperty().bind(videoPane.widthProperty().subtract(8));
             mediaView.fitHeightProperty().bind(videoPane.heightProperty().subtract(8));
             videoPane.getChildren().add(0, mediaView);
-            setSearchStatus("正在加载本地视频预览...");
+            setSearchStatus("正在加载" + sourceLabel + "...");
 
             mediaPlayer.setOnReady(() -> {
+                activeVideoUri = uri;
                 videoPane.getStyleClass().remove("video-placeholder-empty");
                 if (timelinePane != null) {
                     timelinePane.setCursor(Cursor.HAND);
@@ -249,18 +271,31 @@ public class SearchPageController {
                 if (media.getWidth() > 0 && media.getHeight() > 0) {
                     videoPlaceholder.setVisible(false);
                     videoPlaceholder.setManaged(false);
-                    setSearchStatus("本地视频已载入，可点击检索结果直接跳转片段。");
+                    setSearchStatus(sourceLabel + "已载入，可点击检索结果直接跳转片段。");
                 } else {
                     videoPlaceholder.setVisible(true);
                     videoPlaceholder.setManaged(true);
                     videoPlaceholder.toFront();
                     setVideoPlaceholderHint("视频已载入，但当前编码无法在 JavaFX 中渲染画面。\n建议改用 H.264 编码 MP4。");
-                    setSearchStatus("本地视频已载入，但当前编码无法预览画面；仍可继续做检索联调。");
+                    setSearchStatus(sourceLabel + "已载入，但当前编码无法预览画面；仍可继续做检索联调。");
+                }
+                Duration total = mediaPlayer.getTotalDuration();
+                if (resumeAt != null
+                        && total != null
+                        && !total.isUnknown()
+                        && total.greaterThan(Duration.ZERO)
+                        && resumeAt.greaterThan(Duration.ZERO)
+                        && resumeAt.lessThan(total.subtract(Duration.seconds(0.2)))) {
+                    mediaPlayer.seek(resumeAt);
                 }
                 updateTimeLabel();
                 updateTimelineProgress();
                 playPauseBtn.setText("⏸");
                 mediaPlayer.play();
+            });
+            mediaPlayer.totalDurationProperty().addListener((o, oldDuration, newDuration) -> {
+                updateTimeLabel();
+                updateTimelineProgress();
             });
             mediaPlayer.currentTimeProperty().addListener((o, a, b) -> {
                 updateTimeLabel();
@@ -302,6 +337,7 @@ public class SearchPageController {
         if (timelinePane != null) {
             timelinePane.setCursor(Cursor.DEFAULT);
         }
+        activeVideoUri = null;
     }
 
     private void setVideoPlaceholderHint(String text) {
@@ -490,7 +526,7 @@ public class SearchPageController {
             resultsBox.getChildren().add(card);
         }
 
-        setSearchStatus("检索完成：" + payload.originalQuery + " -> " + payload.translatedQuery + "，返回 " + payload.results.size() + " 个片段。");
+        setSearchStatus("检索完成：原始词「" + payload.originalQuery + "」，检索词「" + payload.translatedQuery + "」，返回 " + payload.results.size() + " 个片段。");
         if (firstCard != null && firstResult != null) {
             activateResult(firstCard, firstResult);
         }
@@ -512,7 +548,7 @@ public class SearchPageController {
         top.getChildren().addAll(t, sp, badge);
 
         String translated = payload.translatedQuery != null ? payload.translatedQuery : "";
-        Label d = new Label("Top-" + result.rank + " 片段，相对匹配度展示，英文检索词：" + translated);
+        Label d = new Label("Top-" + result.rank + " 片段，相对匹配度展示，系统检索词：" + translated);
         d.getStyleClass().add("result-desc");
         d.setMaxWidth(Double.MAX_VALUE);
         d.setWrapText(true);

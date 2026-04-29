@@ -1,0 +1,3 @@
+[submodule "third_party/narratoai"]
+	path = third_party/narratoai
+	url = https://github.com/linyqh/NarratoAI.git

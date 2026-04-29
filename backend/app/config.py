@@ -29,7 +29,6 @@ class Settings:
     pcnet_top_k: int = int(os.getenv("PCNET_TOP_K", "5"))
     pcnet_vote: bool = os.getenv("PCNET_VOTE", "false").lower() in {"1", "true", "yes", "on"}
     pcnet_seed: int = int(os.getenv("PCNET_SEED", "8"))
-
     demo_assets_manifest_path: str = os.getenv(
         "DEMO_ASSETS_MANIFEST_PATH",
         str(backend_root / "app" / "demo_assets" / "assets.json"),
@@ -47,6 +46,31 @@ class Settings:
     llm_api_key: str = os.getenv("LLM_API_KEY", "")
     llm_model: str = os.getenv("LLM_MODEL", "")
     llm_timeout_seconds: float = float(os.getenv("LLM_TIMEOUT_SECONDS", "10"))
+    edit_engine: str = os.getenv("EDIT_ENGINE", "legacy_ffmpeg")
+
+    narrato_submodule_path: str = os.getenv(
+        "NARRATO_SUBMODULE_PATH",
+        str(repo_root / "third_party" / "narratoai"),
+    )
+    narrato_storage_root: str = os.getenv(
+        "NARRATO_STORAGE_ROOT",
+        str(Path(storage_root) / "narrato"),
+    )
+    narrato_text_provider: str = os.getenv("NARRATO_TEXT_PROVIDER", "openai")
+    narrato_text_api_key: str = os.getenv("NARRATO_TEXT_API_KEY", "")
+    narrato_text_model: str = os.getenv("NARRATO_TEXT_MODEL", "")
+    narrato_text_base_url: str = os.getenv("NARRATO_TEXT_BASE_URL", "")
+    narrato_vision_provider: str = os.getenv("NARRATO_VISION_PROVIDER", "openai")
+    narrato_vision_api_key: str = os.getenv("NARRATO_VISION_API_KEY", "")
+    narrato_vision_model: str = os.getenv("NARRATO_VISION_MODEL", "")
+    narrato_vision_base_url: str = os.getenv("NARRATO_VISION_BASE_URL", "")
+    narrato_ffmpeg_path: str = os.getenv("NARRATO_FFMPEG_PATH", "")
+    narrato_n_threads: int = int(os.getenv("NARRATO_N_THREADS", "4"))
+    narrato_frame_interval: int = int(os.getenv("NARRATO_FRAME_INTERVAL", "3"))
+    narrato_vision_batch_size: int = int(os.getenv("NARRATO_VISION_BATCH_SIZE", "10"))
+    narrato_vision_max_concurrency: int = int(os.getenv("NARRATO_VISION_MAX_CONCURRENCY", "2"))
+    narrato_tts_engine: str = os.getenv("NARRATO_TTS_ENGINE", "edge_tts")
+    narrato_voice_name: str = os.getenv("NARRATO_VOICE_NAME", "zh-CN-XiaoyiNeural-Female")
 
     def ensure_runtime_dirs(self) -> None:
         Path(self.storage_root).mkdir(parents=True, exist_ok=True)
@@ -54,6 +78,7 @@ class Settings:
         Path(self.storage_previews_dir).mkdir(parents=True, exist_ok=True)
         Path(self.storage_features_dir).mkdir(parents=True, exist_ok=True)
         Path(self.storage_outputs_dir).mkdir(parents=True, exist_ok=True)
+        Path(self.narrato_storage_root).mkdir(parents=True, exist_ok=True)
 
 
 settings = Settings()

@@ -98,3 +98,65 @@ class EditResponseData(BaseModel):
 
 class EditResponse(ApiResponse):
     data: EditResponseData
+
+
+class NarratoDocumentaryRequest(BaseModel):
+    video_path: str = Field(..., min_length=1)
+    video_theme: str = ""
+    custom_prompt: str = ""
+    frame_interval_input: Optional[int] = Field(None, ge=1)
+    vision_batch_size: Optional[int] = Field(None, ge=1)
+    vision_llm_provider: Optional[str] = None
+    vision_max_concurrency: Optional[int] = Field(None, ge=1)
+
+
+class NarratoDocumentaryResponseData(BaseModel):
+    script: List[Dict[str, object]] = Field(default_factory=list)
+
+
+class NarratoDocumentaryResponse(ApiResponse):
+    data: NarratoDocumentaryResponseData
+
+
+class NarratoComposeRequest(BaseModel):
+    video_clip_json_path: str = Field(..., min_length=1)
+    video_origin_path: str = Field(..., min_length=1)
+    tts_engine: str = "edge_tts"
+    voice_name: str = "zh-CN-XiaoyiNeural-Female"
+    voice_rate: float = 1.0
+    voice_pitch: float = 1.0
+    subtitle_enabled: bool = False
+    font_name: str = "Microsoft YaHei"
+    font_size: int = 24
+    text_fore_color: str = "#FFFFFF"
+    subtitle_position: str = "bottom"
+    custom_position: float = 70.0
+    n_threads: int = 4
+    video_aspect: str = "16:9"
+    tts_volume: float = 1.0
+    original_volume: float = 1.0
+    bgm_volume: float = 0.3
+
+
+class NarratoComposeResponseData(BaseModel):
+    task_id: str
+
+
+class NarratoComposeResponse(ApiResponse):
+    data: NarratoComposeResponseData
+
+
+class NarratoTaskResponseData(BaseModel):
+    task_id: str
+    state: str
+    progress: int
+    message: str = ""
+    videos: List[str] = Field(default_factory=list)
+    output_urls: List[str] = Field(default_factory=list)
+    created_at: str
+    updated_at: str
+    debug: Dict[str, object] = Field(default_factory=dict)
+
+
+class NarratoTaskResponse(ApiResponse):
+    data: NarratoTaskResponseData
